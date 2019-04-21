@@ -1,0 +1,56 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Blank.master.cs" Inherits="POS.Blank" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title><%=ConfigurationManager.AppSettings.Get("DomainTitle")%></title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="Ganesh Patil" name="author" />
+    <link rel="icon" href="../app_imgs/favicon.ico" />
+
+    <asp:PlaceHolder ID="phScriptsHolder" runat="server">
+        <script type="text/javascript">
+            var LOGGED_USER = '<%=Session["USER_ID"]%>';
+            var USER_ROLE_ID = '<%=Session["UserGroup_ID"]%>';
+            var SERVICE_PATH = "<%= System.Configuration.ConfigurationManager.AppSettings["ServicePath"].ToString() %>";
+            var ROOT_PATH = "<%= System.Configuration.ConfigurationManager.AppSettings["rootpath"].ToString() %>";
+            var IP_ADDRESS = "<%= Request.ServerVariables["REMOTE_ADDR"] %>";
+        </script>
+    </asp:PlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+
+    <!-- BEGIN JAVASCRIPTS -->
+
+    <asp:PlaceHolder runat="server" ID="phBottomScripts" />
+
+    <!-- END JAVASCRIPTS -->
+
+    <form id="form1" runat="server">
+
+        <div class="st-content-inner padding-none">
+
+            <div class="container-fluid">
+
+                <asp:ContentPlaceHolder ID="cpMaster" runat="server">
+                </asp:ContentPlaceHolder>
+
+            </div>
+
+            <footer class="footer">
+                <div class="container">
+                    <%--<p class="text-muted"><strong>SharpiTech Solutions Pvt. Ltd.</strong> © Copyright 2017</p>--%>
+                </div>
+            </footer>
+
+        </div>
+
+    </form>
+
+</body>
+</html>

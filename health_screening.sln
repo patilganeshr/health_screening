@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOFARCH.HealthScreening.Entities", "SOFARCH.HealthScreening.Entities\SOFARCH.HealthScreening.Entities.csproj", "{F2FEA5D9-0D0E-41F5-B8BF-5D736E1DB32B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOFARCH.HealthScreening.DataModel", "SOFARCH.HealthScreening.DataModel\SOFARCH.HealthScreening.DataModel.csproj", "{44B281D3-F0FF-4132-962E-F300D5F35A34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOFARCH.HealthScreening.Business", "SOFARCH.HealthScreening.Business\SOFARCH.HealthScreening.Business.csproj", "{02EBC423-62A6-4B1D-9A2F-CC4AF6722305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthScreeningApp", "HealthScreeningApp\HealthScreeningApp.csproj", "{04C4BA5A-9AAB-4F6D-ADCE-544B26F5E26A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOFARCH.HealthScreening.Api", "SOFARCH.HealthScreening.Api\SOFARCH.HealthScreening.Api.csproj", "{B82F4344-CDB9-4369-A57E-215AA2468221}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2FEA5D9-0D0E-41F5-B8BF-5D736E1DB32B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2FEA5D9-0D0E-41F5-B8BF-5D736E1DB32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2FEA5D9-0D0E-41F5-B8BF-5D736E1DB32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2FEA5D9-0D0E-41F5-B8BF-5D736E1DB32B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44B281D3-F0FF-4132-962E-F300D5F35A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44B281D3-F0FF-4132-962E-F300D5F35A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44B281D3-F0FF-4132-962E-F300D5F35A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44B281D3-F0FF-4132-962E-F300D5F35A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02EBC423-62A6-4B1D-9A2F-CC4AF6722305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02EBC423-62A6-4B1D-9A2F-CC4AF6722305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02EBC423-62A6-4B1D-9A2F-CC4AF6722305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02EBC423-62A6-4B1D-9A2F-CC4AF6722305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C4BA5A-9AAB-4F6D-ADCE-544B26F5E26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C4BA5A-9AAB-4F6D-ADCE-544B26F5E26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C4BA5A-9AAB-4F6D-ADCE-544B26F5E26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C4BA5A-9AAB-4F6D-ADCE-544B26F5E26A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82F4344-CDB9-4369-A57E-215AA2468221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82F4344-CDB9-4369-A57E-215AA2468221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82F4344-CDB9-4369-A57E-215AA2468221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82F4344-CDB9-4369-A57E-215AA2468221}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Data.6.0.1304.0\lib\NET45
+		SolutionGuid = {AD859AF0-48CC-41F1-9A9D-DD36FEC1029D}
+	EndGlobalSection
+EndGlobal
