@@ -151,7 +151,54 @@ namespace SOFARCH.HealthScreening.DataModel
 
             return employers;
         }
-                
+
+
+        public List<Entities.Employer> SearchEmployerByName(string employerName)
+        {
+            var employers = new List<Entities.Employer>();
+
+            DbCommand dbCommand = null;
+
+            try
+            {
+                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchEmployerByName))
+                {
+                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, employerName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var employer = new Entities.Employer
+                            {
+                                EmployerId = DRE.GetNullableInt32(reader, "employer_id", 0),
+                                EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                                EmployerAddress = DRE.GetNullableString(reader, "employer_address", null),
+                                CountryName = DRE.GetNullableString(reader, "country_name", null),
+                                StateName = DRE.GetNullableString(reader, "state_name", null),
+                                CityName = DRE.GetNullableString(reader, "city_name", null),
+                                PinCode = DRE.GetNullableString(reader, "pin_code", null),
+                                Website=  DRE.GetNullableString(reader, "website", null),
+                                GSTINNo = DRE.GetNullableString(reader, "gstin_no", null)
+                            };
+
+                            employers.Add(employer);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dbCommand = null;
+            }
+
+            return employers;
+        }
+
         /// <summary>
         /// 
         /// </summary>

@@ -38,6 +38,13 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _employer.GetAllEmployers();
         }
 
+        [HttpGet]
+        [Route("SearchEmployerByName/{employerName = null}")]
+        public List<Entities.Employer> SearchEmployerByName(string employerName = null)
+        {
+            return _employer.SearchEmployerByName(employerName);
+        }
+
         /// <summary>
         /// 
         /// </summary>

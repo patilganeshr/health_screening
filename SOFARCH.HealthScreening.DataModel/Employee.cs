@@ -184,7 +184,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="BranchId"></param>
         /// <returns></returns>
-        public List<Entities.Employee> GetAllEmployeesByEmployer(Int32 branchId)
+        public List<Entities.Employee> GetAllEmployeesByBranch(Int32 branchId)
         {
             var employees = new List<Entities.Employee>();
 
@@ -199,19 +199,37 @@ namespace SOFARCH.HealthScreening.DataModel
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         employees = GetEmployees(reader);
-                        //while (reader.Read())
-                        //{
-                        //    var employee = new Entities.Employee
-                        //    {
-                        //        EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
-                        //        FirstName = DRE.GetNullableString(reader, "first_name", null),
-                        //        MiddleName = DRE.GetNullableString(reader, "middle_name", null),
-                        //        LastName = DRE.GetNullableString(reader, "last_name", null),
-                        //        FullName = DRE.GetNullableString(reader, "full_name", null)
-                        //    };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                dbCommand = null;
+            }
 
-                        //    employees.Add(employee);
-                        //}
+            return employees;
+        }
+
+        public List<Entities.Employee> SearchEmployeeByBranchOrName(Int32? branchId, string employeeName = null)
+        {
+            var employees = new List<Entities.Employee>();
+
+            DbCommand dbCommand = null;
+
+            try
+            {
+                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchEmployeeByBranchAndEmployeeName))
+                {
+                    database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, branchId);
+                    database.AddInParameter(dbCommand, "@employee_name", DbType.String, employeeName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        employees = GetEmployees(reader);
                     }
                 }
             }
@@ -240,18 +258,19 @@ namespace SOFARCH.HealthScreening.DataModel
                     MiddleName = DRE.GetNullableString(reader, "middle_name", null),
                     LastName = DRE.GetNullableString(reader, "last_name", null),
                     FullName = DRE.GetNullableString(reader, "full_name", null),
+                    Address = DRE.GetNullableString(reader, "address", null),
                     BranchId = DRE.GetNullableInt32(reader, "branch_id", null),
                     BranchName = DRE.GetNullableString(reader, "branch_name", null),
                     Gender = DRE.GetNullableString(reader, "gender", null),
-                    Address = DRE.GetNullableString(reader, "address", null),
                     DateOfBirth = DRE.GetNullableString(reader, "date_of_birth", null),
+                    ContactNos  = DRE.GetNullableString(reader, "contact_nos", null),
                     ContactNo1 = DRE.GetNullableString(reader, "contact_no_1", null),
                     ContactNo2 = DRE.GetNullableString(reader, "contact_no_2", null),
                     MobileNo1 = DRE.GetNullableString(reader, "mobile_no_1", null),
                     MobileNo2 = DRE.GetNullableString(reader, "mobile_no_2", null),
                     EmailId = DRE.GetNullableString(reader, "email_id", null),
                     PANNo = DRE.GetNullableString(reader, "pan_no", null),
-                    Department = DRE.GetNullableString(reader, "department_id", null),
+                    Department = DRE.GetNullableString(reader,"department", null),
                     Designation = DRE.GetNullableString(reader, "designation", null)
                 };
 

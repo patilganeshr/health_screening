@@ -46,6 +46,8 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string GetListOfAllEmployeesByBranch { get { return "employees_get_list_of_all_employees_by_branch"; } }
 
+        public static string SearchEmployeeByBranchAndEmployeeName { get { return "employees_search_list_of_employees_by_branch_or_employee_name"; } }
+
         public static string GetEmployeeDetailsById { get { return "employees_get_employee_details_by_id"; } }
         
         #endregion
@@ -161,6 +163,10 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string DeleteEmployer { get { return "employers_delete_employer"; } }
 
         public static string GetListOfAllEmployers { get { return "employers_get_list_of_all_employers"; } }
+        
+        public static string ViewListOfAllEmployers { get { return "employers_view_list_of_employers"; } }
+
+        public static string SearchEmployerByName { get { return "employers_search_employer_by_name"; } }
 
         public static string GetEmployerDetailsById { get { return "employers_get_employer_details_by_id"; } }
 

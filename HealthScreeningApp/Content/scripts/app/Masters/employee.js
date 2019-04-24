@@ -13,9 +13,9 @@
 
 
 
-var SharpiTech = {};
+var Sofarch = {};
 
-SharpiTech.Employee = (function () {
+Sofarch.Employee = (function () {
 
     //placeholder for cached DOM elements
     var DOM = {};
@@ -34,12 +34,13 @@ SharpiTech.Employee = (function () {
         DOM.employeesList = document.getElementById('EmployeesList');
 
         DOM.editMode = document.getElementById('EditMode');
-        DOM.employer = document.getElementById('Employer');
+        DOM.branch = document.getElementById('Branch');
         DOM.firstName = document.getElementById('FirstName');
         DOM.middleName = document.getElementById('MiddleName');
         DOM.lastName = document.getElementById('LastName');
         DOM.gender = document.getElementsByName('Gender');
         DOM.dateOfBirth = document.getElementById('DateOfBirth');
+        DOM.dateOfBirthDatePicker = document.getElementById('DateOfBirthDatePicker');
         DOM.contactNo1 = document.getElementById('ContactNo1');
         DOM.contactNo2 = document.getElementById('ContactNo2');
         DOM.mobileNo1 = document.getElementById('MobileNo1');
@@ -48,6 +49,9 @@ SharpiTech.Employee = (function () {
         DOM.emailId = document.getElementById('EmailId');
         DOM.panNo = document.getElementById('PANNo');
         DOM.department = document.getElementById('Department');
+        DOM.designation = document.getElementById('Designation');
+
+        DOM.$dateOfBirthDatePicker = $('#DateOfBirthDatePicker');
 
         DOM.addNewEmployee = document.getElementById('AddNewEmployee');
         DOM.showEmployeeList = document.getElementById('ShowEmployeeList');
@@ -64,7 +68,23 @@ SharpiTech.Employee = (function () {
     function applyPlugins() {
 
         $('select').select2();
+
+        DOM.$dateOfBirthDatePicker.datetimepicker({
+            format: 'DD/MMM/YYYY'
+        });
     }
+
+    function setFocusOnSelect(e) {
+        setTimeout(function () {
+            e.currentTarget.focus();
+        }, 200);
+    }
+
+    $("select").on("change", function (event) {
+
+        setFocusOnSelect(event);
+
+    });
 
     /* ---- handle errors ---- */
     function handleError(err) {
@@ -77,13 +97,6 @@ SharpiTech.Employee = (function () {
 
     }
 
-    //    $("select").on("change", function (event) {
-
-    //    setFocusOnSelect(event);
-
-    //});
-
-
     function bindEvents() {
 
         DOM.addNewEmployee.addEventListener('click', addNewEmployee);
@@ -92,33 +105,23 @@ SharpiTech.Employee = (function () {
         DOM.editEmployee.addEventListener('click', editEmployee);
         DOM.saveEmployee.addEventListener('click', saveEmployee);
         DOM.deleteEmployee.addEventListener('click', deleteEmployee);
-        //DOM.filterEmployee.addEventListener('click', filterEmployee);
-
-        DOM.department.addEventListener('change', function (e) {
-            setFocusOnSelect(e);
-        });
+        
     }
-
-    function setFocusOnSelect(e) {
-        setTimeout(function () {
-            e.currentTarget.focus();
-        }, 200);
-    }
-
+    
     function loadData() {
 
-        getEmployers();
+        getBranches();
 
-        getDepartments();
+        //getDepartments();
 
-        getEmployees();
+        //getEmployees();
     }
 
-    function getEmployers() {
+    function getBranches() {
 
         shared.showLoader(DOM.loader);
 
-        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetAllEmployers', DOM.employer, "EmployerName", "EmployerId", "Choose Employer", function (response) {
+        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetAllBranchNames', DOM.branch, "BranchName", "BranchId", "Choose Branch", function (response) {
 
             if (response.status !== 200) {
 
@@ -131,21 +134,21 @@ SharpiTech.Employee = (function () {
 
     }
 
-    function getDepartments() {
+    //function getDepartments() {
 
-        shared.showLoader(DOM.loader);
+    //    shared.showLoader(DOM.loader);
 
-        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetAllDepartments', DOM.department, "DepartmentName", "DepartmentId", "Choose Department", function (response) {
+    //    shared.fillDropdownWithCallback(SERVICE_PATH + 'GetAllDepartments', DOM.department, "DepartmentName", "DepartmentId", "Choose Department", function (response) {
 
-            if (response.status !== 200) {
+    //        if (response.status !== 200) {
 
-                swal("Error!!!", "Unable to fetch the records due to an error " + response.responseText, "error");
-            }
+    //            swal("Error!!!", "Unable to fetch the records due to an error " + response.responseText, "error");
+    //        }
 
-            shared.hideLoader(DOM.loader);
+    //        shared.hideLoader(DOM.loader);
 
-        });
-    }
+    //    });
+    //}
 
     var getSelectedRows = function () {
 
@@ -169,7 +172,7 @@ SharpiTech.Employee = (function () {
         }
 
         return selectedRows;
-    }
+    };
 
     var getEmployeeId = function (selectedRows) {
 
@@ -180,7 +183,7 @@ SharpiTech.Employee = (function () {
         if (isNaN(employeeId)) { employeeId = 0; }
 
         return employeeId;
-    }
+    };
 
     function addNewEmployee() {
 
@@ -195,7 +198,7 @@ SharpiTech.Employee = (function () {
         shared.hidePanel(DOM.viewMode);
 
         // Set focus
-        DOM.employer.focus();
+        DOM.firstName.focus();
     }
 
     function viewEmployee() {
@@ -289,7 +292,7 @@ SharpiTech.Employee = (function () {
                     confirmButtonText: "Yes, delete it!",
                     cancelButtonText: "No, cancel pls",
                     closeOnConfirm: false,
-                    closeOnCancel: true,
+                    closeOnCancel: true
                 },
                     function (isConfirm) {
 
@@ -353,7 +356,7 @@ SharpiTech.Employee = (function () {
         
         DOM.employeesList.tBodies[0].innerHTML = "";
 
-        shared.sendRequest(SERVICE_PATH + "GetAllEmployees", "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "SearchEmployeeByBranchOrName/", "GET", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -363,38 +366,7 @@ SharpiTech.Employee = (function () {
 
                     if (data !== undefined) {
 
-                        if (data.length > 0) {
-
-                            for (var r = 0; r < data.length; r++) {
-
-                                var employee = {};
-
-                                employee = {
-                                    EmployeeId: data[r].EmployeeId,
-                                    FirstName: data[r].FirstName,
-                                    MiddleName: data[r].MiddleName,
-                                    LastName: data[r].LastName,
-                                    FullName: data[r].FullName,
-                                    SrNo: data[r].SrNo,
-                                    EmployerId: data[r].EmployerId,
-                                    EmployerName: data[r].EmployerName,
-                                    ResidentialAddress: data[r].ResidentialAddress,
-                                    DateOfBirth: data[r].DateOfBirth,
-                                    Gender: data[r].Gender,
-                                    ContactNo1: data[r].ContactNo1,
-                                    ContactNo2: data[r].ContactNo2,
-                                    MobileNo1: data[r].MobileNo1,
-                                    MobileNo2: data[r].MobileNo2,
-                                    ContactNos: data[r].ContactNos,
-                                    EmailId: data[r].EmailId,
-                                    PANNo: data[r].PANNo,
-                                    DepartmentId: data[r].DepartmentId,
-                                    guid: data[r].guid
-                                };
-
-                                employees.push(employee);
-                            }
-                        }
+                        employees = data;
 
                         bindEmployeeDetails();
                     }
@@ -450,8 +422,8 @@ SharpiTech.Employee = (function () {
 
                 for (var e = 0; e < selectedEmployee.length; e++) {
 
-                    shared.setSelectValue(DOM.employer, null, parseInt(selectedEmployee[e].EmployerId));
-                    shared.setSelect2ControlsText(DOM.employer);
+                    shared.setSelectValue(DOM.branch, null, parseInt(selectedEmployee[e].BranchId));
+                    shared.setSelect2ControlsText(DOM.branch);
                     DOM.firstName.value = selectedEmployee[e].FirstName;
                     DOM.firstName.setAttribute('data-employee-id', employeeId);
                     DOM.middleName.value = selectedEmployee[e].MiddleName;
@@ -465,8 +437,9 @@ SharpiTech.Employee = (function () {
                     DOM.mobileNo2.value = selectedEmployee[e].MobileNo2;
                     DOM.emailId.value = selectedEmployee[e].EmailId;
                     DOM.panNo.value = selectedEmployee[e].PANNo;
-                    shared.setSelectValue(DOM.department, null, parseInt(selectedEmployee[e].DepartmentId));
-                    shared.setSelect2ControlsText(DOM.department);
+                    DOM.department.value = selectedEmployee[e].Department;
+                    //shared.setSelectValue(DOM.department, null, parseInt(selectedEmployee[e].DepartmentId));
+                    //shared.setSelect2ControlsText(DOM.department);
 
                 }
             }
@@ -476,13 +449,13 @@ SharpiTech.Employee = (function () {
         }
     }
     
-    var validateData = function() {
+    var validateData = function () {
 
         var isValid = true;
 
-        if (DOM.employer.selectedIndex === -1 || DOM.employer.selectedIndex === 0) {
+        if (DOM.branch.selectedIndex === -1 || DOM.branch.selectedIndex === 0) {
             isValid = false;
-            swal("Error!!!", "Please select the Employer.", "error");
+            swal("Error!!!", "Please select the Branch.", "error");
         }
         else if (DOM.firstName.value === "") {
             isValid = false;
@@ -490,55 +463,52 @@ SharpiTech.Employee = (function () {
         }
         else if (DOM.middleName.value === "") {
             isValid = false;
-            swal("Error!!!", "Please enter the Middle Name.", "error");        
+            swal("Error!!!", "Please enter the Middle Name.", "error");
         }
         else if (DOM.lastName.value === "") {
             isValid = false;
-            swal("Error!!!", "Please enter the Last Name.", "error");            
+            swal("Error!!!", "Please enter the Last Name.", "error");
         }
         else if (DOM.dateOfBirth.value === "") {
             isValid = false;
-            swal("Error!!!", "Please enter the First Name.", "error");            
+            swal("Error!!!", "Please enter the Date of Birth.", "error");
         }
         else if (DOM.address.value === "") {
             isValid = false;
-            swal("Error!!!", "Please enter the Address.", "error");            
+            swal("Error!!!", "Please enter the Address.", "error");
         }
 
         return isValid;
-    }
+    };
 
     function saveEmployee() {
 
         if (validateData()) {
 
             /* temp variable */
-            var employerSelectedIndex = parseInt(0); DOM.employer.selectedIndex;
-            var employerId = parseInt(0);
-            var employerName = "";
-            var employeeId = parseInt(0);
-            var firstName = "";
-            var middleName = "";
-            var lastName = "";
-            var gender = "";
-            var dateOfBirth = "";
-            var contactNo1 = "";
-            var contactNo2 = "";
-            var mobileNo1 = "";
-            var mobileNo2 = "";
-            var address = "";
-            var emailId = "";
-            var panNo = "";
-            var deparmentSelectedIndex = parseInt(0);
-            var departmentId = parseInt(0);
-            var departmentName = "";
+            var branchId = 0;
+            var branchName = null;
+            var employeeId = 0;
+            var firstName = null;
+            var middleName = null;
+            var lastName = null;
+            var gender = null;
+            var dateOfBirth = null;
+            var contactNo1 = null;
+            var contactNo2 = null;
+            var mobileNo1 = null;
+            var mobileNo2 = null;
+            var address = null;
+            var emailId = null;
+            var panNo = null;
+            //var deparmentSelectedIndex = parseInt(0);
+            //var departmentId = parseInt(0);
+            var departmentName = null;
 
             var methodName = "AddEmployee";
 
-            employerSelectedIndex = parseInt(DOM.employer.selectedIndex);
-            employerId = parseInt(DOM.employer.options[employerSelectedIndex].value);
-            employerName = DOM.employer.options[employerSelectedIndex].text;
-            employeeId = parseInt(DOM.firstName.getAttribute('data-employee-id'));
+            branchId = parseInt(DOM.branch.options[DOM.branch.selectedIndex].value);
+            employeeId = parseInt(DOM.branch.getAttribute('data-employee-id'));
             firstName = DOM.firstName.value;
             middleName = DOM.middleName.value;
             lastName = DOM.lastName.value;
@@ -551,26 +521,36 @@ SharpiTech.Employee = (function () {
             address = DOM.address.value;
             emailId = DOM.emailId.value;
             panNo = DOM.panNo.value;
-            deparmentSelectedIndex = DOM.department.selectedIndex;
-            departmentId = parseInt(DOM.department.options[deparmentSelectedIndex].value);
-            departmentName = DOM.department.options[deparmentSelectedIndex].text;
+            //deparmentSelectedIndex = DOM.department.selectedIndex;
+            //departmentId = parseInt(DOM.department.options[deparmentSelectedIndex].value);
+            //departmentName = DOM.department.options[deparmentSelectedIndex].text;
+            departmentName = DOM.department.value;
+            designation = DOM.designation.value;
+
+            if (isNaN(employeeId)) { employeeId = 0; }
+            if (isNaN(branchId)) { branchId = 0; }
 
             var employee = {};
 
             employee = {
                 EmployeeId: employeeId,
-                EmployerId: employerId,
+                BranchId: branchId,
                 FirstName: firstName,
                 MiddleName: middleName,
                 lastName: lastName,
-                ResidentialAddress: address,
+                Address: address,
                 DateOfBirth: dateOfBirth,
                 ContactNo1: contactNo1,
                 ContactNo2: contactNo2,
                 MobileNo1: mobileNo1,
                 MobileNo2: mobileNo2,
                 EmailId: emailId,
-                DepartmentId: departmentId
+                PANNo: panNo,
+
+                //DepartmentId: departmentId
+                Department: departmentName,
+                Designation: designation,
+                Gender: gender
             };
 
             if (parseInt(employeeId) === parseInt(0)) {
@@ -598,6 +578,13 @@ SharpiTech.Employee = (function () {
                         });
                     }
                 }
+                else {
+                    swal({
+                        title: "Error",
+                        text: "Unable to save the records.",
+                        type: "error"
+                    });
+                }
             });
         }
     }
@@ -607,7 +594,8 @@ SharpiTech.Employee = (function () {
         cacheDOM();
         applyPlugins();        
         bindEvents();
-        loadData();        
+        loadData();
+        addNewEmployee();
     }
 
     return {
@@ -617,4 +605,4 @@ SharpiTech.Employee = (function () {
 }());
 
 
-SharpiTech.Employee.init();
+Sofarch.Employee.init();

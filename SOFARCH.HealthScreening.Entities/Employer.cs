@@ -26,5 +26,10 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string GSTINNo { get; set; }
 
+        public string CountryName { get; set; }
+
+        public string StateName { get; set; }
+
+        public string CityName { get; set; }
     }
 }

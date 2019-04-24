@@ -43,11 +43,16 @@ namespace SOFARCH.HealthScreening.Business
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="employerId"></param>
+        /// <param name="branchId"></param>
         /// <returns></returns>
-        public List<Entities.Employee> GetAllEmployeesByEmployer(Int32 employerId)
+        public List<Entities.Employee> GetAllEmployeesByBranch(Int32 branchId)
         {
-            return _employee.GetAllEmployeesByEmployer(employerId);
+            return _employee.GetAllEmployeesByBranch(branchId);
+        }
+
+        public List<Entities.Employee> SearchEmployeeByBranchOrName(Int32? branchId, string employeeName = null)
+        {
+            return _employee.SearchEmployeeByBranchOrName(branchId, employeeName);
         }
 
         /// <summary>

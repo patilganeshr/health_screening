@@ -157,7 +157,7 @@
 
                 var location = window.location.origin;
 
-                location = location + "/POS/login.aspx";
+                location = location + "/HealthScreeningApp/login.aspx";
 
                 window.location.href = location;
             }

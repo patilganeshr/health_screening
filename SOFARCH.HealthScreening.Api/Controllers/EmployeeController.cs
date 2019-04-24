@@ -56,9 +56,16 @@ namespace SOFARCH.HealthScreening.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetAllEmployeesByEmployer/{employerId}")]
-        public List<Entities.Employee> GetAllEmployeesByEmployer(Int32 employerId)
+        public List<Entities.Employee> GetAllEmployeesByBranch(Int32 branchId)
         {
-            return _employee.GetAllEmployeesByEmployer(employerId);
+            return _employee.GetAllEmployeesByBranch(branchId);
+        }
+
+        [HttpGet]
+        [Route("SearchEmployeeByBranchOrName/{branchId = null}/{employeeName = null}")]
+        public List<Entities.Employee> SearchEmployeeByBranchOrName(Int32? branchId = null, string employeeName = null)
+        {
+            return _employee.SearchEmployeeByBranchOrName(branchId, employeeName);
         }
 
         /// <summary>

@@ -252,7 +252,7 @@ namespace POS
 
                     foreach (entities.Menu item in _lstChild)
                     {
-                        _sb.AppendLine("<li><a href=\"" + strUrl + item.PageLink + ".aspx?PageID=" + item.MenuId + "" + "\" nowrap>" + item.MenuName + "</a></li>");
+                        _sb.AppendLine("<li><a href=\"" + strUrl + item.PageLink + ".aspx" + "\" nowrap>" + item.MenuName + "</a></li>");
                     }
                     _sb.AppendLine("</ul>");
                 }

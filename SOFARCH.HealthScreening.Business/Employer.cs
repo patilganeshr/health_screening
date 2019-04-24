@@ -34,7 +34,12 @@ namespace SOFARCH.HealthScreening.Business
         {
             return _employer.GetAllEmployers();
         }
-                
+        
+        public List<Entities.Employer> SearchEmployerByName (string employerName)
+        {
+            return _employer.SearchEmployerByName(employerName);
+        }
+
         /// <summary>
         /// 
         /// </summary>
