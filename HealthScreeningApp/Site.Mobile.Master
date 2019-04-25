@@ -5,19 +5,172 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta name="viewport" content="width=device-width" />
-    <title></title>
-    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+    <title><%=ConfigurationManager.AppSettings.Get("DomainTitle")%></title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="Ganesh Patil" name="author" />
+    <link rel="icon" href="../app_imgs/favicon.ico" />
+
+    <asp:PlaceHolder ID="phScriptsHolder" runat="server">
+        <script type="text/javascript">
+            var LOGGED_USER = '<%=Session["USER_ID"]%>';
+            var USER_ROLE_ID = '<%=Session["UserGroup_ID"]%>';
+            var SERVICE_PATH = "<%= System.Configuration.ConfigurationManager.AppSettings["ServicePath"].ToString() %>";
+            var ROOT_PATH = "<%= System.Configuration.ConfigurationManager.AppSettings["rootpath"].ToString() %>";
+            var IP_ADDRESS = "<%= Request.ServerVariables["REMOTE_ADDR"] %>";
+        </script>
+    </asp:PlaceHolder>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
 </head>
 <body>
-    <form id="form1" runat="server">
+
     <div>
         <h1>Mobile Master Page</h1>
         <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
         <section class="content-wrapper main-content clear-fix">
-            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+            <%--<asp:ContentPlaceHolder runat="server" ID="cpMaster" />--%>
+
+            <!-- fixed top navbar start -->
+
+    <div class="container-fluid">
+
+        <nav class="navbar navbar-inverse top-bar navbar-fixed-top">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="hamburger-menu">
+                    <i class="fa fa-bars" aria-hidden="true" id="change-menu-icon"></i>
+                </span>
+                <a href="#">SKR</a>
+            </div>
+
+            <div id="navbar" class="collapse navbar-collapse navbar-right">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-envelope"></i>
+                            <span class="badge">5</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge">10</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="user-profile"></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Welcome User
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">Settings</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a id="LogOut" href="#">Log out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <%--<ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Masters<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Activity</a></li>
+                            <li><a href="Activity_Type_List.aspx">Activity Type</a></li>
+                            <li><a href="#">Activity Preferences</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Address Type</a></li>
+                            <li><a href="#">Charges</a></li>
+                        </ul>
+                    </li>
+                </ul>--%>
+            </div>
+
+        </nav>
+
+        <!-- MENU BAR -->
+        <nav>
+            <asp:Literal ID="litMenuList" runat="server"></asp:Literal>
+            <%--<ul class="menu">
+                <li><a>Dashboard</a></li>
+                <li><a>Masters</a>
+                    <ul class="sub-menu">
+                        <li><a href="#">GST Category</a></li>
+                        <li><a href="#">City</a></li>
+                        <li><a href="#">Charges</a></li>
+                    </ul>
+                </li>
+                <li><a>Purchases</a>
+                    <ul class="sub-menu">
+                        <li><a href="#">Purchase Order</a></li>
+                        <li><a href="#">Goods Receipt</a></li>
+                        <li><a href="#">Purchase Return</a></li>
+                    </ul>
+                </li>
+                <li><a>Sales</a></li>
+                <li><a>Inventory</a></li>
+                <li><a>Accounts</a></li>
+                <li><a>Admin</a>            </li>
+            </ul>--%>
+        </nav>
+        
+    </div>
+
+    <!-- fixed top navbar end -->
+
+    <!-- sidebar start -->
+
+    <%--<div id="sidebar-menu" class="sidebar hide">
+
+
+        <asp:Literal ID="litMenuList" runat="server"></asp:Literal>
+
+    </div>--%>
+
+    <!-- sidebar end -->
+
+    <!-- BEGIN JAVASCRIPTS -->
+
+    <asp:PlaceHolder runat="server" ID="phBottomScripts" />
+
+    <!-- END JAVASCRIPTS -->
+
+    <form id="form1" runat="server">
+        
+            <asp:ContentPlaceHolder ID="cpMaster" runat="server">
+            </asp:ContentPlaceHolder>
+            <footer class="footer">
+                <div class="container">
+                    <%--<p class="text-muted"><strong>SharpiTech Solutions Pvt. Ltd.</strong> © Copyright 2017</p>--%>
+                </div>
+            </footer>
+        
+
+    </form>
+
+    <script type="text/javascript">
+            LogOut.onclick = function () {
+
+                var location = window.location.origin;
+
+                location = location + "/HealthScreeningApp/login.aspx";
+
+                window.location.href = location;
+            }
+    </script>
+
         </section>
         <friendlyUrls:ViewSwitcher runat="server" />
     </div>
-    </form>
+
 </body>
 </html>
