@@ -245,7 +245,7 @@ Sofarch.Company = (function () {
         var cityId = 0;
         var locality = null;
         var pinCode = null;
-        var website = null
+        var website = null;
         var GSTINNo = null;
         var contactPeron = null;
         var contactNo = null;
@@ -318,7 +318,7 @@ Sofarch.Company = (function () {
             CompanyCode: companyCode,
             CompanyName: companyName,
             ShortName: shortName,
-            GSTINNo: GSTINNo,
+            GSTINNo: GSTINNo
         };
 
         var postData = JSON.string(company);

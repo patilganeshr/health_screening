@@ -343,7 +343,7 @@ SharpiTech.Brand = (function () {
                 data += "<td><label class='label-tick'> <input type='checkbox' id='" + brands[r].BrandId + "' class='label-checkbox' name='SelectBrand' /> <span class='label-text'></span> </label>" + "</td>";
                 data += "<td>" + brands[r].SrNo + "</td>";
                 data += "<td>" + brands[r].BrandName + "</td>";
-                data += '</tr>'
+                data += '</tr>';
             }
 
             DOM.brandList.tBodies[0].innerHTML = data;            
