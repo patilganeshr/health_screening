@@ -15,6 +15,8 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeleteCompany { get { return "companies_insert_company"; } }
 
+        public static string SearchCompany { get { return "companies_search_company_by_name_or_code_or_short_name_or_gstin_no"; } }
+
         public static string GetListOfAllCompanies { get { return "companies_get_list_of_all_companies"; } }
 
         public static string GetCompanyDetailsById { get { return "companies_get_company_details_by_id"; } }

@@ -16,6 +16,13 @@ namespace SOFARCH.HealthScreening.API.Controllers
             _company = new Business.Company();
         }
 
+        [HttpPost]
+        [Route("SearchCompany")]
+        public List<Entities.Company> SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(Entities.Company company)
+        {
+            return _company.SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(company);
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -32,6 +39,14 @@ namespace SOFARCH.HealthScreening.API.Controllers
         {
             return _company.GetCompanyDetailsById(companyId);
         }
+
+        [HttpPost]
+        [Route("SaveCommpany")]
+        public Int32 SaveCompany(Entities.Company company)
+        {
+            return _company.SaveCompany(company);
+        }
+
 
     }
 }

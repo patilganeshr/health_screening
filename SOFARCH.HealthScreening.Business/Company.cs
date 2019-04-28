@@ -15,11 +15,16 @@ namespace SOFARCH.HealthScreening.Business
             _company = new DataModel.Company();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public List<Entities.Company> GetAllCompanies()
+        public List<Entities.Company> SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(Entities.Company company)
+        {
+            return _company.SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(company);
+        }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <returns></returns>
+            public List<Entities.Company> GetAllCompanies()
         {
             return _company.GetAllCompanies();
         }
@@ -32,6 +37,11 @@ namespace SOFARCH.HealthScreening.Business
         public Entities.Company GetCompanyDetailsById(Int32 companyId)
         {
             return _company.GetCompanyDetailsById(companyId);
+        }
+
+        public Int32 SaveCompany(Entities.Company company)
+        {
+            return _company.SaveCompany(company);
         }
 
     }

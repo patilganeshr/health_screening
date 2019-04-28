@@ -469,6 +469,7 @@
     <Content Include="Content\scripts\app\Masters\city.js" />
     <Content Include="Content\scripts\app\Masters\client-type.js" />
     <Content Include="Content\scripts\app\Masters\client.js" />
+    <Content Include="Content\scripts\app\Masters\company.js" />
     <Content Include="Content\scripts\app\Masters\department.js" />
     <Content Include="Content\scripts\app\Masters\employee.js" />
     <Content Include="Content\scripts\app\Masters\employer.js" />
