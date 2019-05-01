@@ -13,16 +13,16 @@
 
 
 
-var SharpiTech = {};
+var Sofarch = {};
 
-SharpiTech.Brand = (function () {
+Sofarch.DrugGroup = (function () {
 
     //placeholder for cached DOM elements
     var DOM = {};
 
     var shared = new Shared();
 
-    var brands = [];
+    var DrugGroups = [];
 
     /* ---- private method ---- */
     //cache DOM elements
@@ -31,16 +31,17 @@ SharpiTech.Brand = (function () {
         DOM.loader = document.getElementById('Loader');
 
         DOM.viewMode = document.getElementById('ViewMode');
-        DOM.brandList = document.getElementById('BrandList');
+        DOM.drugGroupList = document.getElementById('DrugGroupList');
 
         DOM.editMode = document.getElementById('EditMode');
-        DOM.brandName = document.getElementById('BrandName');
-        DOM.addNewBrand = document.getElementById('AddNewBrand');
-        DOM.showBrandList = document.getElementById('ShowBrandList');
-        DOM.viewBrand = document.getElementById('ViewBrand');
-        DOM.editBrand = document.getElementById('EditBrand');
-        DOM.saveBrand = document.getElementById('SaveBrand');
-        DOM.deleteBrand = document.getElementById('DeleteBrand');
+        DOM.groupName = document.getElementById('GroupName');
+
+        DOM.addNewDrugGroup = document.getElementById('AddNewDrugGroup');
+        DOM.showDrugGroupList = document.getElementById('ShowDrugGroupList');
+        DOM.viewDrugGroup = document.getElementById('ViewDrugGroup');
+        DOM.editDrugGroup = document.getElementById('EditDrugGroup');
+        DOM.saveDrugGroup = document.getElementById('SaveDrugGroup');
+        DOM.deleteDrugGroup = document.getElementById('DeleteDrugGroup');
 
     }
 
@@ -57,12 +58,12 @@ SharpiTech.Brand = (function () {
 
     function bindEvents() {
 
-        DOM.addNewBrand.addEventListener('click', addNewBrand);
-        DOM.showBrandList.addEventListener('click', getBrands);
-        DOM.viewBrand.addEventListener('click', viewBrand);
-        DOM.editBrand.addEventListener('click', editBrand);
-        DOM.saveBrand.addEventListener('click', saveBrand);
-        DOM.deleteBrand.addEventListener('click', deleteBrand);
+        DOM.addNewDrugGroup.addEventListener('click', addNewDrugGroup);
+        DOM.showDrugGroupList.addEventListener('click', getDrugGroups);
+        DOM.viewDrugGroup.addEventListener('click', viewDrugGroup);
+        DOM.editDrugGroup.addEventListener('click', editDrugGroup);
+        DOM.saveDrugGroup.addEventListener('click', saveDrugGroup);
+        DOM.deleteDrugGroup.addEventListener('click', deleteDrugGroup);
     }
 
     var getSelectedRows = function (listObject) {
@@ -89,7 +90,7 @@ SharpiTech.Brand = (function () {
         return selectedRows;
     };
     
-    function addNewBrand() {
+    function addNewDrugGroup() {
 
         shared.showLoader(DOM.loader);
 
@@ -98,10 +99,10 @@ SharpiTech.Brand = (function () {
 
         shared.disableControls(DOM.editMode, false);
 
-        DOM.brandName.setAttribute('data-brand-id', 0);
+        DOM.groupName.setAttribute('data-drug-group-id', 0);
                 
         //set focus
-        DOM.brandName.focus();
+        DOM.groupName.focus();
 
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
@@ -109,15 +110,11 @@ SharpiTech.Brand = (function () {
         shared.hideLoader(DOM.loader);
     }
 
-    function viewBrand() {
+    function getSelectedDrugGroupDetails() {
 
         shared.showLoader(DOM.loader);
 
-        shared.clearInputs(DOM.editMode);
-
-        shared.disableControls(DOM.editMode, true);
-
-        var selectedRows = getSelectedRows(DOM.brandList);
+        var selectedRows = getSelectedRows(DOM.drugGroupList);
 
         if (selectedRows.length > 0) {
 
@@ -133,11 +130,11 @@ SharpiTech.Brand = (function () {
 
                 var currentTableRow = selectedRows[0];
 
-                var brandId = parseInt(currentTableRow.getAttribute('data-brand-id'));
+                var drugGroupId = parseInt(currentTableRow.getAttribute('data-drug-group-id'));
 
-                if (isNaN(brandId)) { brandId = 0; }
+                if (isNaN(drugGroupId)) { drugGroupId = 0; }
 
-                showSelectedBrand(brandId);
+                showDrugGroupDetailsById(drugGroupId);
             }
         }
         else {
@@ -146,59 +143,42 @@ SharpiTech.Brand = (function () {
 
         shared.hideLoader(DOM.loader);
 
-        //set focus
-        DOM.brandName.focus();
+    }
+
+    function viewDrugGroup() {
+
+        shared.clearInputs(DOM.editMode);
+
+        shared.disableControls(DOM.editMode, true);
+
+        getSelectedDrugGroupDetails();
+
+        DOM.groupName.focus();
 
     }
 
-    function editBrand() {
-
-        shared.showLoader(DOM.loader);
+    function editDrugGroup() {
 
         shared.clearInputs(DOM.editMode);
 
         shared.disableControls(DOM.editMode, false);
-
-        var selectedRows = getSelectedRows(DOM.brandList);
-
-        if (selectedRows.length > 0) {
-
-            if (selectedRows.length > 1) {
-
-                swal('Warning', "Please select only one record to Edit the Records.", "warning");
-                return false;
-            }
-            else {
-
-                var currentTableRow = selectedRows[0];
-
-                var brandId = parseInt(currentTableRow.getAttribute('data-brand-id'));
-
-                if (isNaN(brandId)) { brandId = 0; }
-
-                showSelectedBrand(brandId);
-            }
-        }
-        else {
-            swal("error", "No row selected.", "error");            
-        }
-
-        shared.hideLoader(DOM.loader);
+                
+        getSelectedDrugGroupDetails();
 
         //set focus
-        DOM.brandName.focus();
+        DOM.groupName.focus();
 
     }
 
-    function deleteBrand() {
+    function deleteDrugGroup() {
 
         shared.showLoader(DOM.loader);
 
         try {
 
-            var tableBody = DOM.brandList.tBodies[0];
+            var tableBody = DOM.drugGroupList.tBodies[0];
 
-            var selectedRows = getSelectedRows(DOM.brandList);
+            var selectedRows = getSelectedRows(DOM.drugGroupList);
 
             if (selectedRows.length > 0) {
 
@@ -219,26 +199,26 @@ SharpiTech.Brand = (function () {
 
                             for (var r = 0; r < selectedRows.length; r++) {
 
-                                var brand = {
-                                    BrandId: parseInt(selectedRows[r].getAttribute('data-brand-id')),
+                                var drugGroup = {
+                                    DrugGroupId: parseInt(selectedRows[r].getAttribute('data-drug-group-id')),
                                     IsDeleted: true,
                                     DeletedBy: parseInt(LOGGED_USER),
                                     DeletedByIP: IP_ADDRESS
                                 };
 
-                                var postData = JSON.stringify(brand);
+                                var postData = JSON.stringify(drugGroup);
 
-                                shared.sendRequest(SERVICE_PATH + 'SaveBrand', "POST", true, "JSON", postData, function (response) {
+                                shared.sendRequest(SERVICE_PATH + 'SaveDrugGroup', "POST", true, "JSON", postData, function (response) {
 
                                     if (response.status === 200) {
 
                                         if (parseInt(response.responseText) > 0) {
                                             swal({
                                                 title: "Success",
-                                                text: "Brand deleted successfully.",
+                                                text: "Drug Group deleted successfully.",
                                                 type: "success"
                                             }, function () {
-                                                getBrands();
+                                                addNewDrugGroup();
                                             });
                                         }
                                         else {
@@ -268,61 +248,66 @@ SharpiTech.Brand = (function () {
         }
     }
 
-    function showSelectedBrand(brandId) {
+    function showDrugGroupDetailsById(drugGroupId) {
 
-        if (brands.length > 0) {
+        if (DrugGroups.length) {
 
-            for (var c = 0; c < brands.length; c++) {
+            var selectedDrugGroup = DrugGroups.filter(function (value, index, array) {
+                return value.DrugGroupId === drugGroupId;
+            });
 
-                if (brands[c].BrandId === brandId) {
+            if (selectedDrugGroup.length) {
 
-                    //assign text to input
-                    DOM.brandName.setAttribute('data-brand-id', brandId);
+                //assign text to input
+                DOM.groupName.setAttribute('data-drug-group-id', selectedDrugGroup[0].DrugGroupId);
+                DOM.groupName.value = selectedDrugGroup[0].GroupName;
 
-                    DOM.brandName.value = brands[c].BrandName;
-                }
             }
         }
 
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
 
-        DOM.brandName.focus();
+        DOM.groupName.focus();
     }
 
-    function saveBrand() {
+    function saveDrugGroup() {
 
-        if (DOM.brandName.value === "") {
-            swal("Error!!!", "Please enter the Brand Name.", "error");
+        if (DOM.groupName.value === "") {
+            DOM.groupName.focus();
+            swal("Error!!!", "Please enter the Group Name.", "error");
             return;
         }
 
         /* temp variable */
-        var brandId = parseInt(DOM.brandName.getAttribute('data-brand-id'));
-        var brandName = DOM.brandName.value;
+        var drugGroupId = 0;
+        var groupName = null;
 
-        if (isNaN(brandId)) { brandId = 0; }
+        drugGroupId = parseInt(DOM.groupName.getAttribute('data-drug-group-id'));
+        groupName = DOM.groupName.value;
 
-        var brand = {};
+        if (isNaN(drugGroupId)) { drugGroupId = 0; }
 
-            brand = {
-                BrandId: brandId,
-                BrandName: brandName
+        var drugGroup = {};
+
+            drugGroup = {
+                DrugGroupId: drugGroupId,
+                GroupName: groupName
             };
 
-        if (parseInt(brandId) === parseInt(0)) {
+        if (parseInt(drugGroupId) === parseInt(0)) {
 
-            brand.CreatedBy = parseInt(LOGGED_USER);
-            brand.CreatedByIP = IP_ADDRESS;            
+            drugGroup.CreatedBy = parseInt(LOGGED_USER);
+            drugGroup.CreatedByIP = IP_ADDRESS;            
         }
         else {
-            brand.ModifiedBy = parseInt(LOGGED_USER);
-            brand.ModifiedByIP = IP_ADDRESS;            
+            drugGroup.ModifiedBy = parseInt(LOGGED_USER);
+            drugGroup.ModifiedByIP = IP_ADDRESS;            
         }
 
-        var postData = JSON.stringify(brand);
+        var postData = JSON.stringify(drugGroup);
 
-        shared.sendRequest(SERVICE_PATH + "SaveBrand", "POST", true, "JSON", postData, function (response) {
+        shared.sendRequest(SERVICE_PATH + "SaveDrugGroup", "POST", true, "JSON", postData, function (response) {
 
             var _response = JSON.parse(response.responseText);
 
@@ -333,7 +318,7 @@ SharpiTech.Brand = (function () {
                         text: "Records Saved Successfully.",
                         type: "success"
                     }, function () {
-                        getBrands();
+                        getDrugGroups();
                     });
                 }
             }
@@ -344,15 +329,15 @@ SharpiTech.Brand = (function () {
 
     }
 
-    function getBrands() {
+    function getDrugGroups() {
 
         shared.showLoader(DOM.loader);
 
-        DOM.brandList.tBodies[0].innerHTML = "";
+        DOM.drugGroupList.tBodies[0].innerHTML = "";
 
-        brands.length = 0;
+        DrugGroups.length = 0;
 
-        shared.sendRequest(SERVICE_PATH + "GetAllBrands", "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "SearchAllDrugGroups", "GET", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -362,9 +347,9 @@ SharpiTech.Brand = (function () {
 
                     if (_response !== undefined) {
 
-                        brands = _response;
+                        DrugGroups = _response;
 
-                        bindBrand();
+                        bindDrugGroup();
                     }
                 }
             }
@@ -374,32 +359,31 @@ SharpiTech.Brand = (function () {
 
     }
 
-    function bindBrand() {
+    function bindDrugGroup() {
 
         shared.showLoader(DOM.loader);
 
-        DOM.brandList.tBodies[0].innerHTML = "";
+        DOM.drugGroupList.tBodies[0].innerHTML = "";
         
-        if (brands.length > 0) {
+        if (DrugGroups.length > 0) {
 
             var data = "";
 
-            for (var r = 0; r < brands.length; r++) {
+            for (var r = 0; r < DrugGroups.length; r++) {
 
-                data += "<tr data-brand-id=" + brands[r].BrandId + ">";
-                data += "<td><label class='label-tick'> <input type='checkbox' id='" + brands[r].BrandId + "' class='label-checkbox' name='SelectBrand' /> <span class='label-text'></span> </label>" + "</td>";
-                data += "<td>" + brands[r].SrNo + "</td>";
-                data += "<td>" + brands[r].BrandName + "</td>";
+                data += "<tr data-drug-group-id=" + DrugGroups[r].DrugGroupId + ">";
+                data += "<td><label class='label-tick'> <input type='checkbox' id='" + DrugGroups[r].DrugGroupId + "' class='label-checkbox' name='SelectDrugGroup' /> <span class='label-text'></span> </label>" + "</td>";
+                data += "<td>" + DrugGroups[r].GroupName + "</td>";
                 data += '</tr>';
             }
 
-            DOM.brandList.tBodies[0].innerHTML = data;            
+            DOM.drugGroupList.tBodies[0].innerHTML = data;            
         }
 
         shared.showPanel(DOM.viewMode);
         shared.hidePanel(DOM.editMode);
 
-        DOM.brandList.focus();
+        DOM.drugGroupList.focus();
 
         shared.hideLoader(DOM.loader);
     }
@@ -409,7 +393,7 @@ SharpiTech.Brand = (function () {
     function init() {
         cacheDOM();
         bindEvents();
-        addNewBrand();
+        addNewDrugGroup();
     }
 
     return {
@@ -419,4 +403,4 @@ SharpiTech.Brand = (function () {
 }());
 
 
-SharpiTech.Brand.init();
+Sofarch.DrugGroup.init();

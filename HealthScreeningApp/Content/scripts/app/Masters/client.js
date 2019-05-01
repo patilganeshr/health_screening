@@ -171,7 +171,7 @@ SharpiTech.Client = (function () {
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(location.search);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
+    }
 
     function getClientType() {
 
@@ -398,7 +398,7 @@ SharpiTech.Client = (function () {
         getCities();
     }
 
-    var getSelectedRows = function(listObject) {
+    var getSelectedRows = function (listObject) {
 
         var selectedRows = [];
 
@@ -420,7 +420,7 @@ SharpiTech.Client = (function () {
         }
 
         return selectedRows;
-    }
+    };
 
     function addNewClient() {
 
@@ -1215,7 +1215,7 @@ SharpiTech.Client = (function () {
                 data += "<td>" + clients[r].ClientTypeName + "</td>";
                 data += "<td>" + clients[r].ClientCode + "</td>";
                 data += "<td>" + clients[r].ClientName + "</td>";
-                data += "</tr>"
+                data += "</tr>";
             }
 
             tableBody.innerHTML = data;
@@ -1452,7 +1452,7 @@ SharpiTech.Client = (function () {
         }
     }
 
-    var checkTransporterNameExists = function(transporterId) {
+    var checkTransporterNameExists = function (transporterId) {
 
         var isTransporterNameExists = false;
 
@@ -1468,7 +1468,7 @@ SharpiTech.Client = (function () {
         }
 
         return isTransporterNameExists;
-    }
+    };
 
     function removeTransporter(e) {
 

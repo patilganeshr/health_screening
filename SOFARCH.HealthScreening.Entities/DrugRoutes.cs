@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SOFARCH.HealthScreening.Entities
 {
-    public class ItemQuality : BaseEntity
+    public class DrugRoutes : BaseEntity
     {
-        public Int32? ItemQualityId { get; set; }
+        public Int32? DrugRouteId{ get; set; }
 
-        public string QualityName { get; set; }
-        
+        public string RouteName { get; set; }
+
     }
 }

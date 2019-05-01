@@ -10,6 +10,6 @@
 namespace HealthScreeningApp.Masters {
     
     
-    public partial class Item {
+    public partial class DrugRoutes {
     }
 }

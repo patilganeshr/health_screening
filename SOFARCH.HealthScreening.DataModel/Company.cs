@@ -25,11 +25,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var companyId = 0;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertCompany))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertCompany))
                 {
                     database.AddInParameter(dbCommand, "@company_id", DbType.Int32, company.CompanyId);
                     database.AddInParameter(dbCommand, "@company_code", DbType.String, company.CompanyCode);
@@ -63,10 +61,6 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
 
             return companyId;
         }
@@ -80,11 +74,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var isDeleted = false;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteCompany))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteCompany))
                 {
                     database.AddInParameter(dbCommand, "@company_id", DbType.Int32, company.CompanyId);
                     database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, company.DeletedBy);
@@ -104,11 +96,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+            
             return isDeleted;
         }
 
@@ -121,11 +109,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var companyId = 0;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateCompany))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateCompany))
                 {
                     database.AddInParameter(dbCommand, "@company_id", DbType.Int32, company.CompanyId);
                     database.AddInParameter(dbCommand, "@company_code", DbType.String, company.CompanyCode);
@@ -159,20 +145,18 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+            
             return companyId;
         }
 
         // <returns></returns>
         public Int32 SaveCompany(Entities.Company company)
         {
+            var companyId = 0;
+
             if (company.CompanyId == null || company.CompanyId == 0)
             {
-                return AddCompany(company);
+                companyId = AddCompany(company);
             }
             else
             {
@@ -180,35 +164,35 @@ namespace SOFARCH.HealthScreening.DataModel
                 {
                     var isDeleted = DeleteCompany(company);
 
-                    return 1;
+                    if (isDeleted == true)
+                    {
+                        companyId = (int)company.CompanyId;
+                    }
                 }
                 else
                 {
-                    return UpdateCompany(company);
+                    companyId = UpdateCompany(company);
                 }
             }
+
+            return companyId;
         }
 
-        public List<Entities.Company> SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(Entities.Company company)
+        public List<Entities.Company> SearchCompanyByCode(string companyCode)
         {
             var companies = new List<Entities.Company>();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchCompany))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchCompany))
                 {
-                    database.AddInParameter(dbCommand, "@company_code", DbType.String, company.CompanyCode);
-                    database.AddInParameter(dbCommand, "@company_name", DbType.String, company.CompanyName);
-                    database.AddInParameter(dbCommand, "@short_name", DbType.String, company.ShortName);
-                    database.AddInParameter(dbCommand, "@gstin_no", DbType.String, company.GSTINNo);
-
+                    database.AddInParameter(dbCommand, "@company_code", DbType.String, companyCode);
+                    
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())
                         {
-                            var companyDetails = new Entities.Company
+                            var company = new Entities.Company
                             {
                                 CompanyId = DRE.GetNullableInt32(reader, "company_id", 0),
                                 CompanyCode = DRE.GetNullableString(reader, "company_code", null),
@@ -239,9 +223,189 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-            finally
+            
+            return companies;
+        }
+
+        public List<Entities.Company> SearchCompanyByName(string companyName)
+        {
+            var companies = new List<Entities.Company>();
+
+            try
             {
-                dbCommand = null;
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchCompany))
+                {
+                    database.AddInParameter(dbCommand, "@company_name", DbType.String, companyName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var company = new Entities.Company
+                            {
+                                CompanyId = DRE.GetNullableInt32(reader, "company_id", 0),
+                                CompanyCode = DRE.GetNullableString(reader, "company_code", null),
+                                CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                                ShortName = DRE.GetNullableString(reader, "short_name", null),
+                                CompanyAddress = DRE.GetNullableString(reader, "company_address", null),
+                                CountryId = DRE.GetNullableInt32(reader, "country_id", null),
+                                CountryName = DRE.GetNullableString(reader, "country_name", null),
+                                StateId = DRE.GetNullableInt32(reader, "state_id", null),
+                                StateName = DRE.GetNullableString(reader, "state_name", null),
+                                CityId = DRE.GetNullableInt32(reader, "city_id", null),
+                                CityName = DRE.GetNullableString(reader, "city_name", null),
+                                PinCode = DRE.GetNullableString(reader, "pin_code", null),
+                                Locality = DRE.GetNullableString(reader, "locality", null),
+                                Website = DRE.GetNullableString(reader, "website", null),
+                                GSTINNo = DRE.GetNullableString(reader, "gstin_no", null),
+                                ContactPerson = DRE.GetNullableString(reader, "contact_person", null),
+                                ContactNo = DRE.GetNullableString(reader, "contact_no", null),
+                                EmailId = DRE.GetNullableString(reader, "email_id", null)
+                            };
+
+                            companies.Add(company);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return companies;
+        }
+
+        private List<Entities.Company> GetCompanyDetails(DbCommand dbCommand)
+        {
+            var companies = new List<Entities.Company>();
+
+            using (IDataReader reader = database.ExecuteReader(dbCommand))
+            {
+                while (reader.Read())
+                {
+                    var company = new Entities.Company
+                    {
+                        CompanyId = DRE.GetNullableInt32(reader, "company_id", 0),
+                        CompanyCode = DRE.GetNullableString(reader, "company_code", null),
+                        CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                        ShortName = DRE.GetNullableString(reader, "short_name", null),
+                        CompanyAddress = DRE.GetNullableString(reader, "company_address", null),
+                        CountryId = DRE.GetNullableInt32(reader, "country_id", null),
+                        CountryName = DRE.GetNullableString(reader, "country_name", null),
+                        StateId = DRE.GetNullableInt32(reader, "state_id", null),
+                        StateName = DRE.GetNullableString(reader, "state_name", null),
+                        CityId = DRE.GetNullableInt32(reader, "city_id", null),
+                        CityName = DRE.GetNullableString(reader, "city_name", null),
+                        PinCode = DRE.GetNullableString(reader, "pin_code", null),
+                        Locality = DRE.GetNullableString(reader, "locality", null),
+                        Website = DRE.GetNullableString(reader, "website", null),
+                        GSTINNo = DRE.GetNullableString(reader, "gstin_no", null),
+                        ContactPerson = DRE.GetNullableString(reader, "contact_person", null),
+                        ContactNo = DRE.GetNullableString(reader, "contact_no", null),
+                        EmailId = DRE.GetNullableString(reader, "email_id", null)
+                    };
+
+                    companies.Add(company);
+                }
+            }
+
+            return companies;
+        }
+
+        public List<Entities.Company> SearchCompanyByShortName(string shortName)
+        {
+            var companies = new List<Entities.Company>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchCompany))
+                {
+                    database.AddInParameter(dbCommand, "@short_name", DbType.String, shortName);
+
+                    companies = GetCompanyDetails(dbCommand);
+
+                    //using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    //{
+                    //    while (reader.Read())
+                    //    {
+                    //        var company = new Entities.Company
+                    //        {
+                    //            CompanyId = DRE.GetNullableInt32(reader, "company_id", 0),
+                    //            CompanyCode = DRE.GetNullableString(reader, "company_code", null),
+                    //            CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                    //            ShortName = DRE.GetNullableString(reader, "short_name", null),
+                    //            CompanyAddress = DRE.GetNullableString(reader, "company_address", null),
+                    //            CountryId = DRE.GetNullableInt32(reader, "country_id", null),
+                    //            CountryName = DRE.GetNullableString(reader, "country_name", null),
+                    //            StateId = DRE.GetNullableInt32(reader, "state_id", null),
+                    //            StateName = DRE.GetNullableString(reader, "state_name", null),
+                    //            CityId = DRE.GetNullableInt32(reader, "city_id", null),
+                    //            CityName = DRE.GetNullableString(reader, "city_name", null),
+                    //            PinCode = DRE.GetNullableString(reader, "pin_code", null),
+                    //            Locality = DRE.GetNullableString(reader, "locality", null),
+                    //            Website = DRE.GetNullableString(reader, "website", null),
+                    //            GSTINNo = DRE.GetNullableString(reader, "gstin_no", null),
+                    //            ContactPerson = DRE.GetNullableString(reader, "contact_person", null),
+                    //            ContactNo = DRE.GetNullableString(reader, "contact_no", null),
+                    //            EmailId = DRE.GetNullableString(reader, "email_id", null)
+                    //        };
+
+                    //        companies.Add(company);
+                    //    }
+                    //}
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return companies;
+        }
+
+        public List<Entities.Company> GetAllCompanies()
+        {
+            var companies = new List<Entities.Company>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetAllCompanies))
+                {
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var company = new Entities.Company
+                            {
+                                CompanyId = DRE.GetNullableInt32(reader, "company_id", 0),
+                                CompanyCode = DRE.GetNullableString(reader, "company_code", null),
+                                CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                                ShortName = DRE.GetNullableString(reader, "short_name", null),
+                                CompanyAddress = DRE.GetNullableString(reader, "company_address", null),
+                                CountryId = DRE.GetNullableInt32(reader, "country_id", null),
+                                CountryName = DRE.GetNullableString(reader, "country_name", null),
+                                StateId = DRE.GetNullableInt32(reader, "state_id", null),
+                                StateName = DRE.GetNullableString(reader, "state_name", null),
+                                CityId = DRE.GetNullableInt32(reader, "city_id", null),
+                                CityName = DRE.GetNullableString(reader, "city_name", null),
+                                PinCode = DRE.GetNullableString(reader, "pin_code", null),
+                                Locality = DRE.GetNullableString(reader, "locality", null),
+                                Website = DRE.GetNullableString(reader, "website", null),
+                                GSTINNo = DRE.GetNullableString(reader, "gstin_no", null),
+                                ContactPerson = DRE.GetNullableString(reader, "contact_person", null),
+                                ContactNo = DRE.GetNullableString(reader, "contact_no", null),
+                                EmailId = DRE.GetNullableString(reader, "email_id", null)
+                            };
+
+                            companies.Add(company);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             return companies;
@@ -251,15 +415,13 @@ namespace SOFARCH.HealthScreening.DataModel
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Entities.Company> GetAllCompanies()
+        public List<Entities.Company> GetCompanyIdAndCompanyName()
         {
             var companies = new List<Entities.Company>();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllCompanies))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetCompanyIdAndCompanyName))
                 {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -280,13 +442,11 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+            
             return companies;
         }
+
+
 
         /// <summary>
         /// 
@@ -297,11 +457,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var companyDetails = new Entities.Company();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetCompanyDetailsById))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetCompanyDetailsById))
                 {
                     database.AddInParameter(dbCommand, "@company_id", DbType.Int32, companyId);
 
@@ -341,11 +499,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+            
             return companyDetails;
         }
     }

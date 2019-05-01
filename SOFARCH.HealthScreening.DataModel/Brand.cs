@@ -30,11 +30,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var brandId = 0;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertBrand))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertBrand))
                 {
                     database.AddInParameter(dbCommand, "@brand_id", DbType.Int32, brand.BrandId);
                     database.AddInParameter(dbCommand, "@brand_name", DbType.String, brand.BrandName);
@@ -55,10 +53,6 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
 
             return brandId;
         }
@@ -72,11 +66,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var isDeleted = false;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteBrand))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteBrand))
                 {
                     database.AddInParameter(dbCommand, "@brand_id", DbType.Int32, brand.BrandId);
                     database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, brand.DeletedBy);
@@ -96,10 +88,6 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
 
             return isDeleted;
         }
@@ -113,11 +101,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var brandId = 0;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateBrand))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateBrand))
                 {
                     database.AddInParameter(dbCommand, "@brand_id", DbType.Int32, brand.BrandId);
                     database.AddInParameter(dbCommand, "@brand_name", DbType.String, brand.BrandName);
@@ -138,10 +124,6 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
 
             return brandId;
         }
@@ -154,11 +136,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var brands = new List<Entities.Brand>();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllBrands))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllBrands))
                 {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -181,10 +161,6 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-            finally
-            {
-                dbCommand = null;
-            }
 
             return brands;
         }
@@ -198,9 +174,7 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var brand = new Entities.Brand();
 
-            DbCommand dbCommand = null;
-
-            using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetBranchDetailsById))
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetBranchDetailsById))
             {
                 database.AddInParameter(dbCommand, "@brand_id", DbType.Int32, brandId);
 
@@ -232,9 +206,7 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var brand = new Entities.Brand();
 
-            DbCommand dbCommand = null;
-
-            using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetBrandDetailsByName))
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetBrandDetailsByName))
             {
                 database.AddInParameter(dbCommand, "@brand_name", DbType.String, brandName);
 
@@ -264,14 +236,27 @@ namespace SOFARCH.HealthScreening.DataModel
         /// <returns></returns>
         public Int32 SaveBrand(Entities.Brand brand)
         {
+            var brandId = 0;
+
             if (brand.BrandId == null || brand.BrandId == 0)
             {
-                return AddBrand(brand);
+                brandId = AddBrand(brand);
             }
-            else
+            else if (brand.ModifiedBy != null || brand.ModifiedBy > 0 )
             {
-                return UpdateBrand(brand);
+                brandId = UpdateBrand(brand);
             }
+            else if(brand.IsDeleted == true)
+            {
+                var result = DeleteBrand(brand);
+
+                if (result == true)
+                {
+                    brandId = (int)brand.BrandId;
+                }
+            }
+
+            return brandId;
         }
     }
 

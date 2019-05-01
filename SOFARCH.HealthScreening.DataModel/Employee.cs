@@ -30,11 +30,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employeeId = 0;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertEmployee))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertEmployee))
                 {
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employee.EmployeeId);
                     database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, employee.BranchId);
@@ -69,11 +67,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+          
             return employeeId;
         }
 
@@ -86,11 +80,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             bool isDeleted = false;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteEmployee))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteEmployee))
                 {
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employee.EmployeeId);
                     database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, employee.DeletedBy);
@@ -110,11 +102,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+      
             return isDeleted;
         }
 
@@ -126,11 +114,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employees = new List<Entities.Employee>();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllEmployeesByBranch))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllEmployeesByBranch))
                 {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -171,11 +157,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+ 
             return employees;
         }
 
@@ -188,11 +170,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employees = new List<Entities.Employee>();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllEmployeesByBranch))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllEmployeesByBranch))
                 {
                     database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, branchId);
 
@@ -206,11 +186,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+           
             return employees;
         }
 
@@ -218,11 +194,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employees = new List<Entities.Employee>();
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchEmployeeByBranchAndEmployeeName))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchEmployeeByBranchAndEmployeeName))
                 {
                     database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, branchId);
                     database.AddInParameter(dbCommand, "@employee_name", DbType.String, employeeName);
@@ -236,10 +210,6 @@ namespace SOFARCH.HealthScreening.DataModel
             catch (Exception ex)
             {
                 throw ex;
-            }
-            finally
-            {
-                dbCommand = null;
             }
 
             return employees;
@@ -289,9 +259,7 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employee = new Entities.Employee();
 
-            DbCommand dbCommand = null;
-
-            using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetEmployeeDetailsById)) {
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetEmployeeDetailsById)) {
 
                 database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employeeId);
 
@@ -338,11 +306,9 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employeeId = 0;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateEmployee))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateEmployee))
                 {
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employee.EmployeeId);
                     database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, employee.BranchId);
@@ -377,11 +343,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            finally
-            {
-                dbCommand = null;
-            }
-
+            
             return employeeId;
         }
 

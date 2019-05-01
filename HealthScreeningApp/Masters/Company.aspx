@@ -6,15 +6,15 @@
 
     <div class="action-toolbar">
 
-        <a href="#" id="AddNewEmployee"><i class="fa fa-plus fa-fw"></i>New</a>
-        <a href="#" id="ShowEmployeeList"><i class="fa fa-list fa-fw"></i>List</a>
-        <a href="#" id="ViewEmployee"><i class="fa fa-eye fa-fw"></i>View</a>
-        <a href="#" id="EditEmployee"><i class="fa fa-edit fa-fw"></i>Edit</a>
-        <a href="#" id="SaveEmployee"><i class="fa fa-save fa-fw"></i>Save</a>
-        <a href="#" id="DeleteEmployee"><i class="fa fa-remove fa-fw"></i>Delete</a>
-        <a href="#" id="PrintEmployeeList"><i class="fa fa-print fa-fw"></i>Print</a>
-        <a href="#" id="FilterEmployee"><i class="fa fa-filter fa-fw"></i>Filter</a>
-        <a href="#" id="ExportEmpoyeeList"><i class="fa fa-cog fa-fw"></i>Export</a>
+        <a href="#" id="AddNewCompany"><i class="fa fa-plus fa-fw"></i>New</a>
+        <a href="#" id="ShowCompanyList"><i class="fa fa-list fa-fw"></i>List</a>
+        <a href="#" id="ViewCompany"><i class="fa fa-eye fa-fw"></i>View</a>
+        <a href="#" id="EditCompany"><i class="fa fa-edit fa-fw"></i>Edit</a>
+        <a href="#" id="SaveCompany"><i class="fa fa-save fa-fw"></i>Save</a>
+        <a href="#" id="DeleteCompany"><i class="fa fa-remove fa-fw"></i>Delete</a>
+        <a href="#" id="PrintCompanyList"><i class="fa fa-print fa-fw"></i>Print</a>
+        <a href="#" id="FilterCompany"><i class="fa fa-filter fa-fw"></i>Filter</a>
+        <a href="#" id="ExportCompanyList"><i class="fa fa-cog fa-fw"></i>Export</a>
 
     </div>
 
@@ -26,7 +26,7 @@
                 <h3>Company</h3>
             </div>
 
-            <div id="Loader" class="loader-container" style="display: none;">
+            <div id="Loader" class="loader-container">
                 <!--There's the container that centers it-->
                 <div class="spinner-frame">
                     <!--The background-->

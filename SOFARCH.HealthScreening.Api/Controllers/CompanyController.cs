@@ -16,23 +16,42 @@ namespace SOFARCH.HealthScreening.API.Controllers
             _company = new Business.Company();
         }
 
-        [HttpPost]
-        [Route("SearchCompany")]
-        public List<Entities.Company> SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(Entities.Company company)
-        {
-            return _company.SearchCompanyByNameOrCodeOrShortNameOrGSTINNo(company);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         [Route("GetAllCompanies")]
         public List<Entities.Company> GetAllCompanies()
         {
             return _company.GetAllCompanies();
         }
 
+        [HttpGet]
+        [Route("SearchCompanyByCode/{companyCode}")]
+        public List<Entities.Company> SearchCompanyByCode(string companyCode)
+        {
+            return _company.SearchCompanyByCode(companyCode);
+        }
+
+        [HttpGet]
+        [Route("SearchCompanyByName/{companyName}")]
+        public List<Entities.Company> SearchCompanyByName(string companyName)
+        {
+            return _company.SearchCompanyByName(companyName);
+        }
+
+        [HttpGet]
+        [Route("SearchCompanyByShortName/{shortName}")]
+        public List<Entities.Company> SearchCompanyByShortName(string shortName)
+        {
+            return _company.SearchCompanyByShortName(shortName);
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [Route("GetCompanyIdAndCompanyName")]
+        public List<Entities.Company> GetCompanyIdAndCompanyName()
+        {
+            return _company.GetCompanyIdAndCompanyName();
+        }
 
         [Route("GetCompanyDetailsById/{companyId}")]
         public Entities.Company GetCompanyDetailsId(Int32 companyId)
@@ -41,7 +60,7 @@ namespace SOFARCH.HealthScreening.API.Controllers
         }
 
         [HttpPost]
-        [Route("SaveCommpany")]
+        [Route("SaveCompany")]
         public Int32 SaveCompany(Entities.Company company)
         {
             return _company.SaveCompany(company);

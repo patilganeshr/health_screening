@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace HealthScreeningApp.Masters
 {
-    public partial class Item: System.Web.UI.Page
+    public partial class DrugGroup : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

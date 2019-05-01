@@ -464,6 +464,9 @@
     <Content Include="Content\scripts\app\Inventory\barcode.js" />
     <Content Include="Content\scripts\app\Inventory\inward-details.js" />
     <Content Include="Content\scripts\app\Masters\address-type.js" />
+    <Content Include="Content\scripts\app\Masters\drug.js" />
+    <Content Include="Content\scripts\app\Masters\drug-route.js" />
+    <Content Include="Content\scripts\app\Masters\drug-group.js" />
     <Content Include="Content\scripts\app\Masters\brand.js" />
     <Content Include="Content\scripts\app\Masters\charge.js" />
     <Content Include="Content\scripts\app\Masters\city.js" />
@@ -650,11 +653,11 @@
     <Content Include="Masters\City.aspx" />
     <Content Include="Masters\Company.aspx" />
     <Content Include="Masters\Drug.aspx" />
+    <Content Include="Masters\DrugRoutes.aspx" />
+    <Content Include="Masters\DrugGroup.aspx" />
     <Content Include="Masters\Employee.aspx" />
     <Content Include="Masters\Employer.aspx" />
     <Content Include="Masters\GSTCategory.aspx" />
-    <Content Include="Masters\Item.aspx" />
-    <Content Include="Masters\ItemCategory.aspx" />
     <Content Include="Transactions\DrugUtilisation.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -714,6 +717,20 @@
     <Compile Include="Masters\Drug.aspx.designer.cs">
       <DependentUpon>Drug.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Masters\DrugRoutes.aspx.cs">
+      <DependentUpon>DrugRoutes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\DrugRoutes.aspx.designer.cs">
+      <DependentUpon>DrugRoutes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Masters\DrugGroup.aspx.cs">
+      <DependentUpon>DrugGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\DrugGroup.aspx.designer.cs">
+      <DependentUpon>DrugGroup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Masters\Employee.aspx.cs">
       <DependentUpon>Employee.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -734,20 +751,6 @@
     </Compile>
     <Compile Include="Masters\GSTCategory.aspx.designer.cs">
       <DependentUpon>GSTCategory.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Masters\Item.aspx.cs">
-      <DependentUpon>Item.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Masters\Item.aspx.designer.cs">
-      <DependentUpon>Item.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Masters\ItemCategory.aspx.cs">
-      <DependentUpon>ItemCategory.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Masters\ItemCategory.aspx.designer.cs">
-      <DependentUpon>ItemCategory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">

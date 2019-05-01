@@ -90,10 +90,12 @@
     <Compile Include="Controllers\CityController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\DrugController.cs" />
+    <Compile Include="Controllers\DrugRoutesController.cs" />
+    <Compile Include="Controllers\DrugGroupController.cs" />
+    <Compile Include="Controllers\DrugsLinkWithDrugRouteController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\EmployerController.cs" />
-    <Compile Include="Controllers\ItemCategoryController.cs" />
-    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ReportController.cs" />

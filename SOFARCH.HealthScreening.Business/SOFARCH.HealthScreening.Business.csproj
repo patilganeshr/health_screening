@@ -49,10 +49,12 @@
     <Compile Include="City.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="Drug.cs" />
+    <Compile Include="DrugGroup.cs" />
+    <Compile Include="DrugRoutes.cs" />
+    <Compile Include="DrugsLinkWithDrugRoute.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Employer.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemCategory.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ModeOfPayment.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,20 +12,28 @@ namespace SOFARCH.HealthScreening.DataModel
         #region Company
         public static string InsertCompany { get { return "companies_insert_company"; } }
 
-        public static string UpdateCompany { get { return "companies_insert_company"; } }
+        public static string UpdateCompany { get { return "companies_update_company"; } }
 
-        public static string DeleteCompany { get { return "companies_insert_company"; } }
+        public static string DeleteCompany { get { return "companies_delete_company"; } }
 
         public static string SearchCompany { get { return "companies_search_company_by_name_or_code_or_short_name_or_gstin_no"; } }
 
-        public static string GetListOfAllCompanies { get { return "companies_get_list_of_all_companies"; } }
+        public static string GetAllCompanies { get { return "companies_get_all_companies"; } }
+
+        public static string GetCompanyIdAndCompanyName { get { return "companies_get_company_id_and_company_name"; } }
 
         public static string GetCompanyDetailsById { get { return "companies_get_company_details_by_id"; } }
+
+        public static string SearchCompanyByCode { get { return "companies_search_company_by_code"; } }
+
+        public static string SearchCompanyByName { get { return "companies_search_company_by_name"; } }
+
+        public static string SearchCompanyByShortName { get { return "companies_search_company_by_short_name"; } }
 
         #endregion
 
         #region Branch
-        
+
         public static string InsertBranch { get { return "branches_insert_branch"; } }
 
         public static string UpdateBranch { get { return "branches_update_branch"; } }
@@ -51,7 +60,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string SearchEmployeeByBranchAndEmployeeName { get { return "employees_search_list_of_employees_by_branch_or_employee_name"; } }
 
         public static string GetEmployeeDetailsById { get { return "employees_get_employee_details_by_id"; } }
-        
+
         #endregion
 
         #region Menus
@@ -85,15 +94,15 @@ namespace SOFARCH.HealthScreening.DataModel
         #endregion
 
         #region Role Permissions
-        
+
         public static string InsertRolePermission { get { return "role_permissions_insert_role_permissions"; } }
-        
+
         public static string UpdateRolePermission { get { return "role_permissions_insert_role_permissions"; } }
-        
+
         public static string DeleteRolePermission { get { return "role_permissions_insert_role_permissions"; } }
-        
+
         public static string GetListOfPermissionsByRoleId { get { return "role_permissions_get_list_of_permissions_by_role_id"; } }
-        
+
         public static string GetListOfPermissionsByRoleIdAndMenuGroupId { get { return "role_permissions_get_list_of_permissions_by_role_and_menu_group_id"; } }
 
         public static string GetPermissionDetailsByRoleAndMenuId { get { return "role_permissions_get_permission_details_by_role_and_menu_id"; } }
@@ -131,19 +140,19 @@ namespace SOFARCH.HealthScreening.DataModel
         #endregion
 
         #region Country
-        
+
         public static string GetListOfAllCountries { get { return "countries_get_list_of_all_countries"; } }
 
         #endregion
 
         #region States
-        
+
         public static string GetListOfStatesByCountryId { get { return "states_get_list_of_states_by_country_id"; } }
 
         #endregion
 
         #region City
-        
+
         public static string InsertCity { get { return "cities_insert_city"; } }
 
         public static string UpdateCity { get { return "cities_update_city"; } }
@@ -153,7 +162,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetListofCitiesByState { get { return "cities_get_list_of_cities_by_state"; } }
 
         public static string CheckCityNameIsExists { get { return "cities_check_city_name_is_exists"; } }
-        
+
         #endregion
 
         #region Employer
@@ -165,7 +174,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string DeleteEmployer { get { return "employers_delete_employer"; } }
 
         public static string GetListOfAllEmployers { get { return "employers_get_list_of_all_employers"; } }
-        
+
         public static string ViewListOfAllEmployers { get { return "employers_view_list_of_employers"; } }
 
         public static string SearchEmployerByName { get { return "employers_search_employer_by_name"; } }
@@ -193,15 +202,15 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string UpdateDoctor { get { return "doctors_update_doctor"; } }
 
-        
+
         public static string DeleteDoctor { get { return "doctors_delete_doctor"; } }
-        
+
         public static string GetListOfAllDoctors { get { return "doctors_get_list_of_all_doctors"; } }
 
         public static string GetDoctorDetailsById { get { return "doctors_get_doctor_details_by_id"; } }
 
         #endregion
-        
+
         #region Illness or Diseases
 
         public static string InsertIllnessOrDisease { get { return "illness_or_diseases_insert_illness_or_disease"; } }
@@ -209,15 +218,15 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string UpldateIllnessOrDisease { get { return "illness_or_diseases_update_illness_or_disease"; } }
 
         public static string DeleteIllnessOrDisease { get { return "illness_or_diseases_delete_illness_or_disease"; } }
-        
+
         public static string GetListOfAllIllnessOrDisease { get { return "illness_or_diseases_get_list_of_all_illness_or_disease"; } }
 
         #endregion
 
         #region Medical Tests
-        
+
         public static string InsertMedicalTest { get { return "medical_tests_insert_medical_test"; } }
-        
+
         public static string UpdateMedicalTest { get { return "medical_tests_update_medical_test"; } }
 
         public static string DeleteMedicalTest { get { return "medical_tests_delete_medical_test"; } }
@@ -230,37 +239,89 @@ namespace SOFARCH.HealthScreening.DataModel
         #region Brands
 
         public static string InsertBrand { get { return "brands_insert_brand"; } }
-        
+
         public static string UpdateBrand { get { return "brands_update_brand"; } }
-        
+
         public static string DeleteBrand { get { return "brands_delete_brand"; } }
 
         public static string GetListOfAllBrands { get { return "brands_get_list_of_all_brand_names"; } }
-        
+
         public static string GetBrandDetailsById { get { return "brands_get_brand_details_by_id"; } }
 
         public static string GetBrandDetailsByName { get { return "brands_get_brand_details_by_name"; } }
 
         #endregion
 
-        #region Item
+        #region Drug Groups
+
+        public static string InsertDrugGroup { get { return "drug_groups_insert_drug_group"; } }
+
+        public static string UpdateDrugGroup { get { return "drug_groups_update_drug_group"; } }
+
+        public static string DeleteDrugGroup { get { return "drug_groups_delete_drug_group"; } }
+
+        public static string GetDrugGroupIdAndGroupName { get { return "drug_groups_get_drug_group_id_and_group_name"; } }
+
+        public static string GetDetailsOfDrugGroupById { get { return "drug_groups_get_details_of_drug_group_by_id"; } }
+
+        public static string GetDetailsOfDrugGroupByName { get { return "drug_groups_get_details_of_drug_group_by_name"; } }
+
+        public static string SearchAllDrugGroups { get { return "drug_groups_search_drug_group_all"; } }
+        
+        public static string SearchDrugGroupByName { get { return "drug_groups_search_drug_group_by_name"; } }
 
         #endregion
 
-        #region ItemCategory
+        #region Drug Routes
 
-        public static string InsertItemCategory { get { return "usp_item_categories_insert_item_category"; } }
+        public static string InsertDrugRoute { get { return "drug_routes_insert_drug_route"; } }
 
-        public static string UpdateItemCategory { get { return "usp_item_categories_update_item_category"; } }
+        public static string UpdateDrugRoute { get { return "drug_routes_update_drug_route"; } }
 
-        public static string DeleteItemCategory { get { return "usp_item_categories_delete_item_category"; } }
+        public static string DeleteDrugRoute { get { return "drug_routes_delete_drug_route"; } }
 
-        public static string GetListOfAllItemCategories { get { return "usp_item_categories_get_list_of_all_item_categories"; } }
+        public static string GetAllDrugRouteIdAndRouteName { get { return "drug_routes_get_drug_route_id_and_route_name"; } }
 
-        public static string GetItemCategoryDetailsByName { get { return "usp_item_categories_get_item_category_details_by_name"; } }
+        public static string GetDetailsOfDrugRouteById { get { return "drug_routes_get_details_of_drug_routes_by_id"; } }
 
-        public static string GetItemCategoryDetailsById { get { return "usp_item_categories_get_item_category_details_by_id"; } }
+        public static string GetDetailsOfDrugRouteByName { get { return "drug_routes_get_details_of_drug_routes_by_name"; } }
+                
+        public static string SearchDrugRouteAll { get { return "drug_routes_search_drug_route_all"; } }
 
+        public static string SearchDrugRouteByRouteName { get { return "drug_routes_search_drug_route_by_route_name"; } }
+
+        #endregion
+
+        #region Drugs
+
+        public static string InsertDrug { get { return "drugs_insert_drug"; } }
+
+        public static string UpdateDrug { get { return "drugs_update_drug"; } }
+
+        public static string DeleteDrug { get { return "drugs_delete_drug"; } }
+
+        public static string GetListOfAllDrugs { get { return "drugs_get_list_of_all_drugs"; } }
+
+        public static string GetDetailsOfDrugById { get { return "drugs_get_details_of_drug_by_id"; } }
+
+        public static string SearchDrugsAll { get { return "drugs_search_drug_all"; } }
+
+        public static string SearchDrugsByDrugCode { get { return "drugs_search_drug_by_drug_code"; } }
+        
+        #endregion
+
+        #region Drugs Link With Drug Routes
+
+        public static string InsertDrugLinkWithDrugRoute { get { return "drugs_link_with_drug_routes_insert_drug_link_with_drug_route"; } }
+
+        public static string UpdateDrugLinkWithDrugRoute { get { return "drugs_link_with_drug_routes_update_drug_link_with_drug_route"; } }
+
+        public static string DeleteDrugLinkWithDrugRoute { get { return "drugs_link_with_drug_routes_delete_drug_link_with_drug_route"; } }
+        
+        public static string DeleteDrugLinkWithDrugRouteByDrugId { get { return "drugs_link_with_drug_routes_delete_by_drug_id"; } }
+
+        public static string GetDrugLinkByDrugId { get { return "drugs_link_with_drug_routes_get_drug_link_by_drug_id"; } }
+        
         #endregion
 
         #region Locations
@@ -301,28 +362,18 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #region Patient Personal History
         
-        public static string InsertPatientPersonalHistory { get { return "patients_personal_history_insert_patient_personal_history"; } }
+        public static string InsertEmployeePersonalHistory { get { return "patients_personal_history_insert_patient_personal_history"; } }
 
-        public static string UpdatePatientPersonalHistory { get { return "patients_personal_history_update_patient_personal_history"; } }
+        public static string UpdateEmployeePersonalHistory { get { return "patients_personal_history_update_patient_personal_history"; } }
 
-        public static string DeletePatientPersonalHistory { get { return "patients_personal_history_delete_patient_personal_history"; } }
+        public static string DeleteEmployeePersonalHistory { get { return "patients_personal_history_delete_patient_personal_history"; } }
 
-        public static string GetPatientPersonalHistoryDetailsById { get { return "patients_personal_history_get_personal_history_details_by_id"; } }
-
-        #endregion
-
-
-        #region Patient Past and Present Illness
-        public static string InsertPatientPastAndPresentIllness { get { return "patients_past_and_present_illness_insert"; } }
-
-        public static string UpdatePatientPastAndPresentIllness { get { return "patients_past_and_present_illness_update"; } }
-
-        public static string DeletePatientPastAndPresentIllness { get { return "patients_past_and_present_illness_delete"; } }
-
-        public static string GetPatientPastAndPresentIllnessById { get { return "patients_past_and_present_illness_get_details_by_id"; } }
+        public static string GetEmployeePersonalHistoryDetailsById { get { return "patients_personal_history_get_personal_history_details_by_id"; } }
 
         #endregion
 
+
+        
     }
 
 }
