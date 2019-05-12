@@ -546,33 +546,139 @@ SharpiTech.Client = (function () {
         DOM.clientName.focus();
     }
 
-    function deleteClient(currentTableRow) {
+    function deleteClient() {
 
-        var table = DOM.clientList;
+        shared.showLoader(DOM.loader);
 
-        var tableBody = table.tBodies[0];
+        try {
 
-        /* temp variable */
-        var clientAddressId = currentTableRow.getAttribute('data-client-address-id');
+            var selectedRows = getSelectedRows(DOM.clientList);
 
-        var client = {};
+            if (selectedRows.length > 0) {
 
-        client = {
-            ClientId: clientId,
-            DeletedBy: parseInt(LOGGED_USER),
-            DeletedByIp: IP_ADDRESS
-        };
+                swal({
+                    title: "Are you sure",
+                    text: "Are you sure you want to delete this record?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel pls",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
+                    function (isConfirm) {
 
-        var postData = JSON.stringify(client);
+                        if (isConfirm) {
 
-        shared.sendRequest(SERVICE_PATH + 'DeleteClient', "POST", true, "JSON", postData, function (response) {
-            if (response.status === 200) {
-                if (response.responseText === "true") {
-                    tableBody.removeChild(currentTableRow);
-                }
+                            for (var r = 0; r < selectedRows.length; r++) {
+
+                                var clients = [];
+
+                                if (Clients.length) {
+
+                                    var clientId = parseInt(selectedRows[r].getAttribute('data-client-id'));
+
+                                    clients = Clients.filter(function (value, index, array) {
+                                        return value.ClientId === clientId;
+                                    });
+
+                                    if (clients.length) {
+
+                                        clients[0].IsDeleted = true;
+                                        clients[0].DeletedBy = parseInt(LOGGED_USER);
+                                        clients[0].DeletedByIP = IP_ADDRESS;
+
+                                        if (clients[0].ClientAddressess !== null) {
+
+                                            var clientAddress = clients[0].ClientAddressess.filter(function (value, index, array) {
+                                                return value.ClientId === clientId && value.IsDeleted === false;
+                                            });
+
+                                            if (clientAddress.length) {
+
+                                                for (var bi = 0; bi < clientAddress.length; bi++) {
+                                                    clientAddress[bi].IsDeleted = true;
+                                                    clientAddress[bi].DeletedBy = parseInt(LOGGED_USER);
+                                                    clientAddress[bi].DeletedByIP = IP_ADDRESS;
+                                                }
+
+                                                clients[0].ClientAddressess = clientAddress;
+                                            }
+                                        }
+
+                                        //if (bills[0].PurchaseBillCharges !== null) {
+                                        //    var billCharges = bills[0].PurchaseBillCharges.filter(function (value, index, array) {
+                                        //        return value.PurchaseBillId === purchaseBillId;
+                                        //    });
+
+                                        //    if (billCharges.length) {
+
+                                        //        for (var bc = 0; bc < billCharges.length; bc++) {
+
+                                        //            billCharges[0].IsDeleted = true;
+                                        //            billCharges[0].DeletedBy = parseInt(LOGGED_USER);
+                                        //            billCharges[0].DeletedByIP = IP_ADDRESS;
+
+                                        //            bills[0].PurchaseBillCharges = billCharges;
+                                        //        }
+                                        //    }
+                                        //}
+
+                                        var client = {};
+
+                                        client = {
+                                            ClientId: clientId,
+                                            IsDeleted: true,
+                                            DeletedBy: LOGGED_USER,
+                                            DeletedByIP: IP_ADDRESS,
+                                            ClientAddressess: clientAddress
+                                        };
+
+                                        var postData = JSON.stringify(client);
+
+                                        shared.sendRequest(SERVICE_PATH + 'SaveClient', "POST", true, "JSON", postData, function (response) {
+
+                                            if (response.status === 200) {
+
+                                                if (parseInt(response.responseText) > 0) {
+
+                                                    //tableBody.removeChild(selectedRows[r]);
+
+                                                    swal({
+                                                        title: "Success",
+                                                        text: "Supplier Details Deleted successfully.",
+                                                        type: "success"
+                                                        //}, function () {
+                                                        //  deleteGoodsReceiptAndInwardDetails();
+                                                    });
+
+                                                    //deleteGoodsReceiptAndInwardDetails(purchaseBillId);
+                                                }
+                                            }
+
+                                            shared.hideLoader(DOM.loader);
+
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    });
             }
-        });
+            else {
+                swal("error", "No row selected.", "error");
+            }
+        }
+        catch (e) {
+            handleError(e.message);
+        }
+        finally {
+
+            shared.hideLoader(DOM.loader);
+        }
     }
+
 
     function getClientDetailsById(clientId) {
 
@@ -748,7 +854,7 @@ SharpiTech.Client = (function () {
 
             for (var r = 0; r < selectedClientAddressList.length; r++) {
                 
-                data += "<tr data-client-address-id=" + selectedClientAddressList[r].ClientAddressId + " data-sr-no=" + selectedClientAddressess[r].SrNo + ">";
+                data += "<tr data-client-address-id=" + selectedClientAddressList[r].ClientAddressId + " data-sr-no=" + selectedClientAddressList[r].SrNo + ">";
                 data += "<td><label class='label-tick'> <input type='checkbox' id='" + selectedClientAddressList[r].ClientAddressId + "' class='label-checkbox' name='SelectClientAddress' /> <span class='label-text'></span> </label>" + "</td>";
                 data += "<td>" + selectedClientAddressList[r].AddressType + "</td>";
                 data += "<td>" + selectedClientAddressList[r].ClientAddressName + "</td>";
@@ -774,9 +880,9 @@ SharpiTech.Client = (function () {
 
     function showClientAddressList() {
 
-        shared.showPanel(DOM.viewMode);
+        shared.showPanel(DOM.clientAddressViewSection);
 
-        shared.hidePanel(DOM.editMode);
+        shared.hidePanel(DOM.clientAddressEditSection);
 
         //clientId = parseInt(DOM.clientName.getAttribute('data-client-id'));
 
@@ -937,7 +1043,7 @@ SharpiTech.Client = (function () {
                 ClientId: clientId,
                 ClientName: clientName,
                 AddressTypeId: addressTypeId,
-                AddressTypeName: addressType,
+                AddressType: addressType,
                 ClientAddressId: clientAddressId,
                 ClientAddressName: clientAddressName,
                 Address: address,
@@ -961,36 +1067,49 @@ SharpiTech.Client = (function () {
 
             if (clientAddress !== undefined) {
 
-                for (var ca = 0; ca < ClientAddressess.length; ca++) {
+                if (ClientAddressess.length) {
 
-                    if (ClientAddressess[ca].ClientId === clientAddress.ClientId &&
-                        ClientAddressess[ca].ClientAddressId === clientAddress.ClientAddressId &&
-                        ClientAddressess[ca].SrNo === maxSrNo) {
+                    // check the client address exists the Sr No.
+                    var clientAddressList = ClientAddressess.filter(function (value, index, array) {
+                        return value.ClientId === clientAddress.ClientId &&
+                            value.ClientAddressId === clientAddress.ClientAddressId &&
+                            value.SrNo === srNo;
+                    });
 
-                        ClientAddressess[ca].ClientId = clientAddress.ClientId;
-                        ClientAddressess[ca].ClientName = clientAddress.ClientName;
-                        ClientAddressess[ca].AddressTypeId = clientAddress.AddressTypeId;
-                        ClientAddressess[ca].AddressTypeName = clientAddress.AddressTypeName;
-                        ClientAddressess[ca].ClientAddressId = clientAddress.ClientAddressId;
-                        ClientAddressess[ca].ClientAddressName = clientAddress.ClientAddressName;
-                        ClientAddressess[ca].Address = clientAddress.Address;
-                        ClientAddressess[ca].CountryId = clientAddress.CountryId;
-                        ClientAddressess[ca].CountryName = clientAddress.CountryName;
-                        ClientAddressess[ca].StateId = clientAddress.StateId;
-                        ClientAddressess[ca].StateName = clientAddress.StateName;
-                        ClientAddressess[ca].CityId = clientAddress.CityId;
-                        ClientAddressess[ca].CityName = clientAddress.CityName;
-                        ClientAddressess[ca].Area = clientAddress.Area;
-                        ClientAddressess[ca].Pincode = clientAddress.Pincode;
-                        ClientAddressess[ca].ContactNos = clientAddress.ContactNos;
-                        ClientAddressess[ca].EmailId = clientAddress.EmailId;
-                        ClientAddressess[ca].Website = clientAddress.Website;
-                        ClientAddressess[ca].GSTNo = clientAddress.GSTNo;
-                        ClientAddressess[ca].IsDeleted = clientAddress.IsDeleted;
-                        ClientAddressess[ca].SrNo = clientAddress.SrNo;
-                        ClientAddressess[ca].CustomerAndTransporterMapping = clientAddress.CustomerAndTransporterMapping;
-                        ClientAddressess[ca].ModifiedBy = parseInt(LOGGED_USER);
-                        ClientAddressess[ca].ModifiedByIP = IP_ADDRESS;
+                    if (clientAddressList.length) {
+
+                        for (var ca = 0; ca < ClientAddressess.length; ca++) {
+
+                            if (ClientAddressess[ca].ClientId === clientAddress.ClientId &&
+                                ClientAddressess[ca].ClientAddressId === clientAddress.ClientAddressId &&
+                                ClientAddressess[ca].SrNo === srNo) {
+
+                                ClientAddressess[ca].ClientId = clientAddress.ClientId;
+                                ClientAddressess[ca].ClientName = clientAddress.ClientName;
+                                ClientAddressess[ca].AddressTypeId = clientAddress.AddressTypeId;
+                                ClientAddressess[ca].AddressTypeName = clientAddress.AddressTypeName;
+                                ClientAddressess[ca].ClientAddressId = clientAddress.ClientAddressId;
+                                ClientAddressess[ca].ClientAddressName = clientAddress.ClientAddressName;
+                                ClientAddressess[ca].Address = clientAddress.Address;
+                                ClientAddressess[ca].CountryId = clientAddress.CountryId;
+                                ClientAddressess[ca].CountryName = clientAddress.CountryName;
+                                ClientAddressess[ca].StateId = clientAddress.StateId;
+                                ClientAddressess[ca].StateName = clientAddress.StateName;
+                                ClientAddressess[ca].CityId = clientAddress.CityId;
+                                ClientAddressess[ca].CityName = clientAddress.CityName;
+                                ClientAddressess[ca].Area = clientAddress.Area;
+                                ClientAddressess[ca].Pincode = clientAddress.Pincode;
+                                ClientAddressess[ca].ContactNos = clientAddress.ContactNos;
+                                ClientAddressess[ca].EmailId = clientAddress.EmailId;
+                                ClientAddressess[ca].Website = clientAddress.Website;
+                                ClientAddressess[ca].GSTNo = clientAddress.GSTNo;
+                                ClientAddressess[ca].IsDeleted = clientAddress.IsDeleted;
+                                ClientAddressess[ca].SrNo = clientAddress.SrNo;
+                                ClientAddressess[ca].CustomerAndTransporterMapping = clientAddress.CustomerAndTransporterMapping;
+                                ClientAddressess[ca].ModifiedBy = parseInt(LOGGED_USER);
+                                ClientAddressess[ca].ModifiedByIP = IP_ADDRESS;
+                            }
+                        }
                     }
                     else {
                         if (parseInt(clientAddress.ClientAddressId) === parseInt(0)) {
@@ -1002,6 +1121,17 @@ SharpiTech.Client = (function () {
                         ClientAddressess.push(clientAddress);
                     }
                 }
+                else {
+                    if (parseInt(clientAddress.ClientAddressId) === parseInt(0)) {
+
+                        clientAddress.CreatedBy = parseInt(LOGGED_USER);
+                        clientAddress.CreatedByIP = IP_ADDRESS;
+                    }
+
+                    ClientAddressess.push(clientAddress);
+                }
+
+                showClientAddressListByClientId(clientId);
             }
         }
     }

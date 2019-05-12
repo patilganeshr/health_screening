@@ -114,15 +114,13 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool DeleteClient(Entities.Client client)
+        public bool DeleteClient(Entities.Client client, DbTransaction dbTransaction)
         {
             bool isDeleted = false;
 
-            DbCommand dbCommand = null;
-
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteClient))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteClient))
                 {
                     database.AddInParameter(dbCommand, "@client_id", DbType.Int32, client.ClientId);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, client.ModifiedBy);
@@ -130,7 +128,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    var result = database.ExecuteNonQuery(dbCommand);
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -141,10 +139,6 @@ namespace SOFARCH.HealthScreening.DataModel
             catch (Exception e)
             {
                 throw e;
-            }
-            finally
-            {
-                dbCommand = null;
             }
 
             return isDeleted;
@@ -420,9 +414,18 @@ namespace SOFARCH.HealthScreening.DataModel
                                         clientId = -2;
                                     }
                                 }
-                                else
+                                else if (c.ModifiedBy == null  || c.ModifiedBy == 0)
                                 {
                                     clientId = UpdateClient(c, transaction);
+                                }
+                                else if(c.IsDeleted == true)
+                                {
+                                    var result = DeleteClient(c, transaction);
+
+                                    if (result)
+                                    {
+                                        clientId = (int)c.ClientId;
+                                    }
                                 }
 
                                 if (clientId > 0)

@@ -26,10 +26,10 @@ namespace SOFARCH.HealthScreening.Business
         /// </summary>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool DeleteClient(Entities.Client client)
-        {
-            return _client.DeleteClient(client);
-        }
+        //public bool DeleteClient(Entities.Client client)
+        //{
+        //    return _client.DeleteClient(client);
+        //}
 
         /// <summary>
         /// 

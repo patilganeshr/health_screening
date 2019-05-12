@@ -720,20 +720,25 @@ namespace SOFARCH.HealthScreening.DataModel
 
             if (clientAddress.ClientAddressId == null || clientAddress.ClientAddressId == 0)
             {
-                var result = IsClientAddresseeNameExists((int)clientAddress.ClientId, clientAddress.ClientAddressName);
+                //var result = IsClientAddresseeNameExists((int)clientAddress.ClientId, clientAddress.ClientAddressName);
 
-                if (result == false)
-                {
+                //if (result == false)
+                //{
                     clientAddressId = AddClientAddress(clientAddress, transaction);
-                }
-                else
-                {
-                    clientAddressId = -1;
-                }
+                //}
+                //else
+                //{
+                //    clientAddressId = -1;
+                //}
             }
             else if (clientAddress.IsDeleted == true)
             {
                 var result = DeleteClientAddress(clientAddress, transaction);
+
+                if (result)
+                {
+                    clientAddressId = (int)clientAddress.ClientAddressId;
+                }
             }
             else if (clientAddress.ModifiedBy > 0 || clientAddress.ModifiedBy != null)
             {

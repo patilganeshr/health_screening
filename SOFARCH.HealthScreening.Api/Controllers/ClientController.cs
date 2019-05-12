@@ -24,17 +24,18 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _client.IsClientNameExists(clientName);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="client"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("DeleteClient")]
-        public bool DeleteClient(Entities.Client client)
-        {
-            return _client.DeleteClient(client);
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="client"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[Route("DeleteClient")]
+        //public bool 
+        //    (Entities.Client client)
+        //{
+        //    return _client.DeleteClient(client);
+        //}
 
         /// <summary>
         /// 
