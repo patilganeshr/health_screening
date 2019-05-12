@@ -300,7 +300,9 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeleteDrug { get { return "drugs_delete_drug"; } }
 
-        public static string GetListOfAllDrugs { get { return "drugs_get_list_of_all_drugs"; } }
+        public static string GetDrugIdAndDrugName { get { return "drugs_get_drug_id_and_generic_name"; } }
+
+        public static string SearchDrugIdAndGenericNameByName { get { return "drugs_search_drug_id_and_generic_name_by_name"; } }
 
         public static string GetDetailsOfDrugById { get { return "drugs_get_details_of_drug_by_id"; } }
 
@@ -308,6 +310,10 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string SearchDrugsByDrugCode { get { return "drugs_search_drug_by_drug_code"; } }
         
+        public static string SearchDrugsByGenericName { get { return "drugs_search_drug_by_generic_name"; } }
+
+        public static string SearchDrugsByDrugGroupId { get { return "drugs_search_drug_by_drug_group_id"; } }
+
         #endregion
 
         #region Drugs Link With Drug Routes
@@ -372,8 +378,157 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
+        #region Address Types
+
+        public static string InsertAddressType { get { return "address_types_insert_address_type"; } }
+
+        public static string UpdateAddressType { get { return "address_types_update_address_type"; } }
+
+        public static string DeleteAddressType { get { return "address_types_delete_address_type"; } }
+
+        public static string GetAllAddressTypes { get { return "address_types_get_all_address_type"; } }
+        public static string GetAddressTypeDetailsById { get { return "address_types_get_type_details_by_id"; } }
+        public static string GetAddressTypeDetailsByName { get { return "address_types_get_type_details_by_name"; } }
 
         
+        #endregion
+
+        #region  Client
+
+        public static string DeleteClientById { get { return "client_addressess_delete_by_client_id"; } }
+        public static string InsertClient { get { return "clients_insert_client"; } }
+        public static string UpdateClient { get { return "clients_update_client"; } }
+        public static string DeleteClient { get { return "clients_delete_client"; } }
+        public static string GetAllClients { get { return "clients_get_all_clients"; } }
+        public static string GetClientById { get { return "clients_get_client_by_id"; } }
+        public static string GetClientByName { get { return "clients_get_client_by_name"; } }
+        public static string CheckClientNameIsExists { get { return "clients_check_client_name_is_exists"; } }
+
+        #endregion Client
+
+        #region Client Type
+        public static string InsertClientType { get { return "client_types_insert_client_type"; } }
+
+        public static string UpdateClientType { get { return "client_types_update_client_type"; } }
+
+        public static string DeleteClientType { get { return "client_types_delete_client_type"; } }
+
+        public static string GetAllClientTypes { get { return "client_types_get_all_client_type"; } }
+
+        public static string GetClientTypeById { get { return "client_types_get_client_type_by_id"; } }
+
+        public static string GetClientTypeByName { get { return "clients_get_client_type_by_name"; } }
+
+        #endregion Client Type
+
+        #region Client Addresses
+
+        public static string GetAllClientAddressess { get { return "client_addressess_get_all_client_addressess"; } }
+
+        public static string GetAllAddressessByClientId { get { return "client_addressess_get_all_addressess_by_client_id"; } }
+
+        public static string GetClientAddressNamesByClientTypeId { get { return "client_addressess_get_client_address_names_by_client_type_id"; } }
+
+        public static string SearchClientAddressNameByClientAddressName { get { return "client_addressess_search_by_client_address_name"; } }
+
+        public static string InsertClientAddress { get { return "client_addressess_insert_client_address"; } }
+
+        public static string UpdateClientAddress { get { return "client_addressess_update_client_address"; } }
+
+        public static string DeleteClientAddress { get { return "client_addressess_delete_client_address"; } }
+
+        public static string GetAllClientAddressByClientId { get { return "client_addressess_get_all_client_addressess_by_client_id"; } }
+
+        public static string GetClientAddressById { get { return "client_addressess_get_client_address_by_id"; } }
+
+        public static string GetClientAddressByName { get { return "client_addressess_get_client_address_by_name"; } }
+
+        public static string CheckClientAddressNameIsExists { get { return "client_addressess_check_client_addressee_name_is_exists"; } }
+
+        #endregion
+
+        #region Client Address Contacts
+
+        public static string InsertClientAddressContact { get { return "client_address_contacts_insert_client_address_contact"; } }
+
+        public static string UpdateClientAddressContact { get { return "client_address_contacts_update_client_address_contact"; } }
+
+        public static string DeleteClientAddressContactByClientAddressId { get { return "client_address_contacts_delete_by_client_address_id"; } }
+
+        public static string DeleteClientAddressContactByContactId { get { return "client_address_contacts_delete_by_contact_id"; } }
+
+        public static string GetAllClientAddressContactsByClientAddressId { get { return "client_address_contacts_get_all_contacts_by_client_address_id"; } }
+
+        public static string GetClientAddressContactById { get { return "client_address_contacts_get_contact_by_id"; } }
+
+        #endregion
+
+        #region Purchase Bill
+
+        public static string InsertPurchaseBill { get { return "purchase_bills_insert_purchase_bill"; } }
+
+        public static string UpdatePurchaseBill { get { return "purchase_bills_update_purchase_bill"; } }
+
+        public static string DeletePurchaseBill { get { return "purchase_bills_delete_purchase_bill"; } }
+
+        public static string GetPurchaseBillIdAndPurchaeBillNo { get { return "purchase_bills_get_purchase_bill_id_and_bill_no"; } }
+
+        public static string GetPurchaseBillDetailsById { get { return "purchase_bills_get_bill_details_by_id"; } }
+
+        public static string SearchAllPurchaseBills { get { return "purchase_bills_search_all"; } }
+
+        public static string SearchPurchaseBillById { get { return "purchase_bills_search_details_by_vendor_id"; } }
+
+        #endregion
+
+        #region Purchase Bill Items
+
+        public static string InsertPurchaseBillItem { get { return "purchase_bill_items_insert_purchase_bill_item"; } }
+
+        public static string UpdatePurchaseBillItem { get { return "purchase_bill_items_update_purchase_bill_item"; } }
+
+        public static string DeletePurchaseBillItem { get { return "purchase_bill_items_delete_purchase_bill_item"; } }
+
+        public static string DeletePurchaseBillItemsByPurchaseBillId { get { return "purchase_bill_items_delete_by_purchase_bill_id"; } }
+
+        public static string GetPurchaseBillItemDetailsByPurchaseBillId { get { return "purchase_bill_items_get_item_details_by_purchase_bill_id"; } }
+
+        #endregion
+
+        #region Purchase Bill Charges
+
+        public static string InsertPurchaseBillCharges { get { return "purchase_bill_charges_insert_purchase_bill_charge"; } }
+
+        public static string UpdatePurchaseBillCharges { get { return "purchase_bill_charges_update_purchase_bill_charge"; } }
+
+        public static string DeletePurchaseBillCharges { get { return "purchase_bill_charges_delete_purchase_bill_charge"; } }
+
+        public static string DeletePurchaseBillChargesByPurchaseBillId { get { return "purchase_bill_charges_delete_by_purchase_bill_id"; } }
+
+        public static string GetPurchaseBillChargeDetailsByPurchaseBillId { get { return "purchase_bill_charges_get_charge_details_by_purchase_bill_id"; } }
+
+        #endregion
+
+        #region 
+
+        public static string InsertAccountHead { get { return "account_heads_insert_account_head"; } }
+
+        public static string UpdatetAccountHead { get { return "account_heads_update_account_head"; } }
+
+        public static string DeleteAccountHead { get { return "account_heads_delete_account_head"; } }
+
+        public static string GetAllAccountHeads { get { return "account_heads_get_all_account_head"; } }
+
+        public static string GetAccountHeadById { get { return "account_heads_get_account_head_by_id"; } }
+
+        public static string GetAccountHeadByName { get { return "account_heads_get_account_head_by_name"; } }
+        
+        public static string SearchAllAccountHeads { get { return "account_heads_search_all_account_head"; } }
+
+        public static string SearchAccountHeadByName { get { return "account_heads_search_account_head_by_name"; } }
+
+        #endregion
+
     }
 
 }

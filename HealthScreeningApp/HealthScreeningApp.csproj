@@ -464,6 +464,7 @@
     <Content Include="Content\scripts\app\Inventory\barcode.js" />
     <Content Include="Content\scripts\app\Inventory\inward-details.js" />
     <Content Include="Content\scripts\app\Masters\address-type.js" />
+    <Content Include="Content\scripts\app\Masters\account-head.js" />
     <Content Include="Content\scripts\app\Masters\drug.js" />
     <Content Include="Content\scripts\app\Masters\drug-route.js" />
     <Content Include="Content\scripts\app\Masters\drug-group.js" />
@@ -651,8 +652,11 @@
     <Content Include="Login.aspx" />
     <Content Include="Masters\Brand.aspx" />
     <Content Include="Masters\City.aspx" />
+    <Content Include="Masters\Client.aspx" />
+    <Content Include="Masters\ClientType.aspx" />
     <Content Include="Masters\Company.aspx" />
     <Content Include="Masters\Drug.aspx" />
+    <Content Include="Masters\AccountHead.aspx" />
     <Content Include="Masters\DrugRoutes.aspx" />
     <Content Include="Masters\DrugGroup.aspx" />
     <Content Include="Masters\Employee.aspx" />
@@ -660,6 +664,7 @@
     <Content Include="Masters\GSTCategory.aspx" />
     <Content Include="Transactions\DrugUtilisation.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
+    <Content Include="Transactions\PurchaseBill.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -703,6 +708,20 @@
     <Compile Include="Masters\City.aspx.designer.cs">
       <DependentUpon>City.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Masters\Client.aspx.cs">
+      <DependentUpon>Client.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\Client.aspx.designer.cs">
+      <DependentUpon>Client.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Masters\ClientType.aspx.cs">
+      <DependentUpon>ClientType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\ClientType.aspx.designer.cs">
+      <DependentUpon>ClientType.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Masters\Company.aspx.cs">
       <DependentUpon>Company.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -716,6 +735,13 @@
     </Compile>
     <Compile Include="Masters\Drug.aspx.designer.cs">
       <DependentUpon>Drug.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Masters\AccountHead.aspx.cs">
+      <DependentUpon>AccountHead.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\AccountHead.aspx.designer.cs">
+      <DependentUpon>AccountHead.aspx</DependentUpon>
     </Compile>
     <Compile Include="Masters\DrugRoutes.aspx.cs">
       <DependentUpon>DrugRoutes.aspx</DependentUpon>
@@ -780,6 +806,13 @@
     </Compile>
     <Compile Include="Transactions\PettyCashExpense.aspx.designer.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\PurchaseBill.aspx.cs">
+      <DependentUpon>PurchaseBill.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PurchaseBill.aspx.designer.cs">
+      <DependentUpon>PurchaseBill.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

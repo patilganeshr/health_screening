@@ -85,9 +85,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountHeadController.cs" />
+    <Compile Include="Controllers\AddressTypeController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CityController.cs" />
+    <Compile Include="Controllers\ClientAddressContactController.cs" />
+    <Compile Include="Controllers\ClientAddressController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\ClientTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DrugController.cs" />
@@ -98,6 +104,7 @@
     <Compile Include="Controllers\EmployerController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PurchaseBillController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\RolePermissionController.cs" />
