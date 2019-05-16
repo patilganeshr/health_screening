@@ -35,7 +35,8 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertEmployee))
                 {
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employee.EmployeeId);
-                    database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, employee.BranchId);
+                    database.AddInParameter(dbCommand, "@employee_code", DbType.String, employee.EmployeeCode);
+                    database.AddInParameter(dbCommand, "@title", DbType.String, employee.Title);
                     database.AddInParameter(dbCommand, "@first_name", DbType.String, employee.FirstName);
                     database.AddInParameter(dbCommand, "@middle_name", DbType.String, employee.MiddleName);
                     database.AddInParameter(dbCommand, "@last_name", DbType.String, employee.LastName);
@@ -50,6 +51,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@department", DbType.String, employee.Department);
                     database.AddInParameter(dbCommand, "@designation", DbType.String, employee.Designation);
                     database.AddInParameter(dbCommand, "@gender", DbType.String, employee.Gender);
+                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, employee.CompanyId);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, employee.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, employee.CreatedByIP);
 
@@ -71,12 +73,13 @@ namespace SOFARCH.HealthScreening.DataModel
             return employeeId;
         }
 
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        public bool DeleteEmployee(Entities.Employee employee)
+        private bool DeleteEmployee(Entities.Employee employee)
         {
             bool isDeleted = false;
 
@@ -106,6 +109,106 @@ namespace SOFARCH.HealthScreening.DataModel
             return isDeleted;
         }
 
+        public bool IsEmployeeNameExists(Int32 companyId, string employeeName)
+        {
+            bool isEmployeeNameExists = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.CheckEmployeeNameIsExists))
+                {
+                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, companyId);
+                    database.AddInParameter(dbCommand, "@employee_name", DbType.String, employeeName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while(reader.Read())
+                        {
+                            isEmployeeNameExists = reader.GetBoolean(reader.GetOrdinal("is_employee_name_exists"));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isEmployeeNameExists;
+        }
+
+        public bool IsEmployeeCodeExists(Int32 companyId, string employeeCode)
+        {
+            bool isEmployeeCodeExists = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.CheckEmployeeCodeIsExists))
+                {
+                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, companyId);
+                    database.AddInParameter(dbCommand, "@employee_code", DbType.String, employeeCode);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            isEmployeeCodeExists = DRE.GetBoolean(reader, "is_employee_code_exists");
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isEmployeeCodeExists;
+        }
+
+        private List<Entities.Employee> GetEmployees(IDataReader reader)
+        {
+            var employees = new List<Entities.Employee>();
+
+            while (reader.Read())
+            {
+                EmployeePersonalHistory employeePersonalHistory = new EmployeePersonalHistory();
+                EmployeeExerciseHistory employeeExerciseHistory = new EmployeeExerciseHistory();
+
+                var employee = new Entities.Employee
+                {
+                    EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
+                    EmployeeCode = DRE.GetNullableString(reader, "employee_code", null),
+                    Title = DRE.GetNullableString(reader, "title", null),
+                    FirstName = DRE.GetNullableString(reader, "first_name", null),
+                    MiddleName = DRE.GetNullableString(reader, "middle_name", null),
+                    LastName = DRE.GetNullableString(reader, "last_name", null),
+                    FullName = DRE.GetNullableString(reader, "full_name", null),
+                    Address = DRE.GetNullableString(reader, "address", null),
+                    Gender = DRE.GetNullableString(reader, "gender", null),
+                    DateOfBirth = DRE.GetNullableString(reader, "date_of_birth", null),
+                    ContactNos = DRE.GetNullableString(reader, "contact_nos", null),
+                    ContactNo1 = DRE.GetNullableString(reader, "contact_no_1", null),
+                    ContactNo2 = DRE.GetNullableString(reader, "contact_no_2", null),
+                    MobileNo1 = DRE.GetNullableString(reader, "mobile_no_1", null),
+                    MobileNo2 = DRE.GetNullableString(reader, "mobile_no_2", null),
+                    EmailId = DRE.GetNullableString(reader, "email_id", null),
+                    PANNo = DRE.GetNullableString(reader, "pan_no", null),
+                    Department = DRE.GetNullableString(reader, "department", null),
+                    Designation = DRE.GetNullableString(reader, "designation", null),
+                    CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
+                    CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                    EmployeePersonalHistory = employeePersonalHistory.GetEmployeePersonalHistoriesByEmployeeId(DRE.GetInt32(reader, "employee_id")),
+                    EmployeeExerciseHistories = employeeExerciseHistory.GetEmployeeExerciseHistoriesByEmployeeId(DRE.GetInt32(reader, "employee_id"))
+                };
+
+                employees.Add(employee);
+            }
+
+            return employees;
+        }
+
+
         /// <summary>
         /// /
         /// </summary>
@@ -122,34 +225,6 @@ namespace SOFARCH.HealthScreening.DataModel
                     {
                         employees = GetEmployees(reader);
 
-                        //while (reader.Read())
-                        //{
-                        //    var employee = new Entities.Employee
-                        //    {
-                        //        EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
-                        //        FirstName = DRE.GetNullableString(reader, "first_name", null),
-                        //        MiddleName = DRE.GetNullableString(reader, "middle_name", null),
-                        //        LastName = DRE.GetNullableString(reader, "last_name", null),
-                        //        FullName = DRE.GetNullableString(reader, "full_name", null),
-                        //        SrNo = DRE.GetNullableInt64(reader, "sr_no", null),
-                        //        BranchId = DRE.GetNullableInt32(reader, "branch_id", null),
-                        //        BranchName = DRE.GetNullableString(reader, "branch_name", null),
-                        //        ResidentialAddress = DRE.GetNullableString(reader, "residential_address", null),
-                        //        DateOfBirth = DRE.GetNullableString(reader, "date_of_birth", null ),
-                        //        ContactNo1 = DRE.GetNullableString(reader, "contact_no_1", null),
-                        //        ContactNo2 = DRE.GetNullableString(reader, "contact_no_2", null),
-                        //        MobileNo1 = DRE.GetNullableString(reader, "mobile_no_1", null),
-                        //        MobileNo2 = DRE.GetNullableString(reader, "mobile_no_2", null),
-                        //        ContactNos = DRE.GetNullableString(reader, "contact_nos", null),
-                        //        EmailId = DRE.GetNullableString(reader, "email_id", null),
-                        //        PANNo = DRE.GetNullableString(reader, "pan_no", null),
-                        //        DepartmentId = DRE.GetNullableInt32(reader, "department_id", null),
-                        //        guid = DRE.GetNullableGuid(reader, "rowguid", null),
-                        //        Gender = DRE.GetNullableString(reader, "gender", null)
-                        //    };
-
-                        //    employees.Add(employee);
-                        //}
                     }
                 }
             }
@@ -161,21 +236,14 @@ namespace SOFARCH.HealthScreening.DataModel
             return employees;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="BranchId"></param>
-        /// <returns></returns>
-        public List<Entities.Employee> GetAllEmployeesByBranch(Int32 branchId)
+        public List<Entities.Employee> SearchAllEmployees()
         {
-            var employees = new List<Entities.Employee>();
+            List<Entities.Employee> employees = new List<Entities.Employee>();
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllEmployeesByBranch))
-                {
-                    database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, branchId);
-
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchAllEmployees))
+                {   
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         employees = GetEmployees(reader);
@@ -185,66 +253,6 @@ namespace SOFARCH.HealthScreening.DataModel
             catch (Exception ex)
             {
                 throw ex;
-            }
-           
-            return employees;
-        }
-
-        public List<Entities.Employee> SearchEmployeeByBranchOrName(Int32? branchId, string employeeName = null)
-        {
-            var employees = new List<Entities.Employee>();
-
-            try
-            {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchEmployeeByBranchAndEmployeeName))
-                {
-                    database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, branchId);
-                    database.AddInParameter(dbCommand, "@employee_name", DbType.String, employeeName);
-
-                    using (IDataReader reader = database.ExecuteReader(dbCommand))
-                    {
-                        employees = GetEmployees(reader);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return employees;
-        }
-
-        private List<Entities.Employee> GetEmployees(IDataReader reader)
-        {
-            var employees = new List<Entities.Employee>();
-
-            while (reader.Read())
-            {
-                var employee = new Entities.Employee
-                {
-                    EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
-                    FirstName = DRE.GetNullableString(reader, "first_name", null),
-                    MiddleName = DRE.GetNullableString(reader, "middle_name", null),
-                    LastName = DRE.GetNullableString(reader, "last_name", null),
-                    FullName = DRE.GetNullableString(reader, "full_name", null),
-                    Address = DRE.GetNullableString(reader, "address", null),
-                    BranchId = DRE.GetNullableInt32(reader, "branch_id", null),
-                    BranchName = DRE.GetNullableString(reader, "branch_name", null),
-                    Gender = DRE.GetNullableString(reader, "gender", null),
-                    DateOfBirth = DRE.GetNullableString(reader, "date_of_birth", null),
-                    ContactNos  = DRE.GetNullableString(reader, "contact_nos", null),
-                    ContactNo1 = DRE.GetNullableString(reader, "contact_no_1", null),
-                    ContactNo2 = DRE.GetNullableString(reader, "contact_no_2", null),
-                    MobileNo1 = DRE.GetNullableString(reader, "mobile_no_1", null),
-                    MobileNo2 = DRE.GetNullableString(reader, "mobile_no_2", null),
-                    EmailId = DRE.GetNullableString(reader, "email_id", null),
-                    PANNo = DRE.GetNullableString(reader, "pan_no", null),
-                    Department = DRE.GetNullableString(reader,"department", null),
-                    Designation = DRE.GetNullableString(reader, "designation", null)
-                };
-
-                employees.Add(employee);
             }
 
             return employees;
@@ -270,12 +278,12 @@ namespace SOFARCH.HealthScreening.DataModel
                         var _employee = new Entities.Employee
                         {
                             EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
+                            EmployeeCode = DRE.GetNullableString(reader, "employee_code", null),
+                            Title = DRE.GetNullableString(reader, "title", null),
                             FirstName = DRE.GetNullableString(reader, "first_name", null),
                             MiddleName = DRE.GetNullableString(reader, "middle_name", null),
                             LastName = DRE.GetNullableString(reader, "last_name", null),
                             FullName = DRE.GetNullableString(reader, "full_name", null),
-                            BranchId = DRE.GetNullableInt32(reader, "branch_id", null),
-                            BranchName = DRE.GetNullableString(reader, "branch_name", null),
                             Gender = DRE.GetNullableString(reader, "gender", null),
                             Address = DRE.GetNullableString(reader, "address", null),
                             DateOfBirth = DRE.GetNullableString(reader, "date_of_birth", null),
@@ -286,7 +294,9 @@ namespace SOFARCH.HealthScreening.DataModel
                             EmailId = DRE.GetNullableString(reader, "email_id", null),
                             PANNo = DRE.GetNullableString(reader, "pan_no", null),
                             Department = DRE.GetNullableString(reader, "department", null),
-                            Designation = DRE.GetNullableString(reader, "designation", null)                            
+                            Designation = DRE.GetNullableString(reader, "designation", null),
+                            CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
+                            CompanyName = DRE.GetNullableString(reader, "company_name", null)
                         };
 
                         employee = _employee;
@@ -311,11 +321,11 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateEmployee))
                 {
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employee.EmployeeId);
-                    database.AddInParameter(dbCommand, "@branch_id", DbType.Int32, employee.BranchId);
+                    database.AddInParameter(dbCommand, "@employee_code", DbType.String, employee.EmployeeCode);
+                    database.AddInParameter(dbCommand, "@title", DbType.String, employee.Title);
                     database.AddInParameter(dbCommand, "@first_name", DbType.String, employee.FirstName);
                     database.AddInParameter(dbCommand, "@middle_name", DbType.String, employee.MiddleName);
                     database.AddInParameter(dbCommand, "@last_name", DbType.String, employee.LastName);
-                    database.AddInParameter(dbCommand, "@gender", DbType.String, employee.Gender);
                     database.AddInParameter(dbCommand, "@address", DbType.String, employee.Address);
                     database.AddInParameter(dbCommand, "@date_of_birth", DbType.String, employee.DateOfBirth);
                     database.AddInParameter(dbCommand, "@contact_no_1", DbType.String, employee.ContactNo1);
@@ -326,6 +336,8 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@pan_no ", DbType.String, employee.PANNo);
                     database.AddInParameter(dbCommand, "@department", DbType.String, employee.Department);
                     database.AddInParameter(dbCommand, "@designation", DbType.String, employee.Designation);
+                    database.AddInParameter(dbCommand, "@gender", DbType.String, employee.Gender);
+                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, employee.CompanyId);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, employee.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, employee.ModifiedByIP);
 
@@ -356,23 +368,98 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employeeId = 0;
 
-            if (employee.EmployeeId == null || employee.EmployeeId  == 0)
-            {
-                employeeId =  AddEmployee(employee);
-            }
-            else if (employee.ModifiedBy != null || employee.ModifiedBy > 0)
-            {
-                employeeId = UpdateEmployee(employee);
-            }
-            else if(employee.IsDeleted == true)
-            {
-                var result = DeleteEmployee(employee);
+            var db = DBConnect.getDBConnection();
 
-                if (result)
+            using(DbConnection conn = db.CreateConnection())
+            {
+                conn.Open();
+
+                using(DbTransaction transaction = conn.BeginTransaction())
                 {
-                    employeeId = 1;
+                    try
+                    {
+                        var employeePersonalHistoryId = 0;
+                        var employeeExerciseHistoryId = 0;
+
+                        if (employee != null)
+                        {
+                            if (employee.EmployeeId == null || employee.EmployeeId == 0)
+                            {
+                                employeeId = AddEmployee(employee);
+                            }
+                            else if (employee.ModifiedBy != null || employee.ModifiedBy > 0)
+                            {
+                                employeeId = UpdateEmployee(employee);
+                            }
+                            else if (employee.IsDeleted == true)
+                            {
+                                var result = DeleteEmployee(employee);
+
+                                if (result)
+                                {
+                                    employeeId = 1;
+                                }
+                            }
+
+                            if (employeeId > 0)
+                            {
+                                if (employee.EmployeePersonalHistory != null)
+                                {
+                                    EmployeePersonalHistory personalHistory = new EmployeePersonalHistory();
+
+                                    employee.EmployeePersonalHistory.EmployeeId  = employeeId;
+
+                                    employeePersonalHistoryId = personalHistory.SaveEmployeePersonalHistory(employee.EmployeePersonalHistory, transaction);
+
+                                    if (employeePersonalHistoryId < 0)
+                                    {
+                                        employeeId = -1;
+                                    }
+
+                                }
+
+                                if (employee.EmployeeExerciseHistories != null)
+                                {
+                                    if (employee.EmployeeExerciseHistories.Count > 0)
+                                    {
+                                        foreach (Entities.EmployeeExerciseHistory employeeExerciseHistory in employee.EmployeeExerciseHistories)
+                                        {
+                                            EmployeeExerciseHistory exerciseHistory = new EmployeeExerciseHistory();
+
+                                            employeeExerciseHistory.EmployeeId = employeeId;
+
+                                            employeeExerciseHistoryId =  exerciseHistory.SaveEmployeeExerciseHistory(employeeExerciseHistory, transaction);
+
+                                            if (employeeExerciseHistoryId < 0)
+                                            {
+                                                employeeId = -1;
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                        if (employeeId > 0)
+                        {
+                            transaction.Commit();
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        employeeId = -1;
+                        transaction.Rollback();
+                        throw ex;
+                    }
                 }
             }
+            
 
             return employeeId;
         }

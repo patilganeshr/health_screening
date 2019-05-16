@@ -53,6 +53,11 @@ namespace SOFARCH.HealthScreening.Business
             return _company.GetCompanyDetailsById(companyId);
         }
 
+        public List<Entities.Company> SearchCompaniesByCompanyCodeOrName(string searchCriteria)
+        {
+            return _company.SearchCompaniesByCompanyCodeOrName(searchCriteria);
+        }
+
         public Int32 SaveCompany(Entities.Company company)
         {
             return _company.SaveCompany(company);

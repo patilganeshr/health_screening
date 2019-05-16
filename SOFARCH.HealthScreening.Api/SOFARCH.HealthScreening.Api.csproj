@@ -87,6 +87,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountHeadController.cs" />
     <Compile Include="Controllers\AddressTypeController.cs" />
+    <Compile Include="Controllers\BloodGroupController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CityController.cs" />

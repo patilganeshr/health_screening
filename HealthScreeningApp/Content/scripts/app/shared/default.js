@@ -1291,7 +1291,7 @@ Shared.prototype = function () {
         }
     };
 
-    var createHTMLTag = function (tagName, id, name, cssClass, textNode) {
+    var createHTMLTag = function (tagName, id = undefined, name = undefined, cssClass = undefined, textNode = undefined) { 
 
         var _htmlTag = document.createElement(tagName);
 
@@ -1304,7 +1304,9 @@ Shared.prototype = function () {
         //}
 
         if (cssClass !== undefined) {
-            _htmlTag.classList.add(cssClass);
+            for (var c = 0; c < cssClass.length; c++) {
+                _htmlTag.classList.add(cssClass[c]);
+            }
         }
 
         if (textNode !== undefined) {
@@ -1828,6 +1830,7 @@ Shared.prototype = function () {
         openChildWindow: openChildWindow,
         getMaxSrNo: getMaxSrNo,
         roundOff: roundOff,
+        createHTMLTag: createHTMLTag,
         createTableHeader: createTableHeader,
         createTableBody: createTableBody,
         showAutoCompleteItemsList: showAutoCompleteItemsList,

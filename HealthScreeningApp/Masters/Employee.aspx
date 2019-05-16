@@ -55,12 +55,13 @@
                                 <table id="EmployeesList" class="table table-condesed">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Action</th>
-                                            <th>Sr</th>
-                                            <th>Employee Name</th>
-                                            <th>Gender</th>
-                                            <th>Contact No.</th>
-                                            <th>Email Id</th>
+                                            <th class="text-center">Action</th>                                            
+                                            <th class="text-center">Company Name</th>
+                                            <th class="text-center">Emp Code</th>
+                                            <th class="text-center">Employee Name</th>
+                                            <th class="text-center">Gender</th>
+                                            <th class="text-center">Contact No.</th>
+                                            <th class="text-center">Email Id</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -114,7 +115,7 @@
                                     <li role="presentation" class="active"><a href="#GeneralDetails" aria-controls="GeneralDetails" role="tab" data-toggle="tab" tabindex="10">General Details</a></li>
                                     <li role="presentation"><a href="#PersonalHistory" aria-controls="PersonalHistory" role="tab" data-toggle="tab" tabindex="10">Personal History</a></li>
                                     <li role="presentation"><a href="#PastAndPresentIllness" aria-controls="PastAndPresentIllness" role="tab" data-toggle="tab" tabindex="100">Past and Present Illness</a></li>
-                                    <li role="presentation"><a href="#FamilyHistory" aria-controls="FamilyHistory" role="tab" data-toggle="tab" tabindex="300">Family History</a></li>
+                                    <li role="presentation"><a href="#HistoryOfMajorIllness" aria-controls="HistoryOfMajorIllness" role="tab" data-toggle="tab" tabindex="300">History of Major Illness</a></li>
                                 </ul>
 
                                 <!-- START OF MAIN NAV TABS TAB CONTENT -->
@@ -126,28 +127,51 @@
     
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label>Employee Code</label>
+                                                        <label>Emp Code</label>
                                                         <input type="text" id="EmployeeCode" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Title</label>
+                                                        <select id="Title" class="form-control">
+                                                            <option value="-1">Title</option>
+                                                            <option value="1">Mr.</option>
+                                                            <option value="2">Mrs.</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Company Name</label>
+                                                        <input type="text" id="CompanyName" class="form-control" placeholder="Search by Company Code or Name" />
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div id="SearchCompanyList" class="autocompleteList"></div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>First Name</label>
                                                         <input type="text" id="FirstName" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Middle Name</label>
                                                         <input type="text" id="MiddleName" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Last Name</label>
                                                         <input type="text" id="LastName" class="form-control" />
@@ -165,7 +189,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Date Of Birth</label>
                                                         <div class="input-group date input-group-md" id="DateOfBirthDatePicker">
@@ -177,7 +201,14 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Age</label>
+                                                        <input type="text" id="Age" class="form-control" disabled="disabled"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <label for="Gender">Gender</label>
                                                     <div class="form-group form-group-sm">
                                                         <label class="lable-tick">
@@ -190,9 +221,8 @@
                                                         </label>
                                                     </div>
                                                 </div>
-
-
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Email Id</label>
                                                         <input type="text" id="EmailId" class="form-control" />
@@ -240,14 +270,7 @@
                                                         <input type="text" id="PANNo" class="form-control" />
                                                     </div>
                                                 </div>
-
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Branch Name</label>
-                                                        <select id="Branch" class="form-control"></select>
-                                                    </div>
-                                                </div>
-
+                                                
                                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Department</label>
@@ -264,10 +287,6 @@
 
                                             </div>
 
-
-
-                                        
-
                                     </div>
 
                                     <!-- END OF GENERAL DETAILS TAB PANE -->
@@ -281,6 +300,20 @@
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Height (Cms)</label>
+                                                        <input type="text" id="Height" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Weight (Kgs)</label>
+                                                        <input type="text" id="Weight" class="form-control" />
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     <label for="MaritalStatus">Marital Status</label>
                                                     <div class="form-group form-group-sm">
@@ -289,7 +322,7 @@
                                                             <span class="label-text">Married</span>
                                                         </label>
                                                         <label class="lable-tick">
-                                                            <input type="radio" id="UnMarried" class="label-radio" name="MartialStatus" checked="checked" value="UnMarried" />
+                                                            <input type="radio" id="UnMarried" class="label-radio" name="MaritalStatus" checked="checked" value="UnMarried" />
                                                             <span class="label-text">UnMarried</span>
                                                         </label>
                                                     </div>
@@ -297,51 +330,19 @@
 
                                                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label>No. of Sons</label>
+                                                        <label>Sons</label>
                                                         <input type="text" id="NoOfSons" class="form-control" />
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label>No. of Daughters</label>
-                                                        <input type="text" id="NoOfDaugthers" class="form-control" />
+                                                        <label>Daughters</label>
+                                                        <input type="text" id="NoOfDaughters" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label>FP Operation on self</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FPOperationOnSelfYes" class="label-radio" name="FPOperationOnSelf" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FPOperationOnSelfNo" class="label-radio" name="FPOperationOnSelf" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <label>FP Operation on Spouse</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FPOperationOnSpouseYes" class="label-radio" name="FPOperationOnSpouse" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FPOperationOnSpouseNo" class="label-radio" name="FPOperationOnSpouse" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <label>Smoking</label>
                                                     <div class="form-group form-group-sm">
                                                         <label class="lable-tick">
@@ -355,7 +356,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <label>Alcohol</label>
                                                     <div class="form-group form-group-sm">
                                                         <label class="lable-tick">
@@ -369,7 +370,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <label>Tobacco</label>
                                                     <div class="form-group form-group-sm">
                                                         <label class="lable-tick">
@@ -383,37 +384,39 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label>Using Contact Lens</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="ContactLensYes" class="label-radio" name="ContactLens" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="ContactLensNo" class="label-radio" name="ContactLens" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label>Laser Surgery On Eyes</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="LaserSurgeryYes" class="label-radio" name="LaserSurgery" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="LaserSurgeryNo" class="label-radio" name="LaserSurgery" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-
                                             </div>
 
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Blood Group</label>
+                                                        <select id="BloodGroup" class="form-control"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Diet</label>
+                                                        <input type="text" id="Diet" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Allergic To</label>
+                                                        <input type="text" id="AllergicTo" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Other Addictions</label>
+                                                        <input type="text" id="OtherAddictions" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
 
                                     </div>
@@ -426,131 +429,58 @@
 
                                         <div class="panel-body">
 
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="Asthama">Asthama</label>
+                                                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="AsthamaYes" class="label-radio" name="Asthama" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="AsthamaNo" class="label-radio" name="Asthama" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
+                                                        <label>Exercise Name</label>
+                                                        <input type="text" id="Exercise" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="Polio">Polio</label>
+                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="PolioYes" class="label-radio" name="Polio" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="PolioNo" class="label-radio" name="Polio" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
+                                                        <label>Frequency</label>
+                                                        <input type="text" id="Frequency" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="EarDisease">Ear Disease</label>
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <label></label>
+                                                <button type="button" id="AddExerciseDetails" class="btn btn-info btn-sm" style="margin-top: 24px;">Add</button>
+                                                    </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="table-responsive">
+                                    <table id="ExerciseList" class="table table-condesed">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Exercise Name</th>
+                                                <th class="text-center">Frequency</th>
+                                                <th class="text-center">Action</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                                
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="EarDiseaseYes" class="label-radio" name="EarDisease" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="EarDiseaseNo" class="label-radio" name="EarDisease" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
+                                                        <label>Present Illness</label>
+                                                        <input type="text" id="PresentIllness" class="form-control" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="VenerealDisease">Venereal Disease</label>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="VenerealDiseaseYes" class="label-radio" name="VenereaDisease" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="VenerealDiseaseNo" class="label-radio" name="VenereaDisease" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="HeartDisease">Heart Disease</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="HeartDiseaseYes" class="label-radio" name="HeartDisease" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="HeartDiseaseNo" class="label-radio" name="HeartDisease" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="SurgeryUndergone">Surgery Undergone</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="SurgeryUndergoneYes" class="label-radio" name="SurgeryUndergone" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="SurgeryUndergoneNo" class="label-radio" name="SurgeryUndergone" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="KidneyDisease">Kidney Disease</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="KidneyDiseaseYes" class="label-radio" name="KidneyDisease" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="KidneyDiseaseNo" class="label-radio" name="KidneyDisease" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="Diabetes">Diabetes</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="DiabetesYes" class="label-radio" name="Diabetes" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="DiabetesNo" class="label-radio" name="Diabetes" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <label for="Leprosy">Leprosy</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="LeprosyYes" class="label-radio" name="Leprosy" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="LeprosyNo" class="label-radio" name="Leprosy" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
+                                                        <label>Treatment</label>
+                                                        <input type="text" id="Treatment" class="form-control" />
                                                     </div>
                                                 </div>
 
@@ -562,127 +492,67 @@
 
                                     <!-- END OF PAST AND PRESENT ILLNESS DETAILS TAB PANE -->
 
-                                    <!-- START OF FAMILY HISTORY DETAILS TAB PANE -->
+                                    <!-- START OF HISTORY OF MAJOR ILLNESS DETAILS TAB PANE -->
 
-                                    <div role="tabpanel" class="tab-pane fade in active" id="FamilyHistory">
+                                    <div role="tabpanel" class="tab-pane fade in" id="HistoryOfMajorIllness">
 
                                         <div class="panel-body">
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHAsthama">Asthama</label>
+                                                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHAsthamaYes" class="label-radio" name="FHAsthama" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHAsthamaNo" class="label-radio" name="FHAsthama" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHHeartDisease">Heart Disease</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHHeartDiseaseYes" class="label-radio" name="FHHeartDisease" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHHeartDiseaseNo" class="label-radio" name="FHHeartDisease" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHHighBloodPressure">High Blood Pressure</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHHighBloodPressureYes" class="label-radio" name="FHHighBloodPressure" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHHighBloodPressureNo" class="label-radio" name="FHHighBloodPressure" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHTB">TB</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHTBYes" class="label-radio" name="FHTB" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHTBNo" class="label-radio" name="FHTB" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHDiabetes">Diabetes</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHDiabetesYes" class="label-radio" name="FHDiabetes" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHDiabetesNo" class="label-radio" name="FHDiabetes" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHCancer">Cancer</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHCancerYes" class="label-radio" name="FHCancer" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHCancerNo" class="label-radio" name="FHCancer" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                                    <label for="FHPsychiatricIllness">Psychiatric Illness</label>
-                                                    <div class="form-group form-group-sm">
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHPsychiatricIllnessYes" class="label-radio" name="FHPsychiatricIllness" value="Yes" />
-                                                            <span class="label-text">Yes</span>
-                                                        </label>
-                                                        <label class="lable-tick">
-                                                            <input type="radio" id="FHPsychiatricIllnessNo" class="label-radio" name="FHPsychiatricIllness" checked="checked" value="No" />
-                                                            <span class="label-text">No</span>
-                                                        </label>
+                                                        <label>Micturation</label>
+                                                        <input type="text" id="Micturation" class="form-control" />
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label>Any other diseases</label>
-                                                        <input type="text" id="AnyOtherDiseases" class="form-control" />
+                                                        <label>Bowels</label>
+                                                        <input type="text" id="Bowels" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Sleep</label>
+                                                        <input type="text" id="Sleep" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>M.C.</label>
+                                                        <input type="text" id="MC" class="form-control" />
                                                     </div>
                                                 </div>
 
                                             </div>
 
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Past History</label>
+                                                        <input type="text" id="PastHistory" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Family History</label>
+                                                        <input type="text" id="FamilyHistory" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
 
                                         </div>
 
                                     </div>
 
-                                    <!-- END OF FAMILY HISTORY DETAILS TAB PANE -->
+                                    <!-- END OF HISTORY OF MAJOR ILLNESS DETAILS TAB PANE -->
 
 
                                 </div>

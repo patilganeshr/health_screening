@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AccountHead.cs" />
     <Compile Include="AddressType.cs" />
+    <Compile Include="BloodGroup.cs" />
     <Compile Include="Branch.cs" />
     <Compile Include="Brand.cs" />
     <Compile Include="City.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="DrugRoutes.cs" />
     <Compile Include="DrugsLinkWithDrugRoute.cs" />
     <Compile Include="Employee.cs" />
+    <Compile Include="EmployeeExerciseHistory.cs" />
+    <Compile Include="EmployeePersonalHistory.cs" />
     <Compile Include="Employer.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Menu.cs" />

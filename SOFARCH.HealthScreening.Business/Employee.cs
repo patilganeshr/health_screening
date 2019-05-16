@@ -21,14 +21,14 @@ namespace SOFARCH.HealthScreening.Business
             return _employee.SaveEmployee(employee);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="employee"></param>
-        /// <returns></returns>
-        public bool DeleteEmployee(Entities.Employee employee)
+        public bool IsEmployeeNameExists(Int32 companyId, string employeeName)
         {
-            return _employee.DeleteEmployee(employee);
+            return _employee.IsEmployeeNameExists(companyId, employeeName);
+        }
+
+        public bool IsEmployeeCodeExists(Int32 companyId, string employeeCode)
+        {
+            return _employee.IsEmployeeCodeExists(companyId, employeeCode);
         }
 
         /// <summary>
@@ -40,19 +40,9 @@ namespace SOFARCH.HealthScreening.Business
             return _employee.GetAllEmployees();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="branchId"></param>
-        /// <returns></returns>
-        public List<Entities.Employee> GetAllEmployeesByBranch(Int32 branchId)
+        public List<Entities.Employee> SearchAllEmployees()
         {
-            return _employee.GetAllEmployeesByBranch(branchId);
-        }
-
-        public List<Entities.Employee> SearchEmployeeByBranchOrName(Int32? branchId, string employeeName = null)
-        {
-            return _employee.SearchEmployeeByBranchOrName(branchId, employeeName);
+            return _employee.SearchAllEmployees();
         }
 
         /// <summary>

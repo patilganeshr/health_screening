@@ -59,6 +59,13 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _company.GetCompanyDetailsById(companyId);
         }
 
+        [HttpGet]
+        [Route("SearchCompaniesByCompanyCodeOrName/{searchCriteria}")]
+        public List<Entities.Company> SearchCompaniesByCompanyCodeOrName(string searchCriteria)
+        {
+            return _company.SearchCompaniesByCompanyCodeOrName(searchCriteria);
+        }
+
         [HttpPost]
         [Route("SaveCompany")]
         public Int32 SaveCompany(Entities.Company company)

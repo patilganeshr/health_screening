@@ -28,16 +28,20 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _employee.SaveEmployee(employee);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="employee"></param>
-        /// <returns></returns>
-        [Route("DeleteEmployee")]
-        public bool DeleteEmployee(Entities.Employee employee)
+        [HttpGet]
+        [Route("IsEmployeeNameExists/{companyId}/{employeeName}")]
+        public bool IsEmployeeNameExists(Int32 companyId, string employeeName)
         {
-            return _employee.DeleteEmployee(employee);
+            return _employee.IsEmployeeNameExists(companyId, employeeName);
         }
+
+        [HttpGet]
+        [Route("IsExmployeeCodeExists/{companyId}/{employeeCode}")]
+        public bool IsEmployeeCodeExists(Int32 companyId, string employeeCode)
+        {
+            return _employee.IsEmployeeCodeExists(companyId, employeeCode);
+        }
+
 
         /// <summary>
         /// /
@@ -49,23 +53,12 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _employee.GetAllEmployees();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="employerId"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("GetAllEmployeesByEmployer/{employerId}")]
-        public List<Entities.Employee> GetAllEmployeesByBranch(Int32 branchId)
-        {
-            return _employee.GetAllEmployeesByBranch(branchId);
-        }
-
+        
         [HttpGet]
-        [Route("SearchEmployeeByBranchOrName/{branchId = null}/{employeeName = null}")]
-        public List<Entities.Employee> SearchEmployeeByBranchOrName(Int32? branchId = null, string employeeName = null)
+        [Route("SearchAllEmployees")]
+        public List<Entities.Employee> SearchAllEmployees()
         {
-            return _employee.SearchEmployeeByBranchOrName(branchId, employeeName);
+            return _employee.SearchAllEmployees();
         }
 
         /// <summary>

@@ -415,14 +415,16 @@ namespace SOFARCH.HealthScreening.DataModel
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Entities.Company> GetCompanyIdAndCompanyName()
+        public List<Entities.Company> SearchCompaniesByCompanyCodeOrName(string searchCriteria)
         {
             var companies = new List<Entities.Company>();
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetCompanyIdAndCompanyName))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchCompaniesByCompanyCodeOrName))
                 {
+                    database.AddInParameter(dbCommand, "@search_company_name", DbType.String, searchCriteria);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())
@@ -447,6 +449,36 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
 
+        public List<Entities.Company> GetCompanyIdAndCompanyName()
+        {
+            var companies = new List<Entities.Company>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetCompanyIdAndCompanyName))
+                {
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var company = new Entities.Company
+                            {
+                                CompanyId = DRE.GetNullableInt32(reader, "company_id", 0),
+                                CompanyName = DRE.GetNullableString(reader, "company_name", null)
+                            };
+
+                            companies.Add(company);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return companies;
+        }
 
         /// <summary>
         /// 
