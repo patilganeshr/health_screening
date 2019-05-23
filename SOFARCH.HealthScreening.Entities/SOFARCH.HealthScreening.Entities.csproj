@@ -65,6 +65,8 @@
     <Compile Include="Employer.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationType.cs" />
+    <Compile Include="MedicalTest.cs" />
+    <Compile Include="MedicalTestParameters.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="MenusGroup.cs" />
     <Compile Include="ModeOfPayment.cs" />

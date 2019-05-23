@@ -26,7 +26,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private Int32 AddEmployee(Entities.Employee employee)
+        private Int32 AddEmployee(Entities.Employee employee, DbTransaction dbTransaction)
         {
             var employeeId = 0;
 
@@ -57,7 +57,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    employeeId = database.ExecuteNonQuery(dbCommand);
+                    employeeId = database.ExecuteNonQuery(dbCommand, dbTransaction);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -79,7 +79,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private bool DeleteEmployee(Entities.Employee employee)
+        private bool DeleteEmployee(Entities.Employee employee, DbTransaction dbTransaction)
         {
             bool isDeleted = false;
 
@@ -93,7 +93,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    var result = database.ExecuteNonQuery(dbCommand);
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -312,7 +312,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private Int32 UpdateEmployee(Entities.Employee employee)
+        private Int32 UpdateEmployee(Entities.Employee employee, DbTransaction dbTransaction)
         {
             var employeeId = 0;
 
@@ -343,7 +343,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    employeeId = database.ExecuteNonQuery(dbCommand);
+                    employeeId = database.ExecuteNonQuery(dbCommand, dbTransaction);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -385,17 +385,22 @@ namespace SOFARCH.HealthScreening.DataModel
                         {
                             if (employee.EmployeeId == null || employee.EmployeeId == 0)
                             {
-                                employeeId = AddEmployee(employee);
+                                employeeId = AddEmployee(employee, transaction);
                             }
                             else if (employee.ModifiedBy != null || employee.ModifiedBy > 0)
                             {
-                                employeeId = UpdateEmployee(employee);
+                                employeeId = UpdateEmployee(employee, transaction);
                             }
                             else if (employee.IsDeleted == true)
                             {
-                                var result = DeleteEmployee(employee);
+                                var result = DeleteEmployee(employee, transaction);
 
+                                
                                 if (result)
+                                {
+                                    employeeId = (int)employee.EmployeeId;
+                                }
+                                else
                                 {
                                     employeeId = 1;
                                 }

@@ -190,7 +190,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateEmployeeExerciseHistory))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateEmployeePersonalHistory))
                 {
                     database.AddInParameter(dbCommand, "@employee_personal_history_id", DbType.Int32, employeePersonalHistory.EmployeePersonalHistoryId);
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employeePersonalHistory.EmployeeId);
@@ -261,7 +261,11 @@ namespace SOFARCH.HealthScreening.DataModel
 
                 if (result)
                 {
-                    employeePersonalHistoryId = 1;
+                    employeePersonalHistoryId = (int)employeePersonalHistory.EmployeePersonalHistoryId;
+                }
+                else
+                {
+                     employeePersonalHistoryId = 1;
                 }
             }
 

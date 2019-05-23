@@ -27,5 +27,13 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _unitsOfMeasurement.GetAllUnitsOfMeasurement();
         }
 
+
+        [HttpGet]
+        [Route("GetAllUnitIdAndUnitCode")]
+        public List<Entities.UnitsOfMeasurement> GetAllUnitIdAndUnitCode()
+        {
+            return _unitsOfMeasurement.GetAllUnitIdAndUnitCode();
+        }
+
     }
 }

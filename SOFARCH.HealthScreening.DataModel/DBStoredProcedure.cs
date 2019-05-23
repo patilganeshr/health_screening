@@ -224,8 +224,10 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeleteUnitsOfMeasurement { get { return "units_of_measurements_delete"; } }
 
-        public static string GetListOfAllUnitsOfMeasurements { get { return "units_of_measurements_get_list_of_all_uom"; } }
+        public static string GetAllUnitsOfMeasurements { get { return "units_of_measurements_get_list_of_all_uom"; } }
 
+        public static string GetAllUnitIdAndUnitCode { get { return "units_of_measurements_get_all_unit_id_and_unit_code"; } }
+        
         #endregion
 
         #region Doctors
@@ -253,19 +255,6 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string DeleteIllnessOrDisease { get { return "illness_or_diseases_delete_illness_or_disease"; } }
 
         public static string GetListOfAllIllnessOrDisease { get { return "illness_or_diseases_get_list_of_all_illness_or_disease"; } }
-
-        #endregion
-
-        #region Medical Tests
-
-        public static string InsertMedicalTest { get { return "medical_tests_insert_medical_test"; } }
-
-        public static string UpdateMedicalTest { get { return "medical_tests_update_medical_test"; } }
-
-        public static string DeleteMedicalTest { get { return "medical_tests_delete_medical_test"; } }
-
-        public static string GetListOfAllMedicalTests { get { return "medical_tests_get_list_of_all_medical_tests"; } }
-
 
         #endregion
 
@@ -538,8 +527,36 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #region Blood Group
 
-        public static string GetAllBloodGroups { get { return "blood_groups_get_all"; } } 
+        public static string GetAllBloodGroups { get { return "blood_groups_get_all"; } }
+
+        #endregion
+
+        #region Medical Test
         
+        public static string InsertMedicalTest { get { return "medical_tests_insert_medical_test"; } }
+
+        public static string UpdateMedicalTest { get { return "medical_tests_update_medical_test"; } }
+
+        public static string DeleteMedicalTest { get { return "medical_tests_delete_medical_test"; } }
+
+        public static string GetMedicalTestIdAndName { get { return "medical_tests_get_medical_test_id_and_test_name"; } }
+
+        public static string SearchMedicalTestAll { get { return "medical_tests_search_medical_tests_all"; } }
+ 
+        public static string SearchMedicalTestByName { get { return "medical_tests_search_medical_test_by_name"; } }
+
+        #endregion
+
+        #region Medical Test Parameters
+
+        public static string InsertMedicalTestParameters { get { return "medical_test_parameters_insert_medical_test_parameter"; } }
+
+        public static string UpdateMedicalTestParameters { get { return "medical_test_parameters_update_medical_test_parameter"; } }
+
+        public static string DeleteMedicalTestParameters { get { return "medical_test_parameters_delete_medical_test_parameter"; } }
+
+        public static string GetMedicalTestParametersByTestId { get { return "medical_test_parameters_get_test_parameter_details_by_test_id"; } }
+
         #endregion
 
     }

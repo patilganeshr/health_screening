@@ -26,6 +26,11 @@ namespace SOFARCH.HealthScreening.Business
         {
             return _unitsOfMeasurement.GetAllUnitsOfMeasurement();
         }
- 
+
+        public List<Entities.UnitsOfMeasurement> GetAllUnitIdAndUnitCode()
+        {
+            return _unitsOfMeasurement.GetAllUnitIdAndUnitCode();
+        }
+
     }
 }

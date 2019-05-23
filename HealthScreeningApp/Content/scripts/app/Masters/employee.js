@@ -56,6 +56,8 @@ Sofarch.Employee = (function () {
         DOM.searchCompanyList = document.getElementById('SearchCompanyList');
         DOM.department = document.getElementById('Department');
         DOM.designation = document.getElementById('Designation');
+
+        DOM.employeePersonalHistoryId = document.getElementById('EmployeePersonalHistoryId');
         DOM.height = document.getElementById('Height');
         DOM.weight = document.getElementById('Weight');
         DOM.maritalStatus = document.getElementsByName('MaritalStatus');
@@ -174,11 +176,11 @@ Sofarch.Employee = (function () {
 
         DOM.employeeCode.onblur = function () {
 
-            checkIsEmployeeCodeExists();
+            checkIsEmployeeCodeExists();            
         };
 
         DOM.companyName.onblur = function () {
-
+            
             checkIsEmployeeCodeExists();
         };
 
@@ -326,7 +328,7 @@ Sofarch.Employee = (function () {
 
             var currentTab = document.querySelectorAll('.nav-tabs li a[href="#' + linkName + '"]');
 
-            var firstInput = nextTab.querySelectorAll('input[type="text"]')[0];
+            var firstInput = nextTab.querySelectorAll('input[type="text"]');
 
             currentActiveTab.classList.remove('active');
 
@@ -334,7 +336,12 @@ Sofarch.Employee = (function () {
 
             nextTab.classList.add('active');
 
-            firstInput.focus();
+            firstInput[0].focus();
+
+            //setTimeout(function () {
+            //    firstInput.focus();
+            //}, 2000);
+
         }
     }
 
@@ -647,7 +654,7 @@ Sofarch.Employee = (function () {
 
                 for (var e = 0; e < exerciseDetails.length; e++) {
 
-                    data += "<tr data-employee-exercise-id=" + exerciseDetails[e].EmployeeExerciseId + " data-sr-no=" + exerciseDetails[e].SrNo + ">";
+                    data += "<tr data-employee-exercise-id=" + exerciseDetails[e].EmployeeExerciseHistoryId + " data-sr-no=" + exerciseDetails[e].SrNo + ">";
                     data += "<td>" + exerciseDetails[e].ExerciseName + "</td>";
                     data += "<td>" + exerciseDetails[e].Frequency + "</td>";
                     data += "<td> <button type='button' id='EditExercise' class='btn btn-xs btn-info'><i class='fa fa-edit fa-fw'></i></button>" +
@@ -703,9 +710,15 @@ Sofarch.Employee = (function () {
 
         if (IsExerciseNameExists === false) {
 
-            var employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+            var employeeExerciseHistoryId = 0;
+            var employeeId = 0;
+
+            employeeExerciseHistoryId = parseInt(DOM.exercise.getAttribute('data-employee-exercise-history-id'));
+            employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
 
             var exerciseDetails = {};
+
+            if (isNaN(employeeExerciseHistoryId)) { employeeExerciseHistoryId = 0; }
 
             if (isNaN(employeeId)) { employeeId = 0; }
 
@@ -722,7 +735,7 @@ Sofarch.Employee = (function () {
                     exerciseDetails = {
                         SrNo: srNo,
                         EmployeeId: employeeId,
-                        EmployeeExerciseId: 0,
+                        EmployeeExerciseId: employeeExerciseHistoryId,
                         ExerciseName: DOM.exercise.value,
                         Frequency: DOM.frequency.value,
                         IsDeleted: false,
@@ -739,6 +752,7 @@ Sofarch.Employee = (function () {
                     for (var e = 0; e < ExerciseDetails.length; e++) {
 
                         if (ExerciseDetails[e].SrNo === srNo) {
+                            ExerciseDetails[e].ExerciseName = employeeExerciseHistoryId;
                             ExerciseDetails[e].ExerciseName = DOM.exercise.value;
                             ExerciseDetails[e].Frequency = DOM.frequency;
                             ExerciseDetails[e].IsDeleted = false;
@@ -757,7 +771,7 @@ Sofarch.Employee = (function () {
                 exerciseDetails = {
                     SrNo: srNo,
                     EmployeeId: employeeId,
-                    EmployeeExerciseId: 0,
+                    EmployeeExerciseId: employeeExerciseHistoryId,
                     ExerciseName: DOM.exercise.value,
                     Frequency: DOM.frequency.value,
                     IsDeleted: false,
@@ -790,6 +804,8 @@ Sofarch.Employee = (function () {
         shared.clearTables(DOM.editMode);
 
         DOM.employeeCode.setAttribute('data-employee-id', 0);
+        DOM.employeePersonalHistoryId.value = 0;
+        DOM.exercise.setAttribute('data-employee-exercise-id', 0);
 
         // Show panel;
         shared.showPanel(DOM.editMode);
@@ -875,7 +891,7 @@ Sofarch.Employee = (function () {
         DOM.firstName.focus();
     }
 
-    function deleteEmployee(currentTableRow) {
+    function deleteEmployee() {
 
         shared.showLoader(DOM.loader);
 
@@ -885,7 +901,9 @@ Sofarch.Employee = (function () {
 
             var selectedRows = getSelectedRows();
 
-            if (selectedRows.length > 0) {
+            var employeeId = getEmployeeId(selectedRows);
+
+            if (employeeId > 0) {
 
                 swal({
                     title: "Are you sure",
@@ -902,39 +920,78 @@ Sofarch.Employee = (function () {
 
                         if (isConfirm) {
 
-                            for (var r = 0; r < selectedRows.length; r++) {
+                            var employeePersonalHistory = {};
 
-                                var employee = {};
+                            var employeeExerciseHistories = [];
 
-                                employee = {
-                                    EmployeeId: parseInt(selectedRows[r].getAttribute('data-employee-id')),
-                                    IsDeleted: true,
-                                    DeletedBy: parseInt(LOGGED_USER),
-                                    DeletedByIP: IP_ADDRESS
-                                };
+                            if (employees.length) {
 
-                                var postData = JSON.stringify(employee);
+                                var selectedEmployee = employees.filter(function (value, index, array) {
+                                    return value.EmployeeId === parseInt(employeeId);
+                                });
 
-                                shared.sendRequest(SERVICE_PATH + 'SaveEmployee', "POST", true, "JSON", postData, function (response) {
+                                if (selectedEmployee.length) {
 
-                                    if (response.status === 200) {
+                                    if (selectedEmployee[0].EmployeePersonalHistory.EmployeePersonalHistoryId > 0) {
 
-                                        if (parseInt(response.responseText) > 0) {
-
-                                            swal({
-                                                title: "Success",
-                                                text: "Employee deleted successfully.",
-                                                type: "success"
-                                            }, function () {
-                                                getEmployees();
-                                            });
-                                        }
+                                        employeePersonalHistory = {
+                                            IsDeleted: true,
+                                            DeletedBy: parseInt(LOGGED_USER),
+                                            DeletedByIP: IP_ADDRESS
+                                        };
+                                    }
+                                    else {
+                                        employeePersonalHistory = null;
                                     }
 
-                                    shared.hideLoader(DOM.loader);
+                                    employeeExerciseHistories = selectedEmployee[0].EmployeeExerciseHistories.filter(function (value, index, array) {
+                                        return value.EmployeeId === selectedEmployee[0].EmployeeId;
+                                    });
 
-                                });
+                                    if (employeeExerciseHistories.length) {
+
+                                        for (var e = 0; e < employeeExerciseHistories.length; e++) {
+
+                                            employeeExerciseHistories[e].IsDeleted = true;
+                                            employeeExerciseHistories[e].DeletedBy = parseInt(LOGGED_USER);
+                                            employeeExerciseHistories[e].DeletedByIP = IP_ADDRESS;
+                                        }
+                                    }
+                                }
                             }
+
+                            var employee = {};
+
+                            employee = {
+                                EmployeeId: parseInt(employeeId),
+                                EmployeePersonalHistory: employeePersonalHistory,
+                                EmployeeExerciseHistories: employeeExerciseHistories,
+                                IsDeleted: true,
+                                DeletedBy: parseInt(LOGGED_USER),
+                                DeletedByIP: IP_ADDRESS
+                            };
+
+                            var postData = JSON.stringify(employee);
+
+                            shared.sendRequest(SERVICE_PATH + 'SaveEmployee', "POST", true, "JSON", postData, function (response) {
+
+                                if (response.status === 200) {
+
+                                    if (parseInt(response.responseText) > 0) {
+
+                                        swal({
+                                            title: "Success",
+                                            text: "Employee deleted successfully.",
+                                            type: "success"
+                                        }, function () {
+                                            getEmployees();
+                                        });
+                                    }
+                                }
+
+                                shared.hideLoader(DOM.loader);
+
+                            });
                         }
                     }
                 );
@@ -1031,6 +1088,8 @@ Sofarch.Employee = (function () {
                 DOM.companyName.setAttribute('data-company-id', selectedEmployee[0].CompanyId);
                 DOM.employeeCode.value = selectedEmployee[0].EmployeeCode;
                 DOM.employeeCode.setAttribute('data-employee-id', selectedEmployee[0].EmployeeId);
+                shared.setSelectValue(DOM.title, selectedEmployee[0].Title, null);
+                shared.setSelect2ControlsText(DOM.title);
                 DOM.firstName.value = selectedEmployee[0].FirstName;
                 DOM.middleName.value = selectedEmployee[0].MiddleName;
                 DOM.lastName.value = selectedEmployee[0].LastName;
@@ -1070,6 +1129,7 @@ Sofarch.Employee = (function () {
 
         if (employeePersonalHistory !== null) {
 
+            DOM.employeePersonalHistoryId.value = employeePersonalHistory.EmployeePersonalHistoryId;
             DOM.height.value = employeePersonalHistory.EmployeeHeight;
             DOM.weight.value = employeePersonalHistory.EmployeeWeight;
             if (employeePersonalHistory.MaritalStatus.toLowerCase() === "married") {
@@ -1195,6 +1255,13 @@ Sofarch.Employee = (function () {
         var pastHistory = null;
         var familyHistory = null;
 
+        employeePersonalHistoryId = parseInt(DOM.employeePersonalHistoryId.value);
+        employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+
+        if (isNaN(employeePersonalHistoryId)) { employeePersonalHistoryId = 0; }
+
+        if (isNaN(employeeId)) { employeeId = 0; }
+
         height = DOM.height.value;
         weight = DOM.weight.value;
         maritalStatus = shared.getRadioSelectedValue(DOM.maritalStatus);
@@ -1210,7 +1277,7 @@ Sofarch.Employee = (function () {
         otherAddictions = DOM.otherAddictions.value;
         exercise = DOM.exercise.value;
         frequency = DOM.frequency.value;
-        presentIllness = DOM.presentIllness.vlaue;
+        presentIllness = DOM.presentIllness.value;
         treatment = DOM.treatment.value;
         micturation = DOM.micturation.value;
         bowels = DOM.bowels.value;
@@ -1244,10 +1311,11 @@ Sofarch.Employee = (function () {
             Sleep: sleep,
             MC: mc,
             PastHistory: pastHistory,
-            FamilyHistory: familyHistory
+            FamilyHistory: familyHistory,
+            IsDeleted: false
         };
 
-        if (parseInt(employeeId) === parseInt(0)) {
+        if (parseInt(employeePersonalHistoryId) === parseInt(0)) {
 
             employeePersonalHistory.CreatedBy = parseInt(LOGGED_USER);
             employeePersonalHistory.CreatedByIP = IP_ADDRESS;
@@ -1262,15 +1330,6 @@ Sofarch.Employee = (function () {
 
     };
 
-    var saveEmployeeExerciseHistory = function () {
-
-        var employeePersonalHistories = [];
-
-        var employeePersonalHistory = {};
-
-        return employeePersonalHistories;
-    };
-
     function checkIsEmployeeNameExists() {
 
         var companyId = parseInt(DOM.companyName.getAttribute('data-company-id'));
@@ -1279,10 +1338,18 @@ Sofarch.Employee = (function () {
         var firstName = undefined;
         var middleName = undefined;
         var lastName = undefined;
+        var employeeId = 0;
 
         firstName = DOM.firstName.value;
         middleName = DOM.middleName.value;
         lastName = DOM.lastName.value;
+        employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+
+        if (isNaN(employeeId)) { employeeId = 0;}
+            
+        if (isNaN(companyId)) { companyId = 0; }
+
+        if (employeeId > 0) { return; }
 
         if (firstName !== "" && middleName !== "" && lastName !== "") {
             employeeName = firstName + ' ' + middleName + ' ' + lastName;
@@ -1315,27 +1382,32 @@ Sofarch.Employee = (function () {
         var employeeCode = "";
 
         employeeCode = DOM.employeeCode.value;
+        employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
 
+        if (isNaN(employeeId)) { employeeId = 0;}
+            
         if (isNaN(companyId)) { companyId = 0; }
 
-        if (empoyeeCode !== "" && companyName !== "") {
-            
-        
-        shared.sendRequest(SERVICE_PATH + "IsEmployeeCodeExists/" + companyId + '/' + employeeCode, "GET", true, "JSON", null, function (response) {
+        if (employeeId > 0) { return; }
 
-            if (response.status === 200) {
+        if (employeeCode !== "" && companyName !== "") {
 
-                if (response.responseText) {
+            shared.sendRequest(SERVICE_PATH + "IsEmployeeCodeExists/" + companyId + '/' + employeeCode, "GET", true, "JSON", null, function (response) {
 
-                    DOM.firstName.focus();
+                if (response.status === 200) {
 
-                    swal("Error", "This Employee Name is already exists.", "error");
+                    if (response.responseText) {
 
+                        DOM.firstName.focus();
+
+                        swal("Error", "This Employee Name is already exists.", "error");
+
+                    }
+
+                    //callback(isEmployeeNameExists);
                 }
-
-                //callback(isEmployeeNameExists);
-            }
-        });
+            });
+        }
     }
 
     function saveEmployee() {
@@ -1389,7 +1461,7 @@ Sofarch.Employee = (function () {
 
             var employee = {};
 
-            var employeePersonalHistory = saveEmployeePersonalHistory();
+            var employeePersonalHistory = saveEmployeePersonalHistory(employeeId);
 
             var employeeExerciseHistories = ExerciseDetails;
 

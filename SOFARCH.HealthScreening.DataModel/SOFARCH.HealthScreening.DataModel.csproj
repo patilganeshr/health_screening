@@ -75,6 +75,8 @@
     <Compile Include="EmployeePersonalHistory.cs" />
     <Compile Include="Employer.cs" />
     <Compile Include="Location.cs" />
+    <Compile Include="MedicalTest.cs" />
+    <Compile Include="MedicalTestParameters.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ModeOfPayment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

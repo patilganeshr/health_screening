@@ -465,6 +465,7 @@
     <Content Include="Content\scripts\app\Inventory\inward-details.js" />
     <Content Include="Content\scripts\app\Masters\address-type.js" />
     <Content Include="Content\scripts\app\Masters\account-head.js" />
+    <Content Include="Content\scripts\app\Masters\medical-test.js" />
     <Content Include="Content\scripts\app\Masters\drug.js" />
     <Content Include="Content\scripts\app\Masters\drug-route.js" />
     <Content Include="Content\scripts\app\Masters\drug-group.js" />
@@ -650,6 +651,7 @@
     <Content Include="Dashboard.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Login.aspx" />
+    <Content Include="Masters\MedicalTest.aspx" />
     <Content Include="Masters\Brand.aspx" />
     <Content Include="Masters\City.aspx" />
     <Content Include="Masters\Client.aspx" />
@@ -693,6 +695,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Masters\MedicalTest.aspx.cs">
+      <DependentUpon>MedicalTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Masters\MedicalTest.aspx.designer.cs">
+      <DependentUpon>MedicalTest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Masters\Brand.aspx.cs">
       <DependentUpon>Brand.aspx</DependentUpon>

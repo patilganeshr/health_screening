@@ -34,7 +34,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
             try
             {
-                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllUnitsOfMeasurements))
+                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetAllUnitsOfMeasurements))
                 {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -43,10 +43,44 @@ namespace SOFARCH.HealthScreening.DataModel
                             var uom = new Entities.UnitsOfMeasurement
                             {
                                 UnitOfMeasurementId = DRE.GetNullableInt32(reader, "unit_of_measurement_id", 0),
-                                UnitCode = DRE.GetNullableString(reader, "unit_code", null),
-                                UnitCodeDesc = DRE.GetNullableString(reader, "unit_code_desc", null),
-                                UnitType = DRE.GetNullableString(reader, "unit_type", null),
-                                SrNo = DRE.GetNullableInt64(reader, "sr_no", null)
+                                UnitCode = DRE.GetNullableString(reader, "unit_code", null)                                
+                            };
+
+                            units.Add(uom);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                dbCommand = null;
+            }
+
+            return units;
+        }
+
+        public List<Entities.UnitsOfMeasurement> GetAllUnitIdAndUnitCode()
+        {
+            List<Entities.UnitsOfMeasurement> units = new List<Entities.UnitsOfMeasurement>();
+
+            DbCommand dbCommand = null;
+
+            try
+            {
+                using (dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetAllUnitIdAndUnitCode))
+                {
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var uom = new Entities.UnitsOfMeasurement
+                            {
+                                UnitOfMeasurementId = DRE.GetNullableInt32(reader, "unit_of_measurement_id", 0),
+                                UnitCode = DRE.GetNullableString(reader, "unit_code", null)                               
                             };
 
                             units.Add(uom);

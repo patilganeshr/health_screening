@@ -121,7 +121,8 @@ namespace SOFARCH.HealthScreening.DataModel
                                 EmployeeExerciseHistoryId = DRE.GetNullableInt32(reader, "employee_exercise_history_id", 0),
                                 EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
                                 ExerciseName = DRE.GetNullableString(reader, "exercise_name", null),
-                                Frequency = DRE.GetNullableString(reader, "frequency", null)
+                                Frequency = DRE.GetNullableString(reader, "frequency", null),
+                                SrNo = DRE.GetNullableInt64(reader, "sr_no", null )
                             };
 
                             employeeExercisesHistory.Add(employeeExerciseHistory);
@@ -198,7 +199,11 @@ namespace SOFARCH.HealthScreening.DataModel
 
                 if (result)
                 {
-                    employeeExerciseHistoryId = 1;
+                    employeeExerciseHistory.EmployeeExerciseHistoryId = (int) employeeExerciseHistory.EmployeeExerciseHistoryId;
+                }
+                else
+                {
+                     employeeExerciseHistoryId = -1;
                 }
             }
 
