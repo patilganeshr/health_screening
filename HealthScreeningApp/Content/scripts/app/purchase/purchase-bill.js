@@ -558,93 +558,98 @@ Sofarch.PurchaseBill = (function () {
 
                                     var purchaseBillId = parseInt(selectedRows[r].getAttribute('data-purchase-bill-id'));
 
-                                    bills = PurchaseBills.filter(function (value, index, array) {
-                                        return value.PurchaseBillId === purchaseBillId;
+                                    var billItems = [];
+                                    var billCharges = [];
+
+                                    //bills = PurchaseBills.filter(function (value, index, array) {
+                                    //    return value.PurchaseBillId === purchaseBillId;
+                                    //});
+
+                                    //if (bills.length) {
+
+                                    //    bills[0].IsDeleted = true;
+                                    //    bills[0].DeletedBy = parseInt(LOGGED_USER);
+                                    //    bills[0].DeletedByIP = IP_ADDRESS;
+
+                                    //    if (bills[0].PurchaseBillLItems !== null) {
+
+                                    //        var billItems = bills[0].PurchaseBillItems.filter(function (value, index, array) {
+                                    //            return value.PurchaseBillId === purchaseBillId && value.IsDeleted === false;
+                                    //        });
+
+                                    //        if (billItems.length) {
+
+                                    //            for (var bi = 0; bi < billItems.length; bi++) {
+                                    //                billItems[bi].PurchaseBillItemId = billItems[bi].PurchaseBillItemId;
+                                    //                billItems[bi].IsDeleted = true;
+                                    //                billItems[bi].DeletedBy = parseInt(LOGGED_USER);
+                                    //                billItems[bi].DeletedByIP = IP_ADDRESS;
+                                    //            }
+
+                                    //            bills[0].PurchaseBillItems = billItems;
+                                    //        }
+                                    //    }
+
+                                    //    if (bills[0].PurchaseBillCharges !== null) {
+                                    //        var billCharges = bills[0].PurchaseBillCharges.filter(function (value, index, array) {
+                                    //            return value.PurchaseBillId === purchaseBillId;
+                                    //        });
+
+                                    //        if (billCharges.length) {
+
+                                    //            for (var bc = 0; bc < billCharges.length; bc++) {
+
+                                    //                billCharges[0].IsDeleted = true;
+                                    //                billCharges[0].DeletedBy = parseInt(LOGGED_USER);
+                                    //                billCharges[0].DeletedByIP = IP_ADDRESS;
+
+                                    //                bills[0].PurchaseBillCharges = billCharges;
+                                    //            }
+                                    //        }
+                                    //    }
+
+
+
+                                    var purchaseBill = {};
+
+                                    purchaseBill = {
+                                        PurchaseBillId: purchaseBillId,
+                                        IsDeleted: true,
+                                        DeletedBy: LOGGED_USER,
+                                        DeletedByIP: IP_ADDRESS,
+                                        PurchaseBillItems: billItems,
+                                        PurchaseBillCharges: billCharges
+                                    };
+
+                                    var postData = JSON.stringify(purchaseBill);
+
+                                    shared.sendRequest(SERVICE_PATH + 'SavePurchaseBill', "POST", true, "JSON", postData, function (response) {
+
+                                        if (response.status === 200) {
+
+                                            if (parseInt(response.responseText) > 0) {
+
+                                                //tableBody.removeChild(selectedRows[r]);
+
+                                                swal({
+                                                    title: "Success",
+                                                    text: "Purchase Bill Details Deleted successfully.",
+                                                    type: "success"
+                                                    //}, function () {
+                                                    //  deleteGoodsReceiptAndInwardDetails();
+                                                });
+
+                                                //deleteGoodsReceiptAndInwardDetails(purchaseBillId);
+                                            }
+                                        }
+
+                                        shared.hideLoader(DOM.loader);
+
                                     });
-
-                                    if (bills.length) {
-
-                                        bills[0].IsDeleted = true;
-                                        bills[0].DeletedBy = parseInt(LOGGED_USER);
-                                        bills[0].DeletedByIP = IP_ADDRESS;
-
-                                        if (bills[0].PurchaseBillLItems !== null) {
-
-                                            var billItems = bills[0].PurchaseBillItems.filter(function (value, index, array) {
-                                                return value.PurchaseBillId === purchaseBillId && value.IsDeleted === false;
-                                            });
-
-                                            if (billItems.length) {
-
-                                                for (var bi = 0; bi < billItems.length; bi++) {
-                                                    billItems[bi].IsDeleted = true;
-                                                    billItems[bi].DeletedBy = parseInt(LOGGED_USER);
-                                                    billItems[bi].DeletedByIP = IP_ADDRESS;
-                                                }
-
-                                                bills[0].PurchaseBillItems = billItems;
-                                            }
-                                        }
-
-                                        if (bills[0].PurchaseBillCharges !== null) {
-                                            var billCharges = bills[0].PurchaseBillCharges.filter(function (value, index, array) {
-                                                return value.PurchaseBillId === purchaseBillId;
-                                            });
-
-                                            if (billCharges.length) {
-
-                                                for (var bc = 0; bc < billCharges.length; bc++) {
-
-                                                    billCharges[0].IsDeleted = true;
-                                                    billCharges[0].DeletedBy = parseInt(LOGGED_USER);
-                                                    billCharges[0].DeletedByIP = IP_ADDRESS;
-
-                                                    bills[0].PurchaseBillCharges = billCharges;
-                                                }
-                                            }
-                                        }
-
-
-                                        var purchaseBill = {};
-
-                                        purchaseBill = {
-                                            PurchaseBillId: purchaseBillId,
-                                            IsDeleted: true,
-                                            DeletedBy: LOGGED_USER,
-                                            DeletedByIP: IP_ADDRESS,
-                                            PurchaseBillItems: billItems,
-                                            PurchaseBillCharges: billCharges
-                                        };
-
-                                        var postData = JSON.stringify(purchaseBill);
-
-                                        shared.sendRequest(SERVICE_PATH + 'SavePurchaseBill', "POST", true, "JSON", postData, function (response) {
-
-                                            if (response.status === 200) {
-
-                                                if (parseInt(response.responseText) > 0) {
-
-                                                    //tableBody.removeChild(selectedRows[r]);
-
-                                                    swal({
-                                                        title: "Success",
-                                                        text: "Purchase Bill Details Deleted successfully.",
-                                                        type: "success"
-                                                        //}, function () {
-                                                        //  deleteGoodsReceiptAndInwardDetails();
-                                                    });
-
-                                                    //deleteGoodsReceiptAndInwardDetails(purchaseBillId);
-                                                }
-                                            }
-
-                                            shared.hideLoader(DOM.loader);
-
-                                        });
-                                    }
                                 }
                             }
                         }
+
                     });
             }
             else {

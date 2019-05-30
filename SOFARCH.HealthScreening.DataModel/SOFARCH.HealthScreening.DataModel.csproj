@@ -79,6 +79,8 @@
     <Compile Include="MedicalTestParameters.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ModeOfPayment.cs" />
+    <Compile Include="PreEmploymentDetails.cs" />
+    <Compile Include="PreEmploymentTestDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PurchaseBill.cs" />
     <Compile Include="PurchaseBillCharges.cs" />

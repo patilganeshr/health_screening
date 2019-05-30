@@ -1,5 +1,4 @@
 ﻿
-
 var Sofarch = {};
 
 Sofarch.MedicalTest = (function () {
@@ -193,13 +192,13 @@ Sofarch.MedicalTest = (function () {
             DOM.parameterName.setAttribute('data-medical-test-parameter-id', medicalTestParameterId);
             DOM.parameterName.setAttribute('data-sr-no', srNo);
             DOM.parameterName.value = tableRow.children[0].textContent;
-            DOM.parameterDesc.value = tableRow.children[0].textContent;
+            //DOM.parameterDesc.value = tableRow.children[0].textContent;
             DOM.parameterSequence.value = tableRow.children[1].textContent;
             DOM.minValue.value = tableRow.children[2].textContent;
             DOM.maxValue.value = tableRow.children[3].textContent;
             DOM.normalValue.value = tableRow.children[4].textContent;
             shared.setSelectValue(DOM.unit, null, tableRow.getAttribute('data-unit-of-measurement-id'));
-            shared.setSelect2ControlsText(DOM.title);
+            shared.setSelect2ControlsText(DOM.unit);
         }
 
         DOM.parameterName.focus();
@@ -350,6 +349,7 @@ Sofarch.MedicalTest = (function () {
             var maxValue = 0;
             var normalValue = 0;
             var unitOfMeasurementId = 0;
+            var unitCode = null;
 
             medicalTestParameterId = parseInt(DOM.parameterName.getAttribute('data-medical-test-parameter-id'));
             medicalTestId = parseInt(DOM.testName.getAttribute('data-medical-test-id'));
@@ -360,6 +360,7 @@ Sofarch.MedicalTest = (function () {
             maxValue = parseFloat(DOM.maxValue.value);
             normalValue = parseFloat(DOM.normalValue.value);
             unitOfMeasurementId = parseInt(DOM.unit.options[DOM.unit.selectedIndex].value);
+            unitCode = DOM.unit.options[DOM.unit.selectedIndex].text;
 
             var parameterDetails = {};
 
@@ -390,6 +391,7 @@ Sofarch.MedicalTest = (function () {
                         MaximumValue: maxValue,
                         NormalValue: normalValue,
                         UnitOfMeasurementId: unitOfMeasurementId,
+                        UnitCode: unitCode,
                         IsDeleted: false,
                         CreatedBy: parseInt(LOGGED_USER),
                         CreatedByIP: IP_ADDRESS
@@ -413,6 +415,7 @@ Sofarch.MedicalTest = (function () {
                             MedicalTestParameters[e].MaximumValue = maxValue;
                             MedicalTestParameters[e].NormalValue = normalValue;
                             MedicalTestParameters[e].UnitOfMeasurementId = unitOfMeasurementId;
+                            MedicalTestParameters[e].UnitCode = unitCode;
                             MedicalTestParameters[e].IsDeleted = false;
                             MedicalTestParameters[e].ModifiedBy = parseInt(LOGGED_USER);
                             MedicalTestParameters[e].ModifiedByIP = IP_ADDRESS;
@@ -437,6 +440,7 @@ Sofarch.MedicalTest = (function () {
                     MaximumValue: maxValue,
                     NormalValue: normalValue,
                     UnitOfMeasurementId: unitOfMeasurementId,
+                    UnitCode: unitCode,
                     IsDeleted: false,
                     CreatedBy: parseInt(LOGGED_USER),
                     CreatedByIP: IP_ADDRESS
@@ -467,12 +471,15 @@ Sofarch.MedicalTest = (function () {
 
         //clear the modal control inputs        
         shared.clearInputs(DOM.editMode);
+        shared.clearTables(DOM.editMode);
 
         shared.disableControls(DOM.editMode, false);
 
         DOM.testName.setAttribute('data-medical-test-id', 0);
 
         DOM.testParameterDetails.style.display = "none";
+        DOM.testParametersNo.checked = true;
+        DOM.testParametersYes.checked = false;
 
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
@@ -573,11 +580,44 @@ Sofarch.MedicalTest = (function () {
 
                             for (var r = 0; r < selectedRows.length; r++) {
 
+                                var medicalTestId = parseInt(selectedRows[r].getAttribute('data-medical-test-id'));
+
+                                if (isNaN(medicalTestId)) { medicalTestId = 0; }
+
+                                var testParametes = [];
+
+                                //var medicalTests = MedicalTests.filter(function (value, index, array) {
+                                //    return value.MedicalTestId === medicalTestId;
+                                //});
+
+                                //if (medicalTests.length) {
+
+                                //    var parametersList = medicalTests[0].MedicalTestParameters.filter(function (value, index, array) {
+                                //        return value.MedicalTestId = medicalTestId;
+                                //    });
+
+                                //    if (parametersList.length) {
+
+                                //        for (var p = 0; p < parametersList.length; p++) {
+
+                                //            var parameter = {
+                                //                MedicalTestParameterId: parametersList[p].MedicalTestParameterId,
+                                //                IsDeleted: true,
+                                //                DeletedBy: parseInt(LOGGED_USER),
+                                //                DeletedByIP: IP_ADDRESS
+                                //            };
+
+                                //            testParametes.push(parameter);
+                                //        }
+                                //    }
+                                //}
+
                                 var medicalTest = {
-                                    MedicalTestId: parseInt(selectedRows[r].getAttribute('data-medical-test-id')),
+                                    MedicalTestId: medicalTestId,
                                     IsDeleted: true,
                                     DeletedBy: parseInt(LOGGED_USER),
-                                    DeletedByIP: IP_ADDRESS
+                                    DeletedByIP: IP_ADDRESS,
+                                    MedicalTestParameters: testParametes
                                 };
 
                                 var postData = JSON.stringify(medicalTest);
@@ -604,7 +644,6 @@ Sofarch.MedicalTest = (function () {
 
                                 });
                             }
-
                         }
 
                     });
@@ -635,7 +674,36 @@ Sofarch.MedicalTest = (function () {
                 //assign text to input
                 DOM.testName.setAttribute('data-medical-test-id', selectedMedicalTest[0].MedicalTestId);
                 DOM.testName.value = selectedMedicalTest[0].TestName;
+                if (selectedMedicalTest[0].IsParameters) {
+                    DOM.testParametersYes.checked = true;
+                    DOM.testParametersNo.checked = false;
+                }
+                else {
+                    DOM.testParametersNo.checked = true;
+                    DOM.testParametersYes.checked = false;
+                }
+                if (selectedMedicalTest[0].IsGeneralTest) {
+                    DOM.generalTestYes.checked = true;
+                    DOM.generalTestNo.checked = false;
+                }
+                else {
+                    DOM.generalTestYes.checked = false;
+                    DOM.generalTestNo.checked = true;
+                }
 
+                var testParameters = selectedMedicalTest[0].MedicalTestParameters.filter(function (value, index, array) {
+                    return value.MedicalTestId === medicalTestid;
+                });
+
+                DOM.testParameterDetails.style.display = "none";
+
+                if (testParameters.length) {
+                    MedicalTestParameters = testParameters;
+
+                    DOM.testParameterDetails.style.display = "";
+
+                    bindParameterDetails();
+                }
             }
         }
 
@@ -656,9 +724,24 @@ Sofarch.MedicalTest = (function () {
         /* temp variable */
         var medicalTestId = 0;
         var testName = null;
+        var isGeneralTest = false;
+        var isTestHasParameters = false;
 
         medicalTestId = parseInt(DOM.testName.getAttribute('data-medical-test-id'));
         testName = DOM.testName.value;
+        if (DOM.generalTestYes.checked) {
+            isGeneralTest = true;
+        }
+        else {
+            isGeneralTest = false;
+        }
+
+        if (DOM.generalTestNo.checked) {
+            isTestHasParameters = true;
+        }
+        else {
+            isTestHasParameters = false;
+        }
 
         if (isNaN(medicalTestId)) { medicalTestId = 0; }
 
@@ -666,7 +749,10 @@ Sofarch.MedicalTest = (function () {
 
             medicalTest = {
                 MedicalTestId: medicalTestId,
-                TestName: testName
+                TestName: testName,
+                IsGeneralTest: isGeneralTest,
+                IsParameters: isTestHasParameters,
+                MedicalTestParameters: MedicalTestParameters
             };
 
         if (parseInt(medicalTestId) === parseInt(0)) {
@@ -768,7 +854,6 @@ Sofarch.MedicalTest = (function () {
         cacheDOM();
         bindEvents();
         loadData();
-        addNewMedicalTest();
     }
 
     return {

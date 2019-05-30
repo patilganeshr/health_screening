@@ -32,7 +32,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@medical_test_id", DbType.Int32, medicalTest.MedicalTestId);
                     database.AddInParameter(dbCommand, "@medical_test_name", DbType.String, medicalTest.TestName);
                     database.AddInParameter(dbCommand, "@is_parameters", DbType.Boolean, medicalTest.IsParameters);
-                    database.AddInParameter(dbCommand, "@is_general_test", DbType.Boolean, medicalTest.IsGeneralTest);
+                    database.AddInParameter(dbCommand, "@is_test_general", DbType.Boolean, medicalTest.IsGeneralTest);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, medicalTest.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, medicalTest.CreatedByIP);
 
@@ -100,7 +100,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@medical_test_id", DbType.Int32, medicalTest.MedicalTestId);
                     database.AddInParameter(dbCommand, "@medical_test_name", DbType.String, medicalTest.TestName);
                     database.AddInParameter(dbCommand, "@is_parameters", DbType.Boolean, medicalTest.IsParameters);
-                    database.AddInParameter(dbCommand, "@is_general_test", DbType.Boolean, medicalTest.IsGeneralTest);
+                    database.AddInParameter(dbCommand, "@is_test_general", DbType.Boolean, medicalTest.IsGeneralTest);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, medicalTest.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, medicalTest.ModifiedByIP);
 
@@ -178,7 +178,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             MedicalTestId = DRE.GetNullableInt32(reader, "medical_test_id", 0),
                             TestName = DRE.GetNullableString(reader, "medical_test_name", null), 
                             IsParameters = DRE.GetNullableBoolean(reader, "is_parameters", null),
-                            IsGeneralTest = DRE.GetNullableBoolean(reader, "is_general_test", null),
+                            IsGeneralTest = DRE.GetNullableBoolean(reader, "is_test_general", null),
                             MedicalTestParameters = medicalTestParameters.GetMedicalTestParameterDetailsByTestId(DRE.GetInt32(reader, "medical_test_id"))
                         };
 
@@ -212,7 +212,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             MedicalTestId = DRE.GetNullableInt32(reader, "medical_test_id", 0),
                             TestName = DRE.GetNullableString(reader, "medical_test_name", null),
                             IsParameters = DRE.GetNullableBoolean(reader, "is_parameters", null), 
-                            IsGeneralTest = DRE.GetNullableBoolean(reader, "is_general_test", null)
+                            IsGeneralTest = DRE.GetNullableBoolean(reader, "is_test_general", null)
                         };
 
                         medicalTestInfo = medicalTest;
@@ -271,6 +271,18 @@ namespace SOFARCH.HealthScreening.DataModel
 
                             if (medicalTestId > 0)
                             {
+                                if (medicalTest.IsDeleted == true)
+                                {
+                                    MedicalTestParameters medicalTestParametersDB = new MedicalTestParameters();
+
+                                    var result = medicalTestParametersDB.DeleteMedicalTestParametersByMedicalTestId((int)medicalTest.MedicalTestId, (int)medicalTest.DeletedBy, medicalTest.DeletedByIP, dbTransaction);
+
+                                    if (result)
+                                    {
+                                        medicalTestId = (int)medicalTest.MedicalTestId;
+                                    }
+                                }
+
                                 if (medicalTest.MedicalTestParameters != null)
                                 {
                                     if (medicalTest.MedicalTestParameters.Count > 0)

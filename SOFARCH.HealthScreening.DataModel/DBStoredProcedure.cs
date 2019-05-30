@@ -555,7 +555,38 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeleteMedicalTestParameters { get { return "medical_test_parameters_delete_medical_test_parameter"; } }
 
+        public static string DeleteMedicalTestParametersByMedicalTestId { get { return "medical_test_parameters_delete_medical_test_parameter_by_medical_test_id"; } }
+
         public static string GetMedicalTestParametersByTestId { get { return "medical_test_parameters_get_test_parameter_details_by_test_id"; } }
+
+        #endregion
+
+        #region Pre Employment Details
+
+        public static string InsertPreEmploymentDetails { get { return "pre_employment_details_insert_pre_employment_details"; } }
+
+        public static string UpdatePreEmploymentDetails { get { return "pre_employment_details_update_pre_employment_details"; } }
+
+        public static string DeletePreEmploymentDetails { get { return "pre_employment_details_delete_pre_employment_details"; } }
+
+        public static string GetPreEmploymentEmployeeDetailsByEmployeeId { get { return "pre_employment_details_get_employee_details_by_employee_id"; } }
+
+        public static string GetAllPreEmploymentDetails { get { return "pre_employment_details_get_all_pre_employment_details"; } }
+
+        #endregion
+
+
+        #region Pre Employment Test Details
+        
+        public static string InsertPreEmploymentTestDetails { get { return "pre_employment_test_details_insert_pre_employment_test_details"; } }
+
+        public static string UpdatePreEmploymentTestDetails { get { return "pre_employment_test_details_update_pre_employment_test_details"; } }
+
+        public static string DeletePreEmploymentTestDetails { get { return "pre_employment_test_details_delete_pre_employment_test_details"; } }
+
+        public static string GetPreEmploymentAllTestDetails { get { return "pre_employemnt_test_details_get_all_tests"; } }
+
+        public static string GetPreEmploymentTestDetailsByPreEmploymentId { get { return "pre_employment_test_details_get_test_details_by_pre_employment_id"; } }
 
         #endregion
 

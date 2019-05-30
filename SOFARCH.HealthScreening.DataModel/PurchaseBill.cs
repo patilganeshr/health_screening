@@ -246,7 +246,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                                     var result = dal.DeletePurchaseBillItemByPurchaseBillId(purchaseBillId, (int)purchaseBill.DeletedBy, purchaseBill.DeletedByIP, transaction);
 
-                                    if (result == true)
+                                    if (result)
                                     {
                                         purchaseBillId = 1;
                                     }

@@ -106,6 +106,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MedicalTestController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PreEmploymentDetailsController.cs" />
     <Compile Include="Controllers\PurchaseBillController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\RoleController.cs" />

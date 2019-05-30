@@ -518,6 +518,7 @@
     <Content Include="Content\scripts\app\sales\sales-order.js" />
     <Content Include="Content\scripts\app\sales\sales-return.js" />
     <Content Include="Content\scripts\app\shared\default.js" />
+    <Content Include="Content\scripts\app\transactions\preemployment-details.js" />
     <Content Include="Content\scripts\vendor\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.min.js" />
@@ -666,6 +667,7 @@
     <Content Include="Masters\GSTCategory.aspx" />
     <Content Include="Transactions\DrugUtilisation.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
+    <Content Include="Transactions\PreEmploymentDetails.aspx" />
     <Content Include="Transactions\PurchaseBill.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -815,6 +817,13 @@
     </Compile>
     <Compile Include="Transactions\PettyCashExpense.aspx.designer.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\PreEmploymentDetails.aspx.cs">
+      <DependentUpon>PreEmploymentDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PreEmploymentDetails.aspx.designer.cs">
+      <DependentUpon>PreEmploymentDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\PurchaseBill.aspx.cs">
       <DependentUpon>PurchaseBill.aspx</DependentUpon>

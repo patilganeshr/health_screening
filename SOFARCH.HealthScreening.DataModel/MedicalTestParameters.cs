@@ -67,9 +67,39 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteMedicalTestParameters))
                 {
-                    database.AddInParameter(dbCommand, "@medical_test_id", DbType.Int32, medicalTestParameters.MedicalTestParameterId);
+                    database.AddInParameter(dbCommand, "@medical_test_parameter_id", DbType.Int32, medicalTestParameters.MedicalTestParameterId);
                     database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, medicalTestParameters.DeletedBy);
                     database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, medicalTestParameters.DeletedByIP);
+
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        isDeleted = Convert.ToBoolean(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return isDeleted;
+        }
+
+        public bool DeleteMedicalTestParametersByMedicalTestId(Int32 medicalTestId, Int32 deletedBy, string deletedByIP, DbTransaction dbTransaction)
+        {
+            var isDeleted = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteMedicalTestParametersByMedicalTestId))
+                {
+                    database.AddInParameter(dbCommand, "@medical_test_id", DbType.Int32, medicalTestId);
+                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, deletedBy);
+                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, deletedByIP);
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
@@ -161,7 +191,8 @@ namespace SOFARCH.HealthScreening.DataModel
                                 MaximumValue = DRE.GetNullableDecimal(reader, "maximum_value", null),
                                 NormalValue = DRE.GetNullableDecimal(reader, "normal_value", null),
                                 UnitOfMeasurementId = DRE.GetNullableInt32(reader, "unit_of_measurement_id", null),
-                                UnitCode = DRE.GetNullableString(reader, "unit_code", null)
+                                UnitCode = DRE.GetNullableString(reader, "unit_code", null),
+                                SrNo = DRE.GetNullableInt64(reader, "sr_no", null)
                             };
 
                             medicalTestParameters.Add(medicalTestParameter);
