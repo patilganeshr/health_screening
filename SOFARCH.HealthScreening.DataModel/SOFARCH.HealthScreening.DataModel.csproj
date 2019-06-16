@@ -67,6 +67,7 @@
     <Compile Include="DBConnect.cs" />
     <Compile Include="DBStoredProcedure.cs" />
     <Compile Include="Drug.cs" />
+    <Compile Include="DrugFormulation.cs" />
     <Compile Include="DrugGroup.cs" />
     <Compile Include="DrugRoutes.cs" />
     <Compile Include="DrugsLinkWithDrugRoute.cs" />

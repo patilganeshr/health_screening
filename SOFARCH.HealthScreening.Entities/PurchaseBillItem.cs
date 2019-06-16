@@ -24,9 +24,13 @@ namespace SOFARCH.HealthScreening.Entities
 
         public decimal? RatePerPack1 { get; set; }
 
+        public string ExpiryDate { get; set; }
+
         public decimal? TaxPercent { get; set; }
 
-        public string DrugCode { get; set; }
+        public Int32? DrugCode { get; set; }
+
+        public string DrugName { get; set; }
 
         public string GenericName { get; set; }
 

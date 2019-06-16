@@ -236,6 +236,10 @@ select2 select2-container select2-container--default select2-container--below se
 	border: 1px solid #f59483;
 }
 
+.bootstrap-datetimepicker-widget .dropdown-menu {
+	z-index: 9999 !important;
+}
+
 /*.select2-container .select2-selection--single {
 	height: 34px;
 	font-size: 14px;

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Purchase Bill" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PurchaseBill.aspx.cs" Inherits="HealthScreeningApp.Transactions.PurchaseBill" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cpMaster" runat="server">
@@ -44,6 +45,68 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+                        <!-- Filter Options -->
+
+                        <div class="panel panel-default hide" id="SearchPurchaseBill">
+
+                            <div class="panel-heading">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <h4 class="panel-title panel-title-align-middle">Search Purchase Bills</h4>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="panel-body">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Options</label>
+                                                <select id="SearchOptions" class="form-control"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Value</label>
+                                                <input type="text" id="SearchValue" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <button type="button" id="Search" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Filter Options -->
+
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
@@ -55,7 +118,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">Action</th>
-                                            <th class="text-center">Supplier</th>                                            
+                                            <th class="text-center">Supplier</th>
                                             <th class="text-center">Bill No.</th>
                                             <th class="text-center">Bill date</th>
                                             <th class="text-center">Qty</th>
@@ -126,19 +189,19 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                                    
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
                                         <div class="form-group form-group-sm">
-                                        <label>Supplier</label>
+                                            <label>Supplier</label>
                                             <input type="text" id="Vendor" class="form-control" />
                                         </div>
-                                        
+
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div id="SearchVendorList" class="autocompleteList"></div>
                                         </div>
 
                                     </div>
-                                    
+
                                     <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
                                         <div class="form-group form-group-sm">
                                             <label>Remarks</label>
@@ -147,6 +210,17 @@
                                     </div>
 
                                 </div>
+
+                            </div>
+                        </div>
+
+                        <div class="panel panel-info">
+
+                            <div class="panel-heading">
+                                <h3 class="panel-title"></h3>
+                            </div>
+
+                            <div class="panel-body">
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
@@ -168,7 +242,7 @@
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive" style="max-height: 300px; overflow: auto;">
                                         <table id="PurchaseBillItemList" class="table table-condensed">
                                             <thead>
                                                 <tr>
@@ -180,6 +254,7 @@
                                                     <th class="text-center">Pack 2</th>
                                                     <th class="text-center">Free Qty</th>
                                                     <th class="text-center">Rate per Pack 1</th>
+                                                    <th class="text-center">Expiry Date</th>
                                                     <th class="text-center">Tax Percent</th>
                                                     <th class="text-center">Tax Amount</th>
                                                     <th class="text-center">Item Amount</th>
@@ -195,18 +270,60 @@
                             </div>
 
                         </div>
-                        
+
+                        <div class="panel panel-info">
+
+                            <div class="panel-body">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    
+                                    
+                                    <div class="form-horizontal">
+
+                                        <div class="pull-right">
+
+                                        <div class="form-group form-group-md">
+                                            <label class="col-lg-6">Total Item Amount</label>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="TotalItemAmount" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-group-md">
+                                            <label class="col-lg-6">Purchase Bill Amount</label>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="PurchaseBillAmount" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group form-group-md">
+                                            <label class="col-lg-6">Adjusted Amount</label>
+                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                <input type="text" id="AdjustedAmount" class="form-control" readonly="readonly" />
+                                            </div>
+                                        </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
-                    
+
                 </div>
-            
+
             </div>
-        
+
         </div>
-   
+
     </div>
-    
+
     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
     <script type="text/javascript" src="../content/scripts/app/purchase/purchase-bill.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/shared/masking.js"></script>
 
 </asp:Content>

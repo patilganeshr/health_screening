@@ -35,6 +35,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@purchase_bill_no", DbType.String, purchaseBill.PurchaseBillNo);
                     database.AddInParameter(dbCommand, "@purchase_bill_date", DbType.String, purchaseBill.PurchaseBillDate);
                     database.AddInParameter(dbCommand, "@vendor_id", DbType.Int32, purchaseBill.VendorId);
+                    database.AddInParameter(dbCommand, "@purchase_bill_amount", DbType.Decimal, purchaseBill.PurchaseBillAmount);
                     database.AddInParameter(dbCommand, "@remarks", DbType.String, purchaseBill.Remarks);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, purchaseBill.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, purchaseBill.CreatedByIP);
@@ -87,6 +88,34 @@ namespace SOFARCH.HealthScreening.DataModel
             return isDeleted;
         }
 
+        public bool CheckPurchaseBillNoIsExists(Int32 vendorId, string purchaseBillNo)
+        {
+            var IsPurchaseBillNoExists = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.CheckPurchaseBillNoExists))
+                {
+                    database.AddInParameter(dbCommand, "@vendor_id", DbType.Int32, vendorId);
+                    database.AddInParameter(dbCommand, "@purchase_bill_no", DbType.String, purchaseBillNo);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            IsPurchaseBillNoExists = reader.GetBoolean(reader.GetOrdinal("is_purchase_bill_no_exists"));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return IsPurchaseBillNoExists;
+        }
+
         public List<Entities.PurchaseBill> GetPurchaseBillIdAndPurcharseBillNo()
         {
             var purchaseBills = new List<Entities.PurchaseBill>();
@@ -128,25 +157,7 @@ namespace SOFARCH.HealthScreening.DataModel
                 {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
-                        while (reader.Read())
-                        {
-                            var purchaseBillItem = new PurchaseBillItem();
-
-                            var purchaseBill = new Entities.PurchaseBill
-                            {
-                                PurchaseBillId = DRE.GetNullableInt32(reader, "purchase_bill_id", 0),
-                                PurchaseBillNo = DRE.GetNullableString(reader, "purchase_bill_no", null),
-                                PurchaseBillDate = DRE.GetNullableString(reader, "purchase_bill_date", null),
-                                VendorId = DRE.GetNullableInt32(reader, "vendor_id", null),
-                                VendorName = DRE.GetNullableString(reader, "vendor_name", null),
-                                TotalBillQty = DRE.GetNullableDecimal(reader, "total_bill_qty", null),
-                                TotalBillAmount = DRE.GetNullableDecimal(reader, "total_bill_amount", null),
-                                Remarks = DRE.GetNullableString(reader, "remarks", null),
-                                PurchaseBillItems= purchaseBillItem.GetPurchaseBillItemDetailsByPurchaseBillId(DRE.GetInt32(reader, "purchase_bill_id"))
-                            };
-
-                            purchaseBills.Add(purchaseBill);
-                        }
+                        purchaseBills = GetPurchaseBills(reader);
                     }
                 }
             }
@@ -155,6 +166,59 @@ namespace SOFARCH.HealthScreening.DataModel
                 throw ex;
             }
         
+            return purchaseBills;
+        }
+
+        public List<Entities.PurchaseBill> SearchPurchaseBillsByPurchaseBillNo(string purchaseBillNo)
+        {
+            var purchaseBills = new List<Entities.PurchaseBill>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchPurchaseBillsByPurchaseBillNo))
+                {
+                    database.AddInParameter(dbCommand, "@purchase_bill_no", DbType.String, purchaseBillNo);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        purchaseBills = GetPurchaseBills(reader);   
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return purchaseBills;
+        }
+
+        private List<Entities.PurchaseBill> GetPurchaseBills(IDataReader reader)
+        {
+            var purchaseBills = new List<Entities.PurchaseBill>();
+
+            while (reader.Read())
+            {
+                var purchaseBillItem = new PurchaseBillItem();
+
+                var purchaseBill = new Entities.PurchaseBill
+                {
+                    PurchaseBillId = DRE.GetNullableInt32(reader, "purchase_bill_id", 0),
+                    PurchaseBillNo = DRE.GetNullableString(reader, "purchase_bill_no", null),
+                    PurchaseBillDate = DRE.GetNullableString(reader, "purchase_bill_date", null),
+                    VendorId = DRE.GetNullableInt32(reader, "vendor_id", null),
+                    VendorName = DRE.GetNullableString(reader, "vendor_name", null),
+                    PurchaseBillAmount = DRE.GetNullableDecimal(reader, "purchase_bill_amount", 0),
+                    AdjustedAmount = DRE.GetNullableDecimal(reader, "adjusted_amount", 0),
+                    TotalBillQty = DRE.GetNullableDecimal(reader, "total_bill_qty", 0),
+                    TotalBillAmount = DRE.GetNullableDecimal(reader, "total_bill_amount", 0),
+                    Remarks = DRE.GetNullableString(reader, "remarks", null),
+                    PurchaseBillItems = purchaseBillItem.GetPurchaseBillItemDetailsByPurchaseBillId(DRE.GetInt32(reader, "purchase_bill_id"))
+                };
+
+                purchaseBills.Add(purchaseBill);
+            }
+
             return purchaseBills;
         }
 
@@ -170,6 +234,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@purchase_bill_no", DbType.String, purchaseBill.PurchaseBillNo);
                     database.AddInParameter(dbCommand, "@purchase_bill_date", DbType.String, purchaseBill.PurchaseBillDate);
                     database.AddInParameter(dbCommand, "@vendor_id", DbType.Int32, purchaseBill.VendorId);
+                    database.AddInParameter(dbCommand, "@purchase_bill_amount", DbType.Decimal, purchaseBill.PurchaseBillAmount);
                     database.AddInParameter(dbCommand, "@remarks", DbType.String, purchaseBill.Remarks);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, purchaseBill.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, purchaseBill.ModifiedByIP);

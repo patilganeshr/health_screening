@@ -16,6 +16,14 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         {
             _purchaseBill = new Business.PurchaseBill();
         }
+
+        [HttpGet]
+        [Route("CheckPurchasebillNoIsExists/{vendorId}/{purchaseBillNo}")]
+        public bool CheckPurchaseBillNoIsExists(Int32 vendorId, string purchaseBillNo)
+        {
+            return _purchaseBill.CheckPurchaseBillNoIsExists(vendorId, purchaseBillNo);
+        }
+
         [Route("GetPurchaseBillIdAndPurcharseBillNo")]
         public List<Entities.PurchaseBill> GetPurchaseBillIdAndPurcharseBillNo()
         {
@@ -27,6 +35,13 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         public List<Entities.PurchaseBill> SearchPurchaseBillsAll()
         {
             return _purchaseBill.SearchPurchaseBillsAll();
+        }
+
+        [HttpGet]
+        [Route("SearchPurchaseBillsByPurchaseBillNo/{purchaseBillNo}")]
+        public List<Entities.PurchaseBill> SearchPurchaseBillsByPurchaseBillNo(string purchaseBillNo)
+        {
+            return _purchaseBill.SearchPurchaseBillsByPurchaseBillNo(purchaseBillNo);
         }
 
         [HttpPost]

@@ -17,16 +17,16 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             _drug = new Business.Drug();
         }
 
-        [Route("GetDrugIdAndGenericName")]
-        public List<Entities.Drug> GetDrugIdAndGenericName()
+        [Route("GetDrugIdAndDrugName")]
+        public List<Entities.Drug> GetDrugIdAndDrugName()
         {
-            return _drug.GetDrugIdAndGenericName();
+            return _drug.GetDrugIdAndDrugName();
         }
 
-        [Route("GetDrugIdAndGenericNameByName/{genericName}")]
-        public List<Entities.Drug> GetDrugIdAndGenericNameByName(string genericName)
+        [Route("GetDrugIdAndDrugNameByDrugName/{drugName}")]
+        public List<Entities.Drug> GetDrugIdAndDrugName(string drugName)
         {
-            return _drug.GetDrugIdAndGenericNameByName(genericName);
+            return _drug.GetDrugIdAndDrugName(drugName);
         }
 
         [HttpGet]
@@ -36,12 +36,35 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _drug.SearchDrugsAll();
         }
 
+        [HttpGet]
         [Route("SearchDrugsByGenericName/{genericName}")]
         public List<Entities.Drug> SearchDrugsByGenericName(string genericName)
         {
             return _drug.SearchDrugsByGenericName(genericName);
         }
 
+        [HttpGet]
+        [Route("SearchDrugsByDrugName/{drugName}")]
+        public List<Entities.Drug> SearchDrugsByDrugName(string drugName)
+        {
+            return _drug.SearchDrugsByDrugName(drugName);
+        }
+
+        [HttpGet]
+        [Route("SearchDrugsByDrugGroupName/{drugGroupName}")]
+        public List<Entities.Drug> SearchDrugsByDrugGroupName(string drugGroupName)
+        {
+            return _drug.SearchDrugsByDrugGroupName(drugGroupName);
+        }
+
+        [HttpGet]
+        [Route("SearchDrugsByDrugCode/{drugCode}")]
+        public List<Entities.Drug> SearchDrugsByDrugCode(string drugCode)
+        {
+            return _drug.SearchDrugsByDrugCode(drugCode);
+        }
+
+        [HttpPost]
         [Route("SaveDrug")]
         public Int32 SaveDrug(Entities.Drug drug)
         {

@@ -518,6 +518,7 @@
     <Content Include="Content\scripts\app\sales\sales-order.js" />
     <Content Include="Content\scripts\app\sales\sales-return.js" />
     <Content Include="Content\scripts\app\shared\default.js" />
+    <Content Include="Content\scripts\app\shared\masking.js" />
     <Content Include="Content\scripts\app\transactions\preemployment-details.js" />
     <Content Include="Content\scripts\vendor\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.js" />

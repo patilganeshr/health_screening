@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Employee" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Employee.aspx.cs" Inherits="HealthScreeningApp.Masters.Employee" %>
+﻿<%@ Page Title="Case Paper" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Employee.aspx.cs" Inherits="HealthScreeningApp.Masters.Employee" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -23,7 +23,7 @@
         <div class="container-fluid">
 
             <div class="page-header">
-                <h3>Employee</h3>
+                <h3>Patient Case Paper</h3>
             </div>
 
             <div id="Loader" class="loader-container">
@@ -48,7 +48,7 @@
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
-                                <h4 class="panel-title">List of Employees</h4>
+                                <h4 class="panel-title">List of Patients</h4>
                             </div>
 
                             <div class="panel-body">
@@ -104,7 +104,7 @@
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
-                                <h3 class="panel-title">Employee Details</h3>
+                                <h3 class="panel-title">Patient Details</h3>
                             </div>
 
                             <div class="panel-body">

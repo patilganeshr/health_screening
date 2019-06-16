@@ -45,14 +45,63 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                        <div class="panel panel-default">
-                            <div class="panel-header">
+                        <div class="panel panel-info" id="SearchDrug">
+
+                        <div class="panel-heading">
+                            <h4 class="panel-title panel-title-align-middle">Search Drug</h4>
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="row">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                    <div class="form-group form-group-md">
+                                        <label>Search Options</label>                                    
+                                        <select id="DrugSearchOption" class="form-control"></select>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                    <div class="form-group form-group-md">
+                                    <label>Search Value</label>                                    
+                                        <input type="text" id="SearchValue" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-group-md">
+                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                        <button type="button" id="Search" class="btn btn-md btn-success" style="margin-top:26px;">Search</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        </div>
+                    
+                    </div>
+                    
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
                                 <div class="row panel-body">
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                         <h4 class="panel-title">List</h4>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="panel-body">
                                 <div class="table-responsive">
                                     <table id="DrugList" class="table table-condesed">
@@ -60,6 +109,8 @@
                                             <tr>
                                                 <th class="text-center">Action</th>
                                                 <th class="text-center">Generic Name</th>
+                                                <th class="text-center">Drug Code</th>
+                                                <th class="text-center">Drug Name</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -113,16 +164,7 @@
 
                                             <label class="col-sm-2">Drug Code</label>
                                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                <input type="text" id="DrugCode" class="form-control" />
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-group form-group-sm">
-
-                                            <label class="col-sm-2">Generic Name</label>
-                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                                <input type="text" id="GenericName" class="form-control" />
+                                                <input type="text" id="DrugCode" class="form-control" readonly="readonly" />
                                             </div>
 
                                         </div>
@@ -138,6 +180,24 @@
 
                                         <div class="form-group form-group-sm">
 
+                                            <label class="col-sm-2">Generic Name</label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <input type="text" id="GenericName" class="form-control" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group form-group-sm">
+
+                                            <label class="col-sm-2">Drug Name</label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <input type="text" id="DrugName" class="form-control" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group form-group-sm" style="display: none;">
+
                                             <label class="col-sm-2">Brand Name</label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                 <select id="Brand" class="form-control"></select>
@@ -148,7 +208,7 @@
                                         <div class="form-group form-group-sm">
                                             <label class="col-sm-2">Formulation</label>
                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                                                <input type="text" id="Formulation" class="form-control" />
+                                                <select id="DrugFormulation" class="form-control"></select>
                                             </div>
                                         </div>
 
@@ -184,71 +244,6 @@
                                             <label class="col-sm-2">Routes</label>
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                 <div id="Routes" style="max-height: 300px; overflow: auto;">
-                                                    <%--<ul class="list-group list-group-flush">
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                        Apply
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                        <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                        Gargle
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            (IM)
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            Inhale
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            Instill
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            (IV)
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                        <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            Oral
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            (Sub cut)
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <label class='label-tick'>
-                                                                <input type='checkbox' class='label-checkbox'/>
-                                                                <span class='label-text'></span>
-                                                            </label>
-                                                            (TD)
-                                                        </li>
-                                                    </ul>--%>
                                                 </div>
                                             </div>
                                         </div>

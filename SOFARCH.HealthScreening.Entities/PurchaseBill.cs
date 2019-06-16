@@ -18,6 +18,9 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string VendorName { get; set; }
 
+        public decimal? PurchaseBillAmount { get; set; }
+
+        public decimal? AdjustedAmount { get; set; }
         public List<PurchaseBillItem> PurchaseBillItems { get; set; }
 
         public List<PurchaseBillCharge> PurchaseBillCharges { get; set; }

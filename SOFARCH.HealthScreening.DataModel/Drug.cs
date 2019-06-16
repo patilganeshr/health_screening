@@ -36,11 +36,11 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertDrug))
                 {
                     database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drug.DrugId);
-                    database.AddInParameter(dbCommand, "@drug_code", DbType.String, drug.DrugCode);
                     database.AddInParameter(dbCommand, "@generic_name", DbType.String, drug.GenericName);
+                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drug.DrugName);
                     database.AddInParameter(dbCommand, "@drug_group_id", DbType.Int32, drug.DrugGroupId);
                     database.AddInParameter(dbCommand, "@brand_id", DbType.Int32, drug.BrandId);
-                    database.AddInParameter(dbCommand, "@formulation", DbType.String, drug.Formulation);
+                    database.AddInParameter(dbCommand, "@drug_formulation_id", DbType.Int32, drug.DrugFormulationId);
                     database.AddInParameter(dbCommand, "@strength", DbType.String, drug.Strength);
                     database.AddInParameter(dbCommand, "@unit", DbType.String, drug.Unit);
                     database.AddInParameter(dbCommand, "@adverse_effects", DbType.String, drug.AdverseEffects);
@@ -97,7 +97,7 @@ namespace SOFARCH.HealthScreening.DataModel
             return isDeleted;
         }
 
-        public List<Entities.Drug> GetDrugIdAndGenericName()
+        public List<Entities.Drug> GetDrugIdAndDrugName()
         {
             var drugs = new List<Entities.Drug>();
 
@@ -112,7 +112,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             var drug = new Entities.Drug
                             {
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
-                                GenericName = DRE.GetNullableString(reader, "generic_name", null)
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null)
                             };
 
                             drugs.Add(drug);
@@ -128,15 +128,15 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugs;
         }
 
-        public List<Entities.Drug> GetDrugIdAndGenericNameByName(string genericName)
+        public List<Entities.Drug> GetDrugIdAndDrugName(string drugName)
         {
             var drugs = new List<Entities.Drug>();
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugIdAndGenericNameByName))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugIdAndDrugNameByDrugName))
                 {
-                    database.AddInParameter(dbCommand, "@generic_name", DbType.String, genericName);
+                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugName);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -145,8 +145,8 @@ namespace SOFARCH.HealthScreening.DataModel
                             var drug = new Entities.Drug
                             {
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
-                                DrugCode = DRE.GetNullableString(reader, "drug_code", null),
-                                GenericName = DRE.GetNullableString(reader, "generic_name", null)                                
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null)
                             };
 
                             drugs.Add(drug);
@@ -179,11 +179,13 @@ namespace SOFARCH.HealthScreening.DataModel
                             var drug = new Entities.Drug
                             {
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
-                                DrugCode = DRE.GetNullableString(reader, "drug_code", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
                                 GenericName = DRE.GetNullableString(reader, "generic_name", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
                                 DrugGroupId = DRE.GetNullableInt32(reader, "drug_group_id", null),
                                 BrandId = DRE.GetNullableInt32(reader, "brand_id", null),
-                                Formulation = DRE.GetNullableString(reader, "formulation", null),
+                                DrugFormulationId = DRE.GetNullableInt32(reader, "drug_formulation_id", null),
+                                DrugFormulationCode = DRE.GetNullableString(reader, "drug_formulation_code", null),
                                 Strength = DRE.GetNullableString(reader, "strength", null),
                                 Unit = DRE.GetNullableString(reader, "unit", null),
                                 AdverseEffects = DRE.GetNullableString(reader, "adverse_effects", null),
@@ -217,28 +219,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
-                        while (reader.Read())
-                        {
-                            var drugLinkWithDrugRoutes = new DrugsLinkWithDrugRoute();
-
-                            var drug = new Entities.Drug
-                            {
-                                DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
-                                DrugCode = DRE.GetNullableString(reader, "drug_code", null),
-                                GenericName = DRE.GetNullableString(reader, "generic_name", null),
-                                DrugGroupId = DRE.GetNullableInt32(reader, "drug_group_id", null),
-                                BrandId = DRE.GetNullableInt32(reader, "brand_id", null),
-                                Formulation = DRE.GetNullableString(reader, "formulation", null),
-                                Strength = DRE.GetNullableString(reader, "strength", null),
-                                Unit = DRE.GetNullableString(reader, "unit", null),
-                                AdverseEffects = DRE.GetNullableString(reader, "adverse_effects", null),
-                                Precautions = DRE.GetNullableString(reader, "precautions", null),
-                                Remarks = DRE.GetNullableString(reader, "remarks", null),
-                                DrugLinkWithDrugRoutes = drugLinkWithDrugRoutes.GetDrugLinkByDrugId(DRE.GetNullableInt32(reader, "drug_id", 0))
-                            };
-
-                            drugs.Add(drug);
-                        }
+                        drugs = GetDrugs(reader);
                     }
                 }
             }
@@ -250,6 +231,111 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugs;
         }
 
+        public List<Entities.Drug> SearchDrugsByDrugName(string drugName)
+        {
+            var drugs = new List<Entities.Drug>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugsByDrugName))
+                {
+                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        drugs = GetDrugs(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return drugs;
+        }
+
+        public List<Entities.Drug> SearchDrugsByDrugGroupName(string drugGroupName)
+        {
+            var drugs = new List<Entities.Drug>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugsByDrugGroupName))
+                {
+                    database.AddInParameter(dbCommand, "@drug_group_name", DbType.String, drugGroupName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        drugs = GetDrugs(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return drugs;
+        }
+
+        public List<Entities.Drug> SearchDrugsByDrugCode(string drugCode)
+        {
+            var drugs = new List<Entities.Drug>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugsByDrugCode))
+                {
+                    database.AddInParameter(dbCommand, "@drug_code", DbType.Int32, drugCode);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        drugs = GetDrugs(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return drugs;
+        }
+
+        private List<Entities.Drug> GetDrugs(IDataReader reader)
+        {
+            var drugs = new List<Entities.Drug>();
+
+            while (reader.Read())
+            {
+                var drugLinkWithDrugRoutes = new DrugsLinkWithDrugRoute();
+
+                var drugInfo = new Entities.Drug()
+                {
+                    DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
+                    DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                    GenericName = DRE.GetNullableString(reader, "generic_name", null),
+                    DrugName = DRE.GetNullableString(reader, "drug_name", null),
+                    DrugGroupId = DRE.GetNullableInt32(reader, "drug_group_id", null),
+                    BrandId = DRE.GetNullableInt32(reader, "brand_id", null),
+                    DrugFormulationId = DRE.GetNullableInt32(reader, "drug_formulation_id", null),
+                    DrugFormulationCode = DRE.GetNullableString(reader, "drug_formulation_code", null),
+                    Strength = DRE.GetNullableString(reader, "strength", null),
+                    Unit = DRE.GetNullableString(reader, "unit", null),
+                    AdverseEffects = DRE.GetNullableString(reader, "adverse_effects", null),
+                    Precautions = DRE.GetNullableString(reader, "precautions", null),
+                    Remarks = DRE.GetNullableString(reader, "remarks", null),
+                    DrugLinkWithDrugRoutes = drugLinkWithDrugRoutes.GetDrugLinkByDrugId(DRE.GetNullableInt32(reader, "drug_id", 0))
+                };
+
+                drugs.Add(drugInfo);
+            }
+
+            return drugs;
+
+        }
+
         private Int32 UpdateDrug(Entities.Drug drug, DbTransaction dbTransaction)
         {
             var drugId = 0;
@@ -259,11 +345,11 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdateDrug))
                 {
                     database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drug.DrugId);
-                    database.AddInParameter(dbCommand, "@drug_code", DbType.String, drug.DrugCode);
                     database.AddInParameter(dbCommand, "@generic_name", DbType.String, drug.GenericName);
+                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drug.DrugName);
                     database.AddInParameter(dbCommand, "@drug_group_id", DbType.Int32, drug.DrugGroupId);
                     database.AddInParameter(dbCommand, "@brand_id", DbType.Int32, drug.BrandId);
-                    database.AddInParameter(dbCommand, "@formulation", DbType.String, drug.Formulation);
+                    database.AddInParameter(dbCommand, "@drug_formulation_id", DbType.Int32, drug.DrugFormulationId);
                     database.AddInParameter(dbCommand, "@strength", DbType.String, drug.Strength);
                     database.AddInParameter(dbCommand, "@unit", DbType.String, drug.Unit);
                     database.AddInParameter(dbCommand, "@adverse_effects", DbType.String, drug.AdverseEffects);

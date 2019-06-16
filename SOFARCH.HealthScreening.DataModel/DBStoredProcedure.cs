@@ -322,7 +322,9 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeleteDrug { get { return "drugs_delete_drug"; } }
 
-        public static string GetDrugIdAndDrugName { get { return "drugs_get_drug_id_and_generic_name"; } }
+        public static string GetDrugIdAndDrugName { get { return "drugs_get_drug_id_and_drug_name"; } }
+
+        public static string GetDrugIdAndDrugNameByDrugName { get { return "drugs_get_drug_id_and_name_by_drug_name"; } }
 
         public static string SearchDrugIdAndGenericNameByName { get { return "drugs_search_drug_id_and_generic_name_by_name"; } }
 
@@ -334,9 +336,28 @@ namespace SOFARCH.HealthScreening.DataModel
         
         public static string SearchDrugsByGenericName { get { return "drugs_search_drug_by_generic_name"; } }
 
+        public static string SearchDrugsByDrugName { get { return "drugs_search_drug_by_drug_name"; } }
+
+        public static string SearchDrugsByDrugGroupName { get { return "drugs_search_drug_by_drug_group_name"; } }
+
         public static string SearchDrugsByDrugGroupId { get { return "drugs_search_drug_by_drug_group_id"; } }
 
+        public static String SearchDrugsByFilters { get { return "drugs_search_drugs_by_generic_name_or_drug_name_or_group_name_or_drug_code"; } }
+       
         #endregion
+
+        #region DrugFormulations
+
+        public static string InsertDrugFormulation { get { return "drug_formulations_insert_drug_formulation"; } }
+
+        public static string UpdateDrugFormulation { get { return "drug_formulations_update_drug_formulation"; } }
+
+        public static string DeleteDrugFormulation { get { return "drug_formulations_delete_drug_formulation"; } }
+
+        public static string GetDrugFormulationIdAndCode { get { return "drug_formulations_get_id_and_code"; } }
+
+        #endregion
+
 
         #region Drugs Link With Drug Routes
 
@@ -467,13 +488,16 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeletePurchaseBill { get { return "purchase_bills_delete_purchase_bill"; } }
 
+        public static string CheckPurchaseBillNoExists { get { return "purchase_bills_check_purchase_bill_no_is_exists"; } }
         public static string GetPurchaseBillIdAndPurchaeBillNo { get { return "purchase_bills_get_purchase_bill_id_and_bill_no"; } }
 
         public static string GetPurchaseBillDetailsById { get { return "purchase_bills_get_bill_details_by_id"; } }
 
         public static string SearchAllPurchaseBills { get { return "purchase_bills_search_all"; } }
 
-        public static string SearchPurchaseBillById { get { return "purchase_bills_search_details_by_vendor_id"; } }
+        public static string SearchPurchaseBillsByPurchaseBillNo { get { return "purchase_bills_search_bill_by_purchase_bill_no"; } }
+
+        public static string SearchPurchaseBillByVendorId { get { return "purchase_bills_search_details_by_vendor_id"; } }
 
         #endregion
 

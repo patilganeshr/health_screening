@@ -10,15 +10,19 @@ namespace SOFARCH.HealthScreening.Entities
     {
         public Int32? DrugId { get; set; }
         
-        public string DrugCode { get; set; }
+        public Int32? DrugCode { get; set; }
 
         public string GenericName{ get; set; }
+
+        public string DrugName { get; set; }
 
         public Int32? DrugGroupId{ get; set; }
 
         public Int32? BrandId{ get; set; }
 
-        public string Formulation{ get; set; }
+        public Int32? DrugFormulationId{ get; set; }
+
+        public string DrugFormulationCode { get; set; }
 
         public string Strength{ get; set; }
 

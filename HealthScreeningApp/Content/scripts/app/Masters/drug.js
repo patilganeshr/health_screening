@@ -18,14 +18,21 @@ Sofarch.Drug = (function () {
         DOM.loader = document.getElementById('Loader');
 
         DOM.viewMode = document.getElementById('ViewMode');
+
+        DOM.searchDrug = document.getElementById('SearchDrug');
+        DOM.drugSearchOption = document.getElementById('DrugSearchOption');
+        DOM.searchValue = document.getElementById('SearchValue');
+        DOM.search = document.getElementById('Search');
+
         DOM.drugList = document.getElementById('DrugList');
 
         DOM.editMode = document.getElementById('EditMode');
         DOM.drugCode = document.getElementById('DrugCode');
         DOM.genericName = document.getElementById('GenericName');
+        DOM.drugName = document.getElementById('DrugName');
         DOM.drugGroup = document.getElementById('DrugGroup');
         DOM.brand = document.getElementById('Brand');
-        DOM.formulation = document.getElementById('Formulation');
+        DOM.drugFormulation = document.getElementById('DrugFormulation');
         DOM.strength = document.getElementById('Strength');
         DOM.unit = document.getElementById('Unit');
         DOM.adverseEffects = document.getElementById('AdverseEffects');
@@ -73,18 +80,22 @@ Sofarch.Drug = (function () {
     function bindEvents() {
 
         DOM.addNewDrug.addEventListener('click', addNewDrug);
-        DOM.showDrugList.addEventListener('click', getDrugs);
+        DOM.showDrugList.addEventListener('click', showDrugList);
         DOM.viewDrug.addEventListener('click', viewDrug);
         DOM.editDrug.addEventListener('click', editDrug);
         DOM.saveDrug.addEventListener('click', saveDrug);
         DOM.deleteDrug.addEventListener('click', deleteDrug);
+
+        DOM.search.addEventListener('click', searchDrugs);
     }
 
     function loadData() {
 
         getDrugGroups();
-        getBrandNames();
+        getDrugFormulation();
+        //getBrandNames();
         getDrugRoutes();
+        fillSearchOptions();
     }
 
     function getDrugGroups() {
@@ -102,7 +113,34 @@ Sofarch.Drug = (function () {
                     shared.setSelectOptionByIndex(DOM.drugGroup, parseInt(0));
                     shared.setSelect2ControlsText(DOM.drugGroup);
                 }
+
             }
+
+            shared.hideLoader(DOM.loader);
+
+        });
+                
+        shared.hideLoader(DOM.loader);
+    }
+
+    function getDrugFormulation() {
+
+        DOM.drugFormulation.options.length = 0;
+
+        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetDrugFormulationIdAndCode', DOM.drugFormulation, "DrugFormulationCode", "DrugFormulationId", "Choose Drug Formulation", function (response) {
+
+            if (response.status === 200) {
+
+                shared.showLoader(DOM.loader);
+
+                if (response.responseText !== undefined) {
+
+                    shared.setSelectOptionByIndex(DOM.drugFormulation, parseInt(0));
+                    shared.setSelect2ControlsText(DOM.drugFormulation);
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
 
         });
                 
@@ -125,6 +163,8 @@ Sofarch.Drug = (function () {
                     shared.setSelect2ControlsText(DOM.brand);
                 }
             }
+
+            shared.hideLoader(DOM.loader);
 
         });
         
@@ -154,6 +194,20 @@ Sofarch.Drug = (function () {
         });
 
         shared.hideLoader(DOM.loader);
+    }
+
+    function fillSearchOptions() {
+
+        var option = null;
+
+        option = "<option value='-1'>Choose Search Option</option>";
+        option += "<option value='gn'>Generic Name</option>";
+        option += "<option value='dn'>Drug Name</option>";
+        option += "<option value='dgn'>Drug Group Name</option>";
+        option += "<option value='dc'>Drug Code</option>";
+
+        DOM.drugSearchOption.innerHTML = option;
+
     }
 
     function bindDrugRoutes(data) {
@@ -189,6 +243,34 @@ Sofarch.Drug = (function () {
         }
 
         shared.hideLoader(DOM.loader);
+    }
+
+    function removeDrugSelection() {
+
+       var tableBody = DOM.drugList.tBodies[0];
+        
+        var checkBoxes = tableBody.querySelectorAll('.label-checkbox');
+
+        if (checkBoxes.length > 0) {
+
+            for (var c = 0; c < checkBoxes.length; c++) {
+
+                checkBoxes[c].checked = false;
+            }
+        }
+    }
+
+    function removeDrugRouteSelection() {
+
+        var checkBoxes = DOM.routes.querySelectorAll('.label-checkbox');
+
+        if (checkBoxes.length > 0) {
+
+            for (var c = 0; c < checkBoxes.length; c++) {
+
+                checkBoxes[c].checked = false;
+            }
+        }
     }
 
     var getSelectedRows = function (listObject) {
@@ -256,13 +338,15 @@ Sofarch.Drug = (function () {
 
         //clear the modal control inputs        
         shared.clearInputs(DOM.editMode);
+        shared.clearSelect(DOM.editMode);
+        removeDrugRouteSelection();
 
         shared.disableControls(DOM.editMode, false);
 
-        DOM.genericName.setAttribute('data-drug-id', 0);
+        DOM.drugName.setAttribute('data-drug-id', 0);
 
         //set focus
-        DOM.drugCode.focus();
+        DOM.genericName.focus();
 
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
@@ -273,6 +357,8 @@ Sofarch.Drug = (function () {
     function viewDrug() {
 
         shared.clearInputs(DOM.editMode);
+        shared.clearSelect(DOM.editMode);
+        removeDrugRouteSelection();
 
         shared.disableControls(DOM.editMode, true);
 
@@ -283,9 +369,21 @@ Sofarch.Drug = (function () {
 
     }
 
+    function showDrugList() {
+
+        shared.showPanel(DOM.viewMode);
+
+        shared.clearInputs(DOM.viewMode);
+        shared.clearTables(DOM.viewMode);
+
+        shared.hidePanel(DOM.editMode);
+    }
+
     function editDrug() {
 
         shared.clearInputs(DOM.editMode);
+        shared.clearSelect(DOM.editMode);
+        removeDrugRouteSelection();
 
         shared.disableControls(DOM.editMode, false);
                 
@@ -371,75 +469,7 @@ Sofarch.Drug = (function () {
             shared.hideLoader(DOM.loader);
         }
     }
-
-
-    function showDrugDetailsById(drugId) {
-
-        if (Drugs.length) {
-
-            var selectedDrug = Drugs.filter(function (value, index, array) {
-                return value.DrugId === drugId;
-            });
-
-            if (selectedDrug.length) {
-
-                DOM.drugCode.value = selectedDrug[0].DrugCode;
-                DOM.genericName.setAttribute('data-drug-id', selectedDrug[0].DrugId);
-                DOM.genericName.value = selectedDrug[0].GenericName;
-                shared.setSelectValue(DOM.drugGroup, null, parseInt(selectedDrug[0].DrugGroupId));
-                shared.setSelect2ControlsText(DOM.drugGroup);
-                shared.setSelectValue(DOM.brand, null, parseInt(selectedDrug[0].BrandId));
-                shared.setSelect2ControlsText(DOM.brand);
-                DOM.formulation.value = selectedDrug[0].Formulation;
-                DOM.strength.value = selectedDrug[0].Strength;
-                DOM.unit.value = selectedDrug[0].Unit;
-                DOM.adverseEffects.value = selectedDrug[0].AdverseEffects;
-                DOM.precautions.value = selectedDrug[0].Precautions;
-                DOM.remarks.value = selectedDrug[0].Remarks;
-
-                var selectedDrugsLinkWithDrougRoutes = selectedDrug[0].DrugLinkWithDrugRoutes.filter(function (value, index, array) {
-                    return value.DrugId === drugId;
-                });
-
-                if (selectedDrugsLinkWithDrougRoutes.length) {
-
-                    // find selected drug routes
-                    var inputTypes = DOM.routes.querySelectorAll('input[type="checkbox"]');
-
-                    if (inputTypes.length) {
-
-                        //Remove all the checked mark from checkbox
-                        for (c = 0; c < inputTypes.length; c++) {
-
-                            inputTypes[c].checked = false;
-                        }
-                    }
-
-                    for (var d = 0; d < selectedDrugsLinkWithDrougRoutes.length; d++) {
-                                            
-                        if (inputTypes.length) {
-
-                            for (c = 0; c < inputTypes.length; c++) {
-
-                                if (selectedDrugsLinkWithDrougRoutes[d].DrugRouteId === parseInt(inputTypes[c].id)) {
-                                    inputTypes[c].checked = true;
-                                    inputTypes[c].setAttribute('data-drug-route-link-id', selectedDrugsLinkWithDrougRoutes[d].DrugRouteLinkId);
-                                    inputTypes[c].setAttribute('data-drug-id', selectedDrugsLinkWithDrougRoutes[d].DrugId);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        shared.showPanel(DOM.editMode);
-        shared.hidePanel(DOM.viewMode);
-
-        DOM.drugCode.focus();
-    }
-
+        
     function saveDrugRoutes() {
 
         DrugRoutes.length = 0;
@@ -499,14 +529,14 @@ Sofarch.Drug = (function () {
 
     function saveDrug() {
 
-        if (DOM.drugCode.value === "") {
-            DOM.drugCode.focus();
-            swal("Error!!!", "Please enter the Drug Code.", "error");
-            return;
-        }
-        else if (DOM.genericName.value === "") {
+        if (DOM.genericName.value === "") {
             DOM.genericName.focus();
             swal("Error!!!", "Please enter the Generic Name.", "error");
+            return;
+        }
+        else if (DOM.drugName.value === "") {
+            DOM.drugName.focus();
+            swal("Error!!!", "Please enter the Drug Name.", "error");
             return;
         }
         else if (DOM.drugGroup.selectedIndex === 0) {
@@ -514,19 +544,20 @@ Sofarch.Drug = (function () {
             swal("Error!!!", "Please select the Drug Group.", "error");
             return;
         }
-        else if (DOM.brand.selectedIndex === 0) {
-            DOM.brand.focus();
-            swal("Error!!!", "Please select the Brand.", "error");
-            return;
-        }
+        //else if (DOM.brand.selectedIndex === 0) {
+        //    DOM.brand.focus();
+        //    swal("Error!!!", "Please select the Brand.", "error");
+        //    return;
+        //}
 
         /* temp variable */
         var drugId = 0;
         var drugCode = null;
         var genericName = null;
+        var drugName = null;
         var drugGroupId = 0;
         var brandId = 0;
-        var formulation = null;
+        var drugFormulationId = 0;
         var strength = null;
         var unit = null;
         var adverseEffects = null;
@@ -540,12 +571,13 @@ Sofarch.Drug = (function () {
             return;
         }
 
-        drugId = parseInt(DOM.genericName.getAttribute('data-drug-id'));
+        drugId = parseInt(DOM.drugName.getAttribute('data-drug-id'));
         drugCode = DOM.drugCode.value;
         genericName = DOM.genericName.value;
+        drugName = DOM.drugName.value;
         drugGroupId = parseInt(DOM.drugGroup.options[DOM.drugGroup.selectedIndex].value);
-        brandId = parseInt(DOM.brand.options[DOM.brand.selectedIndex].value);
-        formulation = DOM.formulation.value;
+        brandId = 0; //parseInt(DOM.brand.options[DOM.brand.selectedIndex].value);
+        drugFormulationId =  parseInt(DOM.drugFormulation.options[DOM.drugFormulation.selectedIndex].value);
         strength = DOM.strength.value;
         unit = DOM.unit.value;
         adverseEffects = DOM.adverseEffects.value;
@@ -560,9 +592,10 @@ Sofarch.Drug = (function () {
                 DrugId: drugId,
                 DrugCode: drugCode,
                 GenericName: genericName,
+                DrugName: drugName,
                 DrugGroupId: drugGroupId,
                 BrandId: brandId,
-                Formulation: formulation,
+                DrugFormulationId: drugFormulationId,
                 Strength: strength,
                 Unit: unit,
                 AdverseEffects: adverseEffects,
@@ -594,7 +627,7 @@ Sofarch.Drug = (function () {
                         text: "Records Saved Successfully.",
                         type: "success"
                     }, function () {
-                        getDrugs();
+                        //showDrugList();
                     });
                 }
             }
@@ -649,7 +682,9 @@ Sofarch.Drug = (function () {
 
                 data += "<tr data-drug-id=" + Drugs[r].DrugId + ">";
                 data += "<td class='text-center'><label class='label-tick'> <input type='checkbox' id='" + Drugs[r].DrugId + "' class='label-checkbox' name='SelectDrug' /> <span class='label-text'></span> </label>" + "</td>";
-                data += "<td class='text-center'>" + Drugs[r].GenericName + "</td>";
+                data += "<td>" + Drugs[r].GenericName + "</td>";
+                data += "<td>" + Drugs[r].DrugCode + "</td>";
+                data += "<td>" + Drugs[r].DrugName + "</td>";
                 data += '</tr>';
             }
 
@@ -664,7 +699,124 @@ Sofarch.Drug = (function () {
         shared.hideLoader(DOM.loader);
     }
     
-    
+    function showDrugDetailsById(drugId) {
+
+        if (Drugs.length) {
+
+            var selectedDrug = Drugs.filter(function (value, index, array) {
+                return value.DrugId === drugId;
+            });
+
+            if (selectedDrug.length) {
+
+                DOM.drugCode.value = selectedDrug[0].DrugCode;
+                DOM.genericName.value = selectedDrug[0].GenericName;
+                DOM.drugName.value = selectedDrug[0].DrugName;
+                DOM.drugName.setAttribute('data-drug-id', selectedDrug[0].DrugId); 
+                shared.setSelectValue(DOM.drugGroup, null, parseInt(selectedDrug[0].DrugGroupId));
+                shared.setSelect2ControlsText(DOM.drugGroup);
+                //shared.setSelectValue(DOM.brand, null, parseInt(selectedDrug[0].BrandId));
+                //shared.setSelect2ControlsText(DOM.brand);
+                shared.setSelectValue(DOM.drugFormulation, null, parseInt(selectedDrug[0].DrugFormulationId));
+                shared.setSelect2ControlsText(DOM.drugFormulation);
+                DOM.strength.value = selectedDrug[0].Strength;
+                DOM.unit.value = selectedDrug[0].Unit;
+                DOM.adverseEffects.value = selectedDrug[0].AdverseEffects;
+                DOM.precautions.value = selectedDrug[0].Precautions;
+                DOM.remarks.value = selectedDrug[0].Remarks;
+
+                var selectedDrugsLinkWithDrougRoutes = selectedDrug[0].DrugLinkWithDrugRoutes.filter(function (value, index, array) {
+                    return value.DrugId === drugId;
+                });
+
+                if (selectedDrugsLinkWithDrougRoutes.length) {
+
+                    // find selected drug routes
+                    var inputTypes = DOM.routes.querySelectorAll('input[type="checkbox"]');
+
+                    if (inputTypes.length) {
+
+                        //Remove all the checked mark from checkbox
+                        for (c = 0; c < inputTypes.length; c++) {
+
+                            inputTypes[c].checked = false;
+                        }
+                    }
+
+                    for (var d = 0; d < selectedDrugsLinkWithDrougRoutes.length; d++) {
+                                            
+                        if (inputTypes.length) {
+
+                            for (c = 0; c < inputTypes.length; c++) {
+
+                                if (selectedDrugsLinkWithDrougRoutes[d].DrugRouteId === parseInt(inputTypes[c].id)) {
+                                    inputTypes[c].checked = true;
+                                    inputTypes[c].setAttribute('data-drug-route-link-id', selectedDrugsLinkWithDrougRoutes[d].DrugRouteLinkId);
+                                    inputTypes[c].setAttribute('data-drug-id', selectedDrugsLinkWithDrougRoutes[d].DrugId);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        shared.showPanel(DOM.editMode);
+        shared.hidePanel(DOM.viewMode);
+
+        DOM.drugCode.focus();
+    }
+
+    function searchDrugs() {
+
+        shared.showLoader(DOM.loader);
+
+        DOM.drugList.tBodies[0].innerHTML = "";
+
+        Drugs.length = 0;
+
+        var searchOption = DOM.drugSearchOption.options[DOM.drugSearchOption.selectedIndex].text;
+        var searchValue = DOM.searchValue.value;
+        var url = null;
+
+        if (searchOption.toLowerCase() === "generic name") {
+            url = "SearchDrugsByGenericName/" + searchValue;
+        }
+        else if (searchOption.toLowerCase() === "drug name") {
+            url = "SearchDrugsByDrugName/" + searchValue;
+        }
+        else if (searchOption.toLowerCase() === "drug group name") {
+            url = "SearchDrugsByDrugGroupName/" + searchValue;
+        }
+        else if (searchOption.toLowerCase() === "drug code") {
+            url = "SearchDrugsByDrugCode/" + searchValue;
+        }
+        else {
+            url = "SearchDrugsAll";
+        }
+
+        shared.sendRequest(SERVICE_PATH + url, "GET", true, "JSON", null, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        Drugs = _response;
+
+                        bindDrug();
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+    }
+
     /* ---- public methods ---- */
     function init() {
         cacheDOM();

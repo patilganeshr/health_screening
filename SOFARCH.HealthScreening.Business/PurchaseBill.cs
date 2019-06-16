@@ -16,6 +16,10 @@ namespace SOFARCH.HealthScreening.Business
             _purchaseBill = new DataModel.PurchaseBill();
         }
 
+        public bool CheckPurchaseBillNoIsExists(Int32 vendorId, string purchaseBillNo) {
+            return _purchaseBill.CheckPurchaseBillNoIsExists(vendorId, purchaseBillNo);
+        }
+
         public List<Entities.PurchaseBill> GetPurchaseBillIdAndPurcharseBillNo()
         {
             return _purchaseBill.GetPurchaseBillIdAndPurcharseBillNo();
@@ -24,6 +28,11 @@ namespace SOFARCH.HealthScreening.Business
         public List<Entities.PurchaseBill> SearchPurchaseBillsAll()
         {
             return _purchaseBill.SearchPurchaseBillsAll();
+        }
+
+        public List<Entities.PurchaseBill> SearchPurchaseBillsByPurchaseBillNo(string purchaseBillNo)
+        {
+            return _purchaseBill.SearchPurchaseBillsByPurchaseBillNo(purchaseBillNo);
         }
 
         public Int32 SavePurchaseBill(Entities.PurchaseBill purchaseBill)

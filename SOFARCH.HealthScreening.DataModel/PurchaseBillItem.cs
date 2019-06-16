@@ -39,6 +39,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@pack_2", DbType.Decimal, purchaseBillItem.Pack2);
                     database.AddInParameter(dbCommand, "@free_qty", DbType.Decimal, purchaseBillItem.FreeQty);
                     database.AddInParameter(dbCommand, "@rate_per_pack_1", DbType.Decimal, purchaseBillItem.RatePerPack1);
+                    database.AddInParameter(dbCommand, "@expiry_date", DbType.String, purchaseBillItem.ExpiryDate);
                     database.AddInParameter(dbCommand, "@tax_percent", DbType.Decimal, purchaseBillItem.TaxPercent);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, purchaseBillItem.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, purchaseBillItem.CreatedByIP);
@@ -140,13 +141,15 @@ namespace SOFARCH.HealthScreening.DataModel
                                 PurchaseBillItemId = DRE.GetNullableInt32(reader, "purchase_bill_item_id", null),
                                 PurchaseBillId = DRE.GetNullableInt32(reader, "purchase_bill_id", 0),
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
-                                DrugCode = DRE.GetNullableString(reader, "drug_code", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
                                 GenericName = DRE.GetNullableString(reader, "generic_name", null ),
                                 BatchNo = DRE.GetNullableString(reader, "batch_no", null),
                                 Pack1 = DRE.GetNullableDecimal(reader, "pack_1", null),
                                 Pack2 = DRE.GetNullableDecimal(reader, "pack_2", null),
                                 FreeQty = DRE.GetNullableDecimal(reader, "free_qty", null),
                                 RatePerPack1 = DRE.GetNullableDecimal(reader, "rate_per_pack_1", null),
+                                ExpiryDate = DRE.GetNullableString(reader, "expiry_date", null),
                                 TaxPercent = DRE.GetNullableDecimal(reader, "tax_percent", null),
                                 TaxAmount = DRE.GetNullableDecimal(reader, "tax_amount", null),
                                 ItemAmount = DRE.GetNullableDecimal(reader, "item_amount", null)
@@ -181,6 +184,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@pack_2", DbType.Decimal, purchaseBillItem.Pack2);
                     database.AddInParameter(dbCommand, "@free_qty", DbType.Decimal, purchaseBillItem.FreeQty);
                     database.AddInParameter(dbCommand, "@rate_per_pack_1", DbType.Decimal, purchaseBillItem.RatePerPack1);
+                    database.AddInParameter(dbCommand, "@expiry_date", DbType.String, purchaseBillItem.ExpiryDate);
                     database.AddInParameter(dbCommand, "@tax_percent", DbType.Decimal, purchaseBillItem.TaxPercent);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, purchaseBillItem.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, purchaseBillItem.ModifiedByIP);
