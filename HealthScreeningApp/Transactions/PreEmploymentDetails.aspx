@@ -135,35 +135,32 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Employee Name</label>
                                                         <input type="text" id="EmployeeName" class="form-control" />
                                                     </div>
                                                 </div>
 
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div id="SearchEmployeeList" class="autocompleteList"></div>
+                                                </div>
+
                                                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Age</label>
-                                                        <input type="text" id="Age" class="form-control" />
+                                                        <input type="text" id="Age" class="form-control" readonly="readonly" />
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Gender</label>
                                                         <input type="text" id="Gender" class="form-control" disabled="disabled" />
                                                     </div>
                                                 </div>
 
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Marital Status</label>
                                                         <input id="MaritalStatus" class="form-control" />
@@ -185,12 +182,8 @@
                                                 </div>
 
                                             </div>
-                                        </div>
-
-                                        <div class="row">
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
 
                                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
@@ -213,72 +206,78 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="row">
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Personal History of major illness</label>
-                                                    <input type="text" id="PersonalHistoryOfMajorIllness" class="form-control" />
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Personal History of major illness</label>
+                                                        <input type="text" id="PersonalHistoryOfMajorIllness" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Drug Allergy</label>
+                                                        <input type="text" id="DrugAllergy" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Micturation</label>
+                                                        <input type="text" id="Micturation" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Bowels</label>
+                                                        <input type="text" id="Bowels" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Sleep</label>
+                                                        <input type="text" id="Sleep" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Alcohol</label>
+                                                        <input type="text" id="Alcohol" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Smoking</label>
+                                                        <input type="text" id="Smoking" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>M.C.</label>
+                                                        <input type="text" id="MC" class="form-control" />
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Drug Allergy</label>
-                                                    <input type="text" id="DrugAllergy" class="form-control" />
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Family History of any major illness</label>
+                                                        <input type="text" id="FamilyHistoryOfMajorIllness" class="form-control" />
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Micturation</label>
-                                                    <input type="text" id="Micturation" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Bowels</label>
-                                                    <input type="text" id="Bowels" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Sleep</label>
-                                                    <input type="text" id="Sleep" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Alcohol</label>
-                                                    <input type="text" id="Alcohol" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Smoking</label>
-                                                    <input type="text" id="Smoking" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>M.C.</label>
-                                                    <input type="text" id="MC" class="form-control" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
-                                                <div class="form-group form-group-sm">
-                                                    <label>Family History of any major illness</label>
-                                                    <input type="text" id="FamilyHistoryOfMajorIllness" class="form-control" />
-                                                </div>
-                                            </div>
 
                                         </div>
 
@@ -318,7 +317,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th class="text-center">Test Name</th>
-                                                                <th class="text-center">Test Result</th>                                                                
+                                                                <th class="text-center">Test Result</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -351,7 +350,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th class="text-center">Test Name</th>
-                                                                    <th class="text-center">Test Result</th>                                                                    
+                                                                    <th class="text-center">Test Result</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -362,6 +361,34 @@
 
                                                 </div>
 
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        
+                                                        <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                            <div class="form-group form-group-md">
+                                                                <label>Other Details</label>
+                                                                <textarea class="form-control" id="OtherDetails" rows="5"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                            <div class="form-group form-group-md">
+                                                                <label>Remarks</label>
+                                                                <textarea class="form-control" id="Remarks" rows="5"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                            <div class="form-group form-group-md">
+                                                                <label>Medically Fit</label>
+                                                                <textarea class="form-control" id="MedicallyFit" rows="5"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
                                             </div>
 
                                         </div>

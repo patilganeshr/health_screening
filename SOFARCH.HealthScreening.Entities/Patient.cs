@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SOFARCH.HealthScreening.Entities
 {
-    public class Employee : BaseEntity
+    public class Patient : BaseEntity
     {
-        public Int32? EmployeeId { get; set; }
+        public Int32? PatientId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -38,7 +38,7 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string Gender { get; set; }
 
-        public string EmployeeCode { get; set; }
+        public string PatientCode { get; set; }
 
         public Int32? CompanyId { get; set; }
 
@@ -50,9 +50,9 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string ContactNos { get; set; }
 
-        public PatientPersonalHistory EmployeePersonalHistory { get; set; }
+        public PatientPersonalHistory PatientPersonalHistory { get; set; }
 
-        public List<PatientExerciseHistory> EmployeeExerciseHistories { get; set; }
+        public List<PatientExerciseHistory> PatientExerciseHistories { get; set; }
 
         public string CompanyName { get; set; }
 

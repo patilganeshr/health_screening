@@ -60,9 +60,10 @@
     <Compile Include="DrugGroup.cs" />
     <Compile Include="DrugLinkWithDrugRoutes.cs" />
     <Compile Include="DrugRoutes.cs" />
+    <Compile Include="Patient.cs" />
     <Compile Include="Employee.cs" />
-    <Compile Include="EmployeeExerciseHistory.cs" />
-    <Compile Include="EmployeePersonalHistory.cs" />
+    <Compile Include="PatientExerciseHistory.cs" />
+    <Compile Include="PatientPersonalHistory.cs" />
     <Compile Include="Employer.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationType.cs" />

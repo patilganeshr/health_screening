@@ -35,14 +35,6 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _employee.IsEmployeeNameExists(companyId, employeeName);
         }
 
-        [HttpGet]
-        [Route("IsExmployeeCodeExists/{companyId}/{employeeCode}")]
-        public bool IsEmployeeCodeExists(Int32 companyId, string employeeCode)
-        {
-            return _employee.IsEmployeeCodeExists(companyId, employeeCode);
-        }
-
-
         /// <summary>
         /// /
         /// </summary>
@@ -59,6 +51,12 @@ namespace SOFARCH.HealthScreening.API.Controllers
         public List<Entities.Employee> SearchAllEmployees()
         {
             return _employee.SearchAllEmployees();
+        }
+
+        [Route("GetEmployeeIdAndNameByEmployeeName/{employeeName}")]
+        public List<Entities.Employee> GetEmployeeIdAndNameByEmployeeName(string employeeName)
+        {
+            return _employee.GetEmployeeIdAndNameByEmployeeName(employeeName);
         }
 
         /// <summary>

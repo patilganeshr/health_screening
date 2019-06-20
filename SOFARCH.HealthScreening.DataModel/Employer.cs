@@ -103,13 +103,13 @@ namespace SOFARCH.HealthScreening.DataModel
         /// /
         /// </summary>
         /// <returns></returns>
-        public List<Entities.Employer> GetAllEmployers()
+        public List<Entities.Employer> GetAllEmployerIdAndName()
         {
             var employers = new List<Entities.Employer>();
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllEmployers))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetAllEmployerIdAndName))
                 {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -134,6 +134,37 @@ namespace SOFARCH.HealthScreening.DataModel
             return employers;
         }
 
+
+        public List<Entities.Employer> GetEmployerIdAndNameByName(string employerName)
+        {
+            var employers = new List<Entities.Employer>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetEmployerIdAndNameByName))
+                {
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var employer = new Entities.Employer
+                            {
+                                EmployerId = DRE.GetNullableInt32(reader, "employer_id", 0),
+                                EmployerName = DRE.GetNullableString(reader, "employer_name", null)
+                            };
+
+                            employers.Add(employer);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return employers;
+        }
 
         public List<Entities.Employer> SearchEmployerByName(string employerName)
         {

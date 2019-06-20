@@ -70,7 +70,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeletePurchaseBillItem))
                 {
-                    database.AddInParameter(dbCommand, "@purchase_bill_item_id", DbType.Int32, purchaseBillItem.PurchaseBillId);
+                    database.AddInParameter(dbCommand, "@purchase_bill_item_id", DbType.Int32, purchaseBillItem.PurchaseBillItemId);
                     database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, purchaseBillItem.DeletedBy);
                     database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, purchaseBillItem.DeletedByIP);
 

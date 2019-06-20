@@ -26,11 +26,6 @@ namespace SOFARCH.HealthScreening.Business
             return _employee.IsEmployeeNameExists(companyId, employeeName);
         }
 
-        public bool IsEmployeeCodeExists(Int32 companyId, string employeeCode)
-        {
-            return _employee.IsEmployeeCodeExists(companyId, employeeCode);
-        }
-
         /// <summary>
         /// /
         /// </summary>
@@ -43,6 +38,11 @@ namespace SOFARCH.HealthScreening.Business
         public List<Entities.Employee> SearchAllEmployees()
         {
             return _employee.SearchAllEmployees();
+        }
+
+        public List<Entities.Employee> GetEmployeeIdAndNameByEmployeeName(string employeeName)
+        {
+            return _employee.GetEmployeeIdAndNameByEmployeeName(employeeName);
         }
 
         /// <summary>

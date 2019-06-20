@@ -26,7 +26,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private Int32 AddEmployee(Entities.Employee employee, DbTransaction dbTransaction)
+        private Int32 AddEmployee(Entities.Employee employee)
         {
             var employeeId = 0;
 
@@ -35,7 +35,6 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertEmployee))
                 {
                     database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employee.EmployeeId);
-                    database.AddInParameter(dbCommand, "@employee_code", DbType.String, employee.EmployeeCode);
                     database.AddInParameter(dbCommand, "@title", DbType.String, employee.Title);
                     database.AddInParameter(dbCommand, "@first_name", DbType.String, employee.FirstName);
                     database.AddInParameter(dbCommand, "@middle_name", DbType.String, employee.MiddleName);
@@ -57,7 +56,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    employeeId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+                    employeeId = database.ExecuteNonQuery(dbCommand);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -69,7 +68,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-          
+
             return employeeId;
         }
 
@@ -79,7 +78,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private bool DeleteEmployee(Entities.Employee employee, DbTransaction dbTransaction)
+        private bool DeleteEmployee(Entities.Employee employee)
         {
             bool isDeleted = false;
 
@@ -93,7 +92,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
+                    var result = database.ExecuteNonQuery(dbCommand);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -105,7 +104,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-      
+
             return isDeleted;
         }
 
@@ -122,7 +121,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
-                        while(reader.Read())
+                        while (reader.Read())
                         {
                             isEmployeeNameExists = reader.GetBoolean(reader.GetOrdinal("is_employee_name_exists"));
                         }
@@ -137,44 +136,12 @@ namespace SOFARCH.HealthScreening.DataModel
             return isEmployeeNameExists;
         }
 
-        public bool IsEmployeeCodeExists(Int32 companyId, string employeeCode)
-        {
-            bool isEmployeeCodeExists = false;
-
-            try
-            {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.CheckEmployeeCodeIsExists))
-                {
-                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, companyId);
-                    database.AddInParameter(dbCommand, "@employee_code", DbType.String, employeeCode);
-
-                    using (IDataReader reader = database.ExecuteReader(dbCommand))
-                    {
-                        while (reader.Read())
-                        {
-                            isEmployeeCodeExists = DRE.GetBoolean(reader, "is_employee_code_exists");
-
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return isEmployeeCodeExists;
-        }
-
         private List<Entities.Employee> GetEmployees(IDataReader reader)
         {
             var employees = new List<Entities.Employee>();
 
             while (reader.Read())
             {
-                EmployeePersonalHistory employeePersonalHistory = new EmployeePersonalHistory();
-                EmployeeExerciseHistory employeeExerciseHistory = new EmployeeExerciseHistory();
-
                 var employee = new Entities.Employee
                 {
                     EmployeeId = DRE.GetNullableInt32(reader, "employee_id", 0),
@@ -197,9 +164,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     Department = DRE.GetNullableString(reader, "department", null),
                     Designation = DRE.GetNullableString(reader, "designation", null),
                     CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
-                    CompanyName = DRE.GetNullableString(reader, "company_name", null),
-                    EmployeePersonalHistory = employeePersonalHistory.GetEmployeePersonalHistoriesByEmployeeId(DRE.GetInt32(reader, "employee_id")),
-                    EmployeeExerciseHistories = employeeExerciseHistory.GetEmployeeExerciseHistoriesByEmployeeId(DRE.GetInt32(reader, "employee_id"))
+                    CompanyName = DRE.GetNullableString(reader, "company_name", null)
                 };
 
                 employees.Add(employee);
@@ -232,7 +197,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
- 
+
             return employees;
         }
 
@@ -243,10 +208,43 @@ namespace SOFARCH.HealthScreening.DataModel
             try
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchAllEmployees))
-                {   
+                {
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         employees = GetEmployees(reader);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return employees;
+        }
+
+
+        public List<Entities.Employee> GetEmployeeIdAndNameByEmployeeName(string employeeName)
+        {
+            List<Entities.Employee> employees = new List<Entities.Employee>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetEmployeeIdAndNameByEmployeeName))
+                {
+                    database.AddInParameter(dbCommand, "@employee_name", DbType.String, employeeName);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        var employee = new Entities.Employee()
+                        {
+                            EmployeeId = DRE.GetNullableInt32(reader, "@employee_id", null),
+                            EmployeeCode = DRE.GetNullableString(reader, "@employee_code", null),
+                            CompanyName = DRE.GetNullableString(reader, "@company_name", null),
+                            FullName = DRE.GetNullableString(reader, "@full_name", null)
+                        };
+
+                        employees.Add(employee);
                     }
                 }
             }
@@ -312,7 +310,7 @@ namespace SOFARCH.HealthScreening.DataModel
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        private Int32 UpdateEmployee(Entities.Employee employee, DbTransaction dbTransaction)
+        private Int32 UpdateEmployee(Entities.Employee employee)
         {
             var employeeId = 0;
 
@@ -343,7 +341,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    employeeId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+                    employeeId = database.ExecuteNonQuery(dbCommand);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -355,7 +353,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return employeeId;
         }
 
@@ -368,103 +366,27 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var employeeId = 0;
 
-            var db = DBConnect.getDBConnection();
-
-            using(DbConnection conn = db.CreateConnection())
+            if (employee.EmployeeId == null || employee.EmployeeId == 0)
             {
-                conn.Open();
+                employeeId = AddEmployee(employee);
+            }
+            else if (employee.ModifiedBy != null || employee.ModifiedBy > 0)
+            {
+                employeeId = UpdateEmployee(employee);
+            }
+            else if (employee.IsDeleted == true)
+            {
+                var result = DeleteEmployee(employee);
 
-                using(DbTransaction transaction = conn.BeginTransaction())
+                if (result)
                 {
-                    try
-                    {
-                        var employeePersonalHistoryId = 0;
-                        var employeeExerciseHistoryId = 0;
-
-                        if (employee != null)
-                        {
-                            if (employee.EmployeeId == null || employee.EmployeeId == 0)
-                            {
-                                employeeId = AddEmployee(employee, transaction);
-                            }
-                            else if (employee.ModifiedBy != null || employee.ModifiedBy > 0)
-                            {
-                                employeeId = UpdateEmployee(employee, transaction);
-                            }
-                            else if (employee.IsDeleted == true)
-                            {
-                                var result = DeleteEmployee(employee, transaction);
-
-                                
-                                if (result)
-                                {
-                                    employeeId = (int)employee.EmployeeId;
-                                }
-                                else
-                                {
-                                    employeeId = 1;
-                                }
-                            }
-
-                            if (employeeId > 0)
-                            {
-                                if (employee.EmployeePersonalHistory != null)
-                                {
-                                    EmployeePersonalHistory personalHistory = new EmployeePersonalHistory();
-
-                                    employee.EmployeePersonalHistory.EmployeeId  = employeeId;
-
-                                    employeePersonalHistoryId = personalHistory.SaveEmployeePersonalHistory(employee.EmployeePersonalHistory, transaction);
-
-                                    if (employeePersonalHistoryId < 0)
-                                    {
-                                        employeeId = -1;
-                                    }
-
-                                }
-
-                                if (employee.EmployeeExerciseHistories != null)
-                                {
-                                    if (employee.EmployeeExerciseHistories.Count > 0)
-                                    {
-                                        foreach (Entities.EmployeeExerciseHistory employeeExerciseHistory in employee.EmployeeExerciseHistories)
-                                        {
-                                            EmployeeExerciseHistory exerciseHistory = new EmployeeExerciseHistory();
-
-                                            employeeExerciseHistory.EmployeeId = employeeId;
-
-                                            employeeExerciseHistoryId =  exerciseHistory.SaveEmployeeExerciseHistory(employeeExerciseHistory, transaction);
-
-                                            if (employeeExerciseHistoryId < 0)
-                                            {
-                                                employeeId = -1;
-                                            }
-                                        }
-                                    }
-
-                                }
-
-                            }
-                        }
-
-                        if (employeeId > 0)
-                        {
-                            transaction.Commit();
-                        }
-                        else
-                        {
-                            transaction.Rollback();
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        employeeId = -1;
-                        transaction.Rollback();
-                        throw ex;
-                    }
+                    employeeId = (int)employee.EmployeeId;
+                }
+                else
+                {
+                    employeeId = 1;
                 }
             }
-            
 
             return employeeId;
         }

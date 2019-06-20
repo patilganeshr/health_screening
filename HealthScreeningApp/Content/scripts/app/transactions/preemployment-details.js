@@ -26,6 +26,7 @@ Sofarch.PreEmployment = (function () {
         DOM.employeeDetails = document.getElementById('EmployeeDetails');
         DOM.employeeCode = document.getElementById('EmployeeCode');
         DOM.employeeName = document.getElementById('EmployeeName');
+        DOM.searchEmployeeList = document.getElementById('SearchEmployeeList');
         DOM.age = document.getElementById('Age');
         DOM.gender = document.getElementsByName('Gender');
         DOM.maritalStatus = document.getElementsByName('MaritalStatus');
@@ -100,8 +101,12 @@ Sofarch.PreEmployment = (function () {
         DOM.savePreEmploymentDetails.addEventListener('click', savePreEmploymentDetails);
         DOM.deletePreEmploymentDetails.addEventListener('click', deletePreEmploymentDetails);
 
-        DOM.employeeCode.onblur = function () {
-            getEmployeeAndTestDetails();
+        DOM.employeeName.onkeyup = function (e) {
+
+            if (CurrentFocus === undefined) { CurrentFocus = -1; }
+
+            showSearchEmployeeList(e);
+
         };
 
     }
@@ -110,6 +115,131 @@ Sofarch.PreEmployment = (function () {
 
         addNewPreEmploymentDetails();
 
+    }
+
+    function showSearchEmployeeList(e) {
+
+        if (e.keyCode === 13) {
+            CurrentFocus = -1;
+            showEmployeeNameOnEnterKey(e);
+            return;
+        }
+
+        var dataAttributes = ['Employee-Id', 'Full-Name'];
+
+        var parameters = {};
+
+        parameters = {
+
+            Event: e,
+            CurrentFocus: CurrentFocus,
+            PostDataKeyValue: postMessage,
+            ElementToBeAppend: DOM.searchEmployeeList,
+            DataAttributes: dataAttributes,
+            PostParamObject: undefined,
+            URL: SERVICE_PATH + "GetEmployeeIdAndNameByEmployeeName/" + DOM.employeeName.value + "/",
+            DisplayName: "FullName"
+        };
+
+        shared.showAutoCompleteItemsList(parameters, function (response) {
+        
+            if (response !== undefined) {
+
+                if (response >= 0) {
+
+                    CurrentFocus = response;
+                }
+                else {
+                                        
+                    CurrentFocus = -1;
+
+                    var autoCompleteList = response;
+
+                    var listCount = autoCompleteList.length;
+
+                    if (listCount) {
+
+                        var data = "";
+
+                        var fragment = document.createDocumentFragment();
+
+                        var ul = document.createElement('ul');
+
+                        ul.classList.add('list-group');
+
+                        for (var s = 0; s < listCount; s++) {   
+
+                            var li = document.createElement('li');
+                            var p = document.createElement('p');
+
+                            li.classList.add('list-group-item');
+                            li.classList.add('clearfix');
+
+                            li.setAttribute('id', autoCompleteList[s].EmployeeId);
+
+                            li.style.cursor = "pointer";
+                            li.onclick = showEmployeeNameOnSelection;
+                            li.textContent = autoCompleteList[s].FullName;
+
+                            p.classList.add('list-group-item-text');
+                            p.textContent = autoCompleteList[s].CompanyName;
+
+                            li.appendChild(p);
+
+                            fragment.appendChild(li);
+                        }
+
+                        ul.appendChild(fragment);
+
+                        DOM.searchEmployeeList.appendChild(ul);
+
+                        DOM.searchEmployeeList.style.width = e.target.offsetWidth + 'px';
+                        DOM.searchEmployeeList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
+
+                        DOM.searchEmployeeList.classList.add('autocompleteList-active');
+                        //DOM.itemsList.innerHTML = data;
+
+                    }
+                }
+            }
+
+        });
+    }
+
+    function showEmployeeNameOnSelection(e) {
+
+        FLAG = "NEW ITEM";
+
+        setEmployeeName(e.target.textContent, e.target.id);
+
+    }
+
+    function showEmployeeNameOnEnterKey() {
+
+        FLAG = "NEW ITEM";
+       
+        var li = DOM.searchEmployeeList.querySelectorAll('.autocompleteListItem-active');
+
+        var count = li.length;
+
+        if (count) {
+
+            setEmployeeName(li[0].textContent, li[0].id);
+        }
+
+    }
+
+    function setEmployeeName(name, id) {
+
+        DOM.employeeName.value = name;
+
+        DOM.employeeName.setAttribute('data-employee-id', id);
+
+        shared.closeAutoCompleteList(DOM.searchEmployeeList);
+
+        DOM.employeeName.focus();
+
+        getEmployeeAndTestDetails(employeeId);
     }
 
     var getSelectedRows = function () {
@@ -231,19 +361,15 @@ Sofarch.PreEmployment = (function () {
         return preEmploymentId;
     };
 
-    function getEmployeeAndTestDetails() {
+    function getEmployeeAndTestDetails(employeeId) {
 
-        var employeeCode = "";
-
-        employeeCode = DOM.employeeCode.value;
-
-        employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+        //employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
         
         if (isNaN(employeeId)) { employeeId = 0; }
 
-        if (employeeCode !== "") {
+        if (DOM.employeeName.value !== "") {
 
-            shared.sendRequest(SERVICE_PATH + "GetEmployeeDetails/7", "GET", true, "JSON", null, function (response) {
+            shared.sendRequest(SERVICE_PATH + "GetEmployeeDetails/" + employeeId, "GET", true, "JSON", null, function (response) {
 
                 if (response.status === 200) {
 
@@ -272,14 +398,14 @@ Sofarch.PreEmployment = (function () {
         shared.disableControls(DOM.editMode, false);
         shared.clearTables(DOM.editMode);
 
-        DOM.employeeCode.setAttribute('data-employee-id', 0);
+        DOM.employeeName.setAttribute('data-employee-id', 0);
         
         // Show panel;
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
 
         // Set focus
-        DOM.employeeCode.focus();
+        DOM.employeeName.focus();
 
         shared.hideLoader(DOM.loader);
     }
@@ -553,8 +679,8 @@ Sofarch.PreEmployment = (function () {
         if (EmployeeDetails !== null) {
 
             DOM.employeeCode.value = EmployeeDetails.EmployeeCode;
-            DOM.employeeCode.setAttribute('data-employee-id', EmployeeDetails.EmployeeId);
-            DOM.employeeCode.setAttribute('data-pre-employment-id', EmployeeDetails.PreEmploymentId);
+            DOM.employeeName.setAttribute('data-employee-id', EmployeeDetails.EmployeeId);
+            DOM.employeeName.setAttribute('data-pre-employment-id', EmployeeDetails.PreEmploymentId);
             DOM.employeeName.value = EmployeeDetails.EmployeeFullName;
             DOM.age.value = EmployeeDetails.Age;
             DOM.gender.value = EmployeeDetails.Gender;
@@ -730,7 +856,7 @@ Sofarch.PreEmployment = (function () {
         firstName = DOM.firstName.value;
         middleName = DOM.middleName.value;
         lastName = DOM.lastName.value;
-        employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+        employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
 
         if (isNaN(employeeId)) { employeeId = 0;}
             
@@ -769,7 +895,7 @@ Sofarch.PreEmployment = (function () {
         var employeeCode = "";
 
         employeeCode = DOM.employeeCode.value;
-        employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+        employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
 
         if (isNaN(employeeId)) { employeeId = 0;}
             
@@ -806,7 +932,7 @@ Sofarch.PreEmployment = (function () {
             var employeeId = 0;
             
             preEmploymentId = parseInt(DOM.employeeCode.getAttribute('data-pre-employment-id'));
-            employeeId = parseInt(DOM.employeeCode.getAttribute('data-employee-id'));
+            employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
             
             if (isNaN(preEmploymentId)) { preEmploymentId = 0; }
             if (isNaN(employeeId)) { employeeId = 0; }

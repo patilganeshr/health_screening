@@ -553,44 +553,52 @@ Sofarch.PurchaseBill = (function () {
 
         shared.showLoader(DOM.loader);
 
-        var purchaseBillNo = null;
+        var purchaseBillNo = null;      
+        var purchaseBillId = 0;
         var vendorId = 0;
 
         purchaseBillNo = DOM.purchaseBillNo.value;
+        purchaseBillId = parseInt(DOM.purchaseBillNo.getAttribute('data-purchase-bill-id'));
         vendorId = parseInt(DOM.vendor.getAttribute('data-client-address-id'));
 
         if (isNaN(vendorId)) { vendorId = 0; }
 
-        if (purchaseBillNo !== "" && vendorId > 0) {
+        if (purchaseBillId === 0) {
 
-            shared.sendRequest(SERVICE_PATH + "CheckPurchaseBillNoIsExists/" + vendorId + "/" + purchaseBillNo, "GET", true, "JSON", null, function (response) {
+            if (purchaseBillNo !== "" && vendorId > 0) {
 
-                if (response.status === 200) {
+                shared.sendRequest(SERVICE_PATH + "CheckPurchaseBillNoIsExists/" + vendorId + "/" + purchaseBillNo, "GET", true, "JSON", null, function (response) {
 
-                    if (response.responseText !== undefined) {
+                    if (response.status === 200) {
 
-                        var _response = JSON.parse(response.responseText);
+                        if (response.responseText !== undefined) {
 
-                        if (_response !== undefined) {
+                            var _response = JSON.parse(response.responseText);
 
-                            if (_response) {
-                                swal({
-                                    title: "Warning",
-                                    text: "This Purchase Bill No. is already exists.",
-                                    type: "warning"
-                                }, function () {
-                                    DOM.purchaseBillNo.focus();
-                                });
+                            if (_response !== undefined) {
+
+                                if (_response) {
+                                    swal({
+                                        title: "Warning",
+                                        text: "This Purchase Bill No. is already exists.",
+                                        type: "warning"
+                                    }, function () {
+                                        DOM.purchaseBillNo.focus();
+                                    });
+                                }
                             }
                         }
+
+                        callback(_response);
                     }
 
-                    callback(_response);
-                }
+                    shared.hideLoader(DOM.loader);
+                });
 
-                shared.hideLoader(DOM.loader);
-            });
-
+            }
+        }
+        else {
+            callback(false);
         }
 
         shared.hideLoader(DOM.loader);
@@ -796,6 +804,9 @@ Sofarch.PurchaseBill = (function () {
 
                         bindPurchaseBillItems(billItems[bi]);
                     }
+
+                    calculateTotalItemAmount();
+
                 }
                 
                 //bindBillCharges(purchaseBillId);
@@ -1153,11 +1164,10 @@ Sofarch.PurchaseBill = (function () {
 
         shared.showLoader(DOM.loader);
 
+
         checkPurchaseBillNoIsExists(function (response) {
 
             if (response === false) {
-
-                savePurchaseBillItem();
 
                 if (validatePurchaseBillDetails()) {
 
@@ -1166,41 +1176,29 @@ Sofarch.PurchaseBill = (function () {
                     var purchaseBillNo = null;
                     var purchaseBillDate = null;
                     var vendorId = 0;
-                    var adjustedAmount = 0;
+                    var purchaseBillAmount = 0;
                     var remarks = null;
                     var srNo = parseInt(0);
 
                     PurchaseBills.length = 0;
                     PurchaseBillItems.length = 0;
 
+                    savePurchaseBillItem();
+
                     purchaseBillId = parseInt(DOM.purchaseBillNo.getAttribute('data-purchase-bill-id'));
                     purchaseBillNo = DOM.purchaseBillNo.value;
                     purchaseBillDate = DOM.purchaseBillDate.value;
                     vendorId = parseInt(DOM.vendor.getAttribute('data-client-address-id'));
-                    adjustedAmount = parseFloat(DOM.adjustedAmount.value);
+                    purchaseBillAmount = parseFloat(DOM.purchaseBillAmount.value);
                     remarks = DOM.remarks.value;
-
-                    if (PurchaseBillItems.length === 0) {
-                        shared.hideLoader(DOM.loader);
-                        return;
-                    }
-
-                    //if (purchaseBillItems.length === 0) {
-                    //    swal({
-                    //        title: "Warning",
-                    //        text: "No Purchase Bill Items is entered. Please add the items.",
-                    //        type: "warning",
-                    //        function() {
-                    //            DOM.searchItem.focus();
-                    //            return false;
-                    //        }
-                    //    });
-                    //}
 
                     if (isNaN(purchaseBillId)) { purchaseBillId = parseInt(0); }
                     if (isNaN(vendorId)) { vendorId = parseInt(0); }
 
-                    srNo = getMaxSrNo(PurchaseBills, 0);
+                    if (PurchaseBillItems.length === 0) {
+                        swal("Error", "No Purchase Bill Items found or there might be some issue.", "error");
+                        return;
+                    }
 
                     var purchaseBill = {};
 
@@ -1209,7 +1207,7 @@ Sofarch.PurchaseBill = (function () {
                         PurchaseBillNo: purchaseBillNo,
                         PurchaseBillDate: purchaseBillDate,
                         VendorId: vendorId,
-                        AdjustedAmount: adjustedAmount,
+                        PurchaseBillAmount: purchaseBillAmount,
                         PurchaseBillItems: PurchaseBillItems,
                         PurchaseBillChargesDetails: PurchaseBillCharges,
                         IsDeleted: false
@@ -1267,69 +1265,6 @@ Sofarch.PurchaseBill = (function () {
         });
 
         shared.hideLoader(DOM.loader);
-    }
-
-    var checkIsDrugNameExistsInTable = function (drugId) {
-
-        shared.showLoader(DOM.loader);
-
-        var isItemExists = false;
-
-        var table = DOM.purchaseBillItemList;
-
-        var tableBody = table.tBodies[0];
-
-        var tableRows = tableBody.children;
-
-        if (tableRows.length) {
-
-            for (var i = 0; i < tableRows.length; i++) {
-                if (parseInt(tableRows[i].getAttribute('data-drug-id')) === drugId) {
-                    isItemExists = true;
-                    break;
-                }
-            }
-        }
-
-        shared.hideLoader(DOM.loader);
-
-        return isItemExists;
-    };
-
-    function validateInput(e) {
-        return shared.acceptDecimalNos(e);
-    }
-
-    function removeBillItem(e) {
-
-        // Remove the item from the Table only if the purchase bill item id is 0
-        var tableBody = DOM.purchaseBillItemList.tBodies[0];
-
-        var tableRow = e.currentTarget.parentElement.parentElement;
-
-        var purchaseBillItemId = parseInt(tableRow.getAttribute('data-purchase-bill-item-id'));
-
-        if (isNaN(purchaseBillItemId)) { purchaseBillItemId = parseInt(0); }
-
-        tableRow.classList.add('removed-item');
-
-        //setTimeout(function() {
-            tableRow.style.display = "none";
-        //}, 100);
-
-        //tableBody.removeChild(tableRow);
-        
-        // Mark the Item as Deleted if the sales bill item id is > 0
-        if (purchaseBillItems.length) {
-            for (var i = 0; i < purchaseBillItems.length; i++) {
-                if (purchaseBillItems[i].PurchaseBillItemId === purchaseBillItemId) {
-                    purchaseBillItems[i].IsDeleted = true;
-                    purchaseBillItems[i].DeletedBy = parseInt(LOGGED_USER);
-                    purchaseBillItems[i].DeletedByIP = IP_ADDRESS;
-                    break;
-                }
-            }
-        }
     }
 
     function bindPurchaseBillItems(purchaseBillItems) {
@@ -1554,28 +1489,37 @@ Sofarch.PurchaseBill = (function () {
 
         var tableRow = e.currentTarget.parentElement.parentElement;
 
-        var purchaseBillId = parseInt(tableRow.getAttribute('data-purchase-bill-id'));
+        var purchaseBillItemId = parseInt(tableRow.getAttribute('data-purchase-bill-item-id'));
 
-        if (isNaN(purchaseBillId)) { purchaseBillId = parseInt(0); }
+        if (isNaN(purchaseBillItemId)) { purchaseBillItemId = parseInt(0); }
 
-        tableBody.removeChild(tableRow);
-        
-        // Mark the Item as Deleted if the inward goods id is > 0
-        if (PurchaseBillItems.length) {
+        if (purchaseBillItemId === 0) {
 
-            if (purchaseBillId > 0) {
-
-                for (var i = 0; i < PurchaseBillItems.length; i++) {
-
-                    if (PurchaseBillItems[i].PurchaseBillId === purchaseBillId) {
-                        PurchaseBillItems[i].IsDeleted = true;
-                        PurchaseBillItems[i].DeletedBy = parseInt(LOGGED_USER);
-                        PurchaseBillItems[i].DeletedByIP = IP_ADDRESS;
-                        break;
-                    }
-                }
-            }
+            tableBody.removeChild(tableRow);
         }
+        else {
+
+            tableRow.classList.add('removed-item');
+
+            tableRow.style.display = "none";
+        }
+
+        //// Mark the Item as Deleted if the inward goods id is > 0
+        //if (PurchaseBillItems.length) {
+
+        //    if (purchaseBillId > 0) {
+
+        //        for (var i = 0; i < PurchaseBillItems.length; i++) {
+
+        //            if (PurchaseBillItems[i].PurchaseBillId === purchaseBillId) {
+        //                PurchaseBillItems[i].IsDeleted = true;
+        //                PurchaseBillItems[i].DeletedBy = parseInt(LOGGED_USER);
+        //                PurchaseBillItems[i].DeletedByIP = IP_ADDRESS;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
 
         calculateItemAmount(tableRow);
     }
@@ -1607,7 +1551,7 @@ Sofarch.PurchaseBill = (function () {
 
         tableRow.children[10].textContent = taxAmount;
 
-        tableRow.children[11].textContent = itemTotal;
+        tableRow.children[11].textContent = parseFloat(parseFloat(itemTotal).toFixed(2));
 
         calculateTotalItemAmount();
     }
@@ -1626,12 +1570,15 @@ Sofarch.PurchaseBill = (function () {
 
             for (var tr = 0; tr < tableRows.length; tr++) {
 
-                var tableRow = tableRows[tr];
+                if (tableRows[tr].className.indexOf('removed-item') === -1) {
 
-                totalItemAmount += parseFloat(tableRow.children[11].textContent);
+                    var tableRow = tableRows[tr];
+
+                    totalItemAmount += parseFloat(parseFloat(tableRow.children[11].textContent).toFixed(2));
+                }
             }
-
         }
+
         DOM.totalBillAmount.textContent = "";
 
         DOM.totalBillAmount.textContent = totalItemAmount;
@@ -1653,7 +1600,7 @@ Sofarch.PurchaseBill = (function () {
         if (isNaN(totalItemAmount)) { totalItemAmount = 0; }
         if (isNaN(purchaseBillAmount)) { purchaseBillAmount = 0; }
 
-        adjustedAmount = purchaseBillAmount - totalItemAmount;
+        adjustedAmount = parseFloat(parseFloat(purchaseBillAmount - totalItemAmount).toFixed(2));
 
         DOM.adjustedAmount.value = adjustedAmount;
     }

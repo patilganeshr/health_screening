@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace SOFARCH.HealthScreening.Entities
 {
-    public class EmployeePersonalHistory : BaseEntity
+    public class PatientPersonalHistory : BaseEntity
     {
-        public Int32? EmployeePersonalHistoryId { get; set; }
+        public Int32? PatientPersonalHistoryId { get; set; }
 
-        public Int32? EmployeeId { get; set; }
+        public Int32? PatientId { get; set; }
 
         public string MaritalStatus { get; set; }
 
@@ -18,11 +18,11 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? NoOfDaughters { get; set; }
 
-        public decimal? EmployeeHeight { get; set; }
+        public decimal? PatientHeight { get; set; }
 
         public string HeightUnit { get; set; }
 
-        public decimal? EmployeeWeight { get; set; }
+        public decimal? PatientWeight { get; set; }
 
         public string WeightUnit { get; set; }
 

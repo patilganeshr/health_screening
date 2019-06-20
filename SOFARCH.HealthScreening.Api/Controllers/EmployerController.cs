@@ -32,11 +32,18 @@ namespace SOFARCH.HealthScreening.API.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        [Route("GetAllEmployers")]
-        public List<Entities.Employer> GetAllEmployers()
+        [Route("GetAllEmployerIdAndName")]
+        public List<Entities.Employer> GetAllEmployerIdAndName()
         {
-            return _employer.GetAllEmployers();
+            return _employer.GetAllEmployerIdAndName();
         }
+
+        [Route("GetEmployerIdAndNameByName/{employerName}")]
+        public List<Entities.Employer> GetEmployerIdAndNameByName(string employerName)
+        {
+            return _employer.GetEmployerIdAndNameByName(employerName);
+        }
+
 
         [HttpGet]
         [Route("SearchEmployerByName/{employerName = null}")]

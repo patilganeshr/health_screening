@@ -67,32 +67,53 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string SearchAllEmployees { get { return "employees_search_all_employees"; } }
 
+        public static string GetEmployeeIdAndNameByEmployeeName { get { return "employees_search_employee_id_and_name_by_employee_name"; } }
+        
         public static string GetEmployeeDetailsById { get { return "employees_get_employee_details_by_id"; } }
 
         #endregion
 
-        #region Employee Personal History
+        #region Patients
+        public static string InsertPatient => "patients_insert_patient";
 
-        public static string InsertEmployeePersonalHistory { get { return "employees_personal_history_insert_employee_personal_history"; } }
+        public static string UpdatePatient { get { return "patients_update_patient"; } }
 
-        public static string UpdateEmployeePersonalHistory { get { return "employees_personal_history_update_employee_personal_history"; } }
+        public static string DeletePatient { get { return "patients_delete_patient"; } }
 
-        public static string DeleteEmployeePersonalHistory { get { return "employees_personal_history_insert_employee_personal_history"; } }
+        public static string CheckPatientNameIsExists { get { return "patients_check_patient_name_exists"; } }
 
-        public static string GetEmployeePersonalHistoryDetailsByEmployeeId { get { return "employees_personal_history_get_employee_history_details_by_employee_id"; } }
+        public static string CheckPatientCodeIsExists { get { return "patients_check_patient_codeexists"; } }
+
+        public static string SearchAllPatients { get { return "patients_search_all_patients"; } }
+
+        public static string GetPatientIdAndNameByPatientName { get { return "patients_search_patient_id_and_name_by_patient_name"; } }
+
+        public static string GetPatientDetailsById { get { return "patients_get_patient_details_by_id"; } }
+
+        #endregion
+
+        #region Patients Personal History
+
+        public static string InsertPatientPersonalHistory { get { return "patients_personal_history_insert_patient_personal_history"; } }
+
+        public static string UpdatePatientPersonalHistory { get { return "patients_personal_history_update_patient_personal_history"; } }
+
+        public static string DeletePatientPersonalHistory { get { return "patients_personal_history_insert_patient_personal_history"; } }
+
+        public static string GetPatientPersonalHistoryDetailsByPatientId { get { return "patients_personal_history_get_patient_history_details_by_patient_id"; } }
 
 
         #endregion
 
-        #region Employee Exercise History
+        #region Patients Exercise History
 
-        public static string InsertEmployeeExerciseHistory { get { return "employees_exercise_history_insert_employee_exercise_history"; } }
+        public static string InsertPatientExerciseHistory { get { return "patients_exercise_history_insert_patient_exercise_history"; } }
 
-        public static string UpdateEmployeeExerciseHistory { get { return "employees_exercise_history_insert_employee_exercise_history"; } }
+        public static string UpdatePatientExerciseHistory { get { return "patients_exercise_history_insert_patient_exercise_history"; } }
 
-        public static string DeleteEmployeeExerciseHistory { get { return "employees_exercise_history_insert_employee_exercise_history"; } }
+        public static string DeletePatientExerciseHistory { get { return "patients_exercise_history_insert_patient_exercise_history"; } }
 
-        public static string GetEmployeeExerciseDetailsByEmployeeId { get { return "employees_exercise_history_get_exercise_details_by_employee_id"; } }
+        public static string GetPatientExerciseDetailsByPatientId { get { return "patients_exercise_history_get_exercise_details_by_patient_id"; } }
 
         #endregion
 
@@ -205,6 +226,10 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string UpdateEmployer { get { return "employers_update_employer"; } }
 
         public static string DeleteEmployer { get { return "employers_delete_employer"; } }
+
+        public static string GetAllEmployerIdAndName { get { return "employers_get_employer_id_and_name"; } }
+
+        public static string GetEmployerIdAndNameByName { get { return "employers_get_employer_id_and_name_by_name"; } }
 
         public static string GetListOfAllEmployers { get { return "employers_get_list_of_all_employers"; } }
 
@@ -608,7 +633,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeletePreEmploymentTestDetails { get { return "pre_employment_test_details_delete_pre_employment_test_details"; } }
 
-        public static string GetPreEmploymentAllTestDetails { get { return "pre_employemnt_test_details_get_all_tests"; } }
+        public static string GetPreEmploymentAllTestDetails { get { return "pre_employment_test_details_get_all_tests"; } }
 
         public static string GetPreEmploymentTestDetailsByPreEmploymentId { get { return "pre_employment_test_details_get_test_details_by_pre_employment_id"; } }
 
