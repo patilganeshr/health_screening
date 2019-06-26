@@ -17,7 +17,7 @@ namespace SOFARCH.HealthScreening.API.Controllers
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
@@ -35,11 +35,11 @@ namespace SOFARCH.HealthScreening.API.Controllers
             return _patient.IsPatientNameExists(employerId, patientName);
         }
 
-        [HttpGet]
-        [Route("SearchAllPatients")]
-        public List<Entities.Patient> SearchAllPatients()
+        [HttpPost]
+        [Route("SearchPatients")]
+        public List<Entities.Patient> SearchPatients(Entities.Patient patient)
         {
-            return _patient.SearchAllPatients();
+            return _patient.SearchPatients(patient);
         }
 
         [Route("GetPatientIdAndNameByPatientName/{patientName}")]
@@ -47,9 +47,9 @@ namespace SOFARCH.HealthScreening.API.Controllers
         {
             return _patient.GetPatientIdAndNameByPatientName(patientName);
         }
-                
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientId"></param>
         /// <returns></returns>

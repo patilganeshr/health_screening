@@ -68,7 +68,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string SearchAllEmployees { get { return "employees_search_all_employees"; } }
 
         public static string GetEmployeeIdAndNameByEmployeeName { get { return "employees_search_employee_id_and_name_by_employee_name"; } }
-        
+
         public static string GetEmployeeDetailsById { get { return "employees_get_employee_details_by_id"; } }
 
         #endregion
@@ -84,7 +84,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string CheckPatientCodeIsExists { get { return "patients_check_patient_codeexists"; } }
 
-        public static string SearchAllPatients { get { return "patients_search_all_patients"; } }
+        public static string SearchPatients { get { return "patients_search_patients"; } }
 
         public static string GetPatientIdAndNameByPatientName { get { return "patients_search_patient_id_and_name_by_patient_name"; } }
 
@@ -252,7 +252,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetAllUnitsOfMeasurements { get { return "units_of_measurements_get_list_of_all_uom"; } }
 
         public static string GetAllUnitIdAndUnitCode { get { return "units_of_measurements_get_all_unit_id_and_unit_code"; } }
-        
+
         #endregion
 
         #region Doctors
@@ -314,7 +314,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetDetailsOfDrugGroupByName { get { return "drug_groups_get_details_of_drug_group_by_name"; } }
 
         public static string SearchAllDrugGroups { get { return "drug_groups_search_drug_group_all"; } }
-        
+
         public static string SearchDrugGroupByName { get { return "drug_groups_search_drug_group_by_name"; } }
 
         #endregion
@@ -332,7 +332,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetDetailsOfDrugRouteById { get { return "drug_routes_get_details_of_drug_routes_by_id"; } }
 
         public static string GetDetailsOfDrugRouteByName { get { return "drug_routes_get_details_of_drug_routes_by_name"; } }
-                
+
         public static string SearchDrugRouteAll { get { return "drug_routes_search_drug_route_all"; } }
 
         public static string SearchDrugRouteByRouteName { get { return "drug_routes_search_drug_route_by_route_name"; } }
@@ -358,7 +358,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string SearchDrugsAll { get { return "drugs_search_drug_all"; } }
 
         public static string SearchDrugsByDrugCode { get { return "drugs_search_drug_by_drug_code"; } }
-        
+
         public static string SearchDrugsByGenericName { get { return "drugs_search_drug_by_generic_name"; } }
 
         public static string SearchDrugsByDrugName { get { return "drugs_search_drug_by_drug_name"; } }
@@ -368,7 +368,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string SearchDrugsByDrugGroupId { get { return "drugs_search_drug_by_drug_group_id"; } }
 
         public static String SearchDrugsByFilters { get { return "drugs_search_drugs_by_generic_name_or_drug_name_or_group_name_or_drug_code"; } }
-       
+
         #endregion
 
         #region DrugFormulations
@@ -391,11 +391,11 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string UpdateDrugLinkWithDrugRoute { get { return "drugs_link_with_drug_routes_update_drug_link_with_drug_route"; } }
 
         public static string DeleteDrugLinkWithDrugRoute { get { return "drugs_link_with_drug_routes_delete_drug_link_with_drug_route"; } }
-        
+
         public static string DeleteDrugLinkWithDrugRouteByDrugId { get { return "drugs_link_with_drug_routes_delete_by_drug_id"; } }
 
         public static string GetDrugLinkByDrugId { get { return "drugs_link_with_drug_routes_get_drug_link_by_drug_id"; } }
-        
+
         #endregion
 
         #region Locations
@@ -419,7 +419,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetListOfAllModeOfPayments { get { return "mode_of_payments_get_list_of_all_mode_of_payments"; } }
 
         #endregion
-                
+
         #region Address Types
 
         public static string InsertAddressType { get { return "address_types_insert_address_type"; } }
@@ -432,7 +432,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetAddressTypeDetailsById { get { return "address_types_get_type_details_by_id"; } }
         public static string GetAddressTypeDetailsByName { get { return "address_types_get_type_details_by_name"; } }
 
-        
+
         #endregion
 
         #region  Client
@@ -567,7 +567,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetAccountHeadById { get { return "account_heads_get_account_head_by_id"; } }
 
         public static string GetAccountHeadByName { get { return "account_heads_get_account_head_by_name"; } }
-        
+
         public static string SearchAllAccountHeads { get { return "account_heads_search_all_account_head"; } }
 
         public static string SearchAccountHeadByName { get { return "account_heads_search_account_head_by_name"; } }
@@ -581,7 +581,7 @@ namespace SOFARCH.HealthScreening.DataModel
         #endregion
 
         #region Medical Test
-        
+
         public static string InsertMedicalTest { get { return "medical_tests_insert_medical_test"; } }
 
         public static string UpdateMedicalTest { get { return "medical_tests_update_medical_test"; } }
@@ -591,7 +591,7 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetMedicalTestIdAndName { get { return "medical_tests_get_medical_test_id_and_test_name"; } }
 
         public static string SearchMedicalTestAll { get { return "medical_tests_search_medical_tests_all"; } }
- 
+
         public static string SearchMedicalTestByName { get { return "medical_tests_search_medical_test_by_name"; } }
 
         #endregion
@@ -626,7 +626,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
         #region Pre Employment Test Details
-        
+
         public static string InsertPreEmploymentTestDetails { get { return "pre_employment_test_details_insert_pre_employment_test_details"; } }
 
         public static string UpdatePreEmploymentTestDetails { get { return "pre_employment_test_details_update_pre_employment_test_details"; } }

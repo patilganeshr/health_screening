@@ -26,9 +26,9 @@ namespace SOFARCH.HealthScreening.Business
             return _patient.IsPatientNameExists(employerId, patientName);
         }
 
-        public List<Entities.Patient> SearchAllPatients()
+        public List<Entities.Patient> SearchPatients(Entities.Patient patient)
         {
-            return _patient.SearchAllPatients();
+            return _patient.SearchPatients(patient);
         }
 
         public List<Entities.Patient> GetPatientIdAndNameByPatientName(string patientName)
@@ -37,7 +37,7 @@ namespace SOFARCH.HealthScreening.Business
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientId"></param>
         /// <returns></returns>
@@ -45,6 +45,6 @@ namespace SOFARCH.HealthScreening.Business
         {
             return _patient.GetPatientDetailsById(patientId);
         }
-        
+
     }
 }

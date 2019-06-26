@@ -22,7 +22,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patient"></param>
         /// <returns></returns>
@@ -68,13 +68,13 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-          
+
             return patientId;
         }
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patient"></param>
         /// <returns></returns>
@@ -104,7 +104,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-      
+
             return isDeleted;
         }
 
@@ -178,15 +178,18 @@ namespace SOFARCH.HealthScreening.DataModel
             return patients;
         }
 
-
-        public List<Entities.Patient> SearchAllPatients()
+        public List<Entities.Patient> SearchPatients(Entities.Patient patient)
         {
             List<Entities.Patient> patients = new List<Entities.Patient>();
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchAllPatients))
-                {   
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchPatients))
+                {
+                    database.AddInParameter(dbCommand, "@full_name", DbType.String, patient.FullName);
+                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, patient.EmployerName);
+                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, patient.PatientCode);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         patients = GetPatients(reader);
@@ -200,7 +203,6 @@ namespace SOFARCH.HealthScreening.DataModel
 
             return patients;
         }
-
 
         public List<Entities.Patient> GetPatientIdAndNameByPatientName(string patientName)
         {
@@ -235,7 +237,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientId"></param>
         /// <returns></returns>
@@ -284,7 +286,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patient"></param>
         /// <returns></returns>
@@ -330,12 +332,12 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return patientId;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patient"></param>
         /// <returns></returns>
@@ -370,7 +372,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             {
                                 var result = DeletePatient(patient, transaction);
 
-                                
+
                                 if (result)
                                 {
                                     patientId = (int)patient.PatientId;
@@ -439,7 +441,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     }
                 }
             }
-            
+
 
             return patientId;
         }

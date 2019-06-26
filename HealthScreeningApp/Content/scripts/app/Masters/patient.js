@@ -22,6 +22,7 @@ Sofarch.Patient = (function () {
 
     var shared = new Shared();
     var CurrentFocus = -1;
+    var IsPatientRecordChanged = false;
 
     var Patients = [];
     var ExerciseDetails = [];
@@ -33,6 +34,11 @@ Sofarch.Patient = (function () {
         DOM.loader = document.getElementById('Loader');
 
         DOM.viewMode = document.getElementById('ViewMode');
+        DOM.searchPatientPanel = document.getElementById('SearchPatientPanel');
+        DOM.searchOptions = document.getElementById('SearchOptions');
+        DOM.searchValue = document.getElementById('SearchValue');
+        DOM.searchPatient = document.getElementById('SearchPatient');
+
         DOM.patientsList = document.getElementById('PatientsList');
 
         DOM.editMode = document.getElementById('EditMode');
@@ -142,11 +148,12 @@ Sofarch.Patient = (function () {
     function bindEvents() {
 
         DOM.addNewPatient.addEventListener('click', addNewPatient);
-        DOM.showPatientList.addEventListener('click', getPatients);
+        DOM.showPatientList.addEventListener('click', checkIsRecordsAreChanged);
         DOM.viewPatient.addEventListener('click', viewPatient);
         DOM.editPatient.addEventListener('click', editPatient);
         DOM.savePatient.addEventListener('click', savePatient);
         DOM.deletePatient.addEventListener('click', deletePatient);
+        DOM.searchPatient.addEventListener('click', searchPatient);
 
         DOM.addExerciseDetails.addEventListener('click', addExerciseDetails);
 
@@ -228,30 +235,6 @@ Sofarch.Patient = (function () {
         });
 
     }
-
-    var getSelectedRows = function () {
-
-        var selectedRows = [];
-
-        var tableBody = DOM.employeesList.tBodies[0];
-
-        var tableRows = tableBody.children;
-
-        if (tableRows.length > 0) {
-
-            for (var tr = 0; tr < tableRows.length; tr++) {
-
-                var checkBox = tableRows[tr].querySelectorAll('.label-checkbox')[0];
-
-                if (checkBox.checked) {
-
-                    selectedRows.push(tableRows[tr]);
-                }
-            }
-        }
-
-        return selectedRows;
-    };
 
     function setActiveTabAndFocus(e) {
 
@@ -750,6 +733,81 @@ Sofarch.Patient = (function () {
         DOM.exercise.focus();
     }
 
+    function fillSearchOption() {
+
+        var options = "";
+
+        options += "<option value='-1'> Choose Search Option </option>";
+        options += "<option value='FullName' selected='selected'> Patient Name</option>";
+        options += "<option value='EmployerName'> Company Name </option>";
+        options += "<option value='PatientCode'> Patient Code</option>";
+
+        DOM.searchOptions.innerHTML = options;
+    }
+
+    function filterPatient() {
+
+        shared.showPanel(DOM.searchPatientPanel);
+
+        shared.clearInputs(DOM.searchPatientPanel);
+
+        fillSearchOption();
+
+        if (DOM.searchPatientPanel.classList.contains("hide")) {
+            DOM.searchPatientPanel.classList.remove('hide');
+            DOM.searchPatientPanel.classList.add('show');
+        }
+        else {
+            DOM.searchPatientPanel.classList.remove('show');
+            DOM.searchPatientPanel.classList.add('hide');
+        }
+
+        DOM.searchValue.focus();
+    }
+
+    function searchPatient() {
+
+        shared.showLoader(DOM.loader);
+
+        DOM.patientsList.tBodies[0].innerHTML = "";
+
+        Patients.length = 0;
+
+        var searchParmater = {
+            FullName: null,
+            EmployerName: null,
+            PatientCode: null
+        };
+
+        var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
+        var searchValue = DOM.searchValue.value;
+
+        searchParmater[searchParameterName] = searchValue;
+
+        var postData = JSON.stringify(searchParmater);
+
+        shared.sendRequest(SERVICE_PATH + "SearchPatients/", "POST", true, "JSON", postData, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        Patients = _response;
+
+                        bindPatientDetails();
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
+    }
 
     function addNewPatient() {
 
@@ -774,6 +832,98 @@ Sofarch.Patient = (function () {
         shared.hideLoader(DOM.loader);
     }
 
+    function unselectPatientListDetails() {
+
+        var tableBody = DOM.patientsList.tBodies[0];
+
+        var checkBoxes = tableBody.querySelectorAll('.label-checkbox');
+
+        if (checkBoxes.length > 0) {
+
+            for (var c = 0; c < checkBoxes.length; c++) {
+
+                checkBoxes[c].checked = false;
+            }
+        }
+    }
+
+    function checkIsRecordsAreChanged() {
+
+        shared.showLoader(DOM.loader);
+
+        showPaitentList();
+
+        shared.hideLoader(DOM.loader);
+    }
+
+    function showPaitentList() {
+
+        shared.showPanel(DOM.viewMode);
+        shared.hidePanel(DOM.editMode);
+
+        filterPatient();
+
+        DOM.patientsList.tBodies[0].innerHTML = "";
+    }
+
+    var getSelectedRows = function (element) {
+
+        var selectedRows = [];
+
+        var tableBody = element.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        if (tableRows.length > 0) {
+
+            for (var tr = 0; tr < tableRows.length; tr++) {
+
+                var checkBox = tableRows[tr].querySelectorAll('.label-checkbox')[0];
+
+                if (checkBox.checked) {
+
+                    selectedRows.push(tableRows[tr]);
+                }
+            }
+        }
+
+        return selectedRows;
+    };
+
+    function getSelectedPatientDetails() {
+
+        shared.showLoader(DOM.loader);
+
+        var selectedRows = getSelectedRows(DOM.patientsList);
+
+        if (selectedRows.length > 0) {
+
+            if (selectedRows.length > 1) {
+
+                swal('Warning', "Please select only one record to Edit the Records.", "warning");
+
+                shared.hideLoader(DOM.loader);
+
+                return false;
+            }
+            else {
+
+                var currentTableRow = selectedRows[0];
+
+                var patientId = parseInt(currentTableRow.getAttribute('data-patient-id'));
+
+                if (isNaN(patientId)) { patientId = 0; }
+
+                showPatientDetailsByPatientId(patientId);
+            }
+        }
+        else {
+            swal("error", "No row selected.", "error");
+        }
+
+        shared.hideLoader(DOM.loader);
+    }
+
     function viewPatient() {
 
         shared.showLoader(DOM.loader);
@@ -784,33 +934,11 @@ Sofarch.Patient = (function () {
 
         shared.disableControls(DOM.editMode, true);
 
-        var selectedRows = getSelectedRows();
-
-        if (selectedRows.length) {
-
-            if (selectedRows.length > 1) {
-                swal({
-                    title: "Warning",
-                    text: "Please select only one record to View or Edit the Records.",
-                    type: "success"
-                }, function () {
-                    shared.hideLoader(DOM.loader);
-                });
-            }
-            else {
-
-                var patientId = getPatientId(selectedRows);
-
-                showPatientDetails(patientId);
-            }
-        }
-        else {
-            swal("error", "No row selected.", "error");
-        }
+        getSelectedPatientDetails();
 
         shared.hideLoader(DOM.loader);
 
-        DOM.firstName.focus();
+        DOM.companyName.focus();
     }
 
     function editPatient() {
@@ -823,24 +951,7 @@ Sofarch.Patient = (function () {
 
         shared.disableControls(DOM.editMode, false);
 
-        var selectedRows = getSelectedRows();
-
-        if (selectedRows.length) {
-
-            if (selectedRows.length > 1) {
-                swal('Warning', "Please select only one record to Edit the Records.", "warning");
-                return false;
-            }
-            else {
-
-                var patientId = getPatientId(selectedRows);
-
-                showPatientDetails(patientId);
-            }
-        }
-        else {
-            swal("error", "No row selected.", "error");
-        }
+        getSelectedPatientDetails();
 
         shared.hideLoader(DOM.loader);
 
@@ -941,7 +1052,7 @@ Sofarch.Patient = (function () {
                                             text: "Patient Details Deleted Successfully.",
                                             type: "success"
                                         }, function () {
-                                            getPatients();
+                                            addNewPatient();
                                         });
                                     }
                                 }
@@ -974,7 +1085,7 @@ Sofarch.Patient = (function () {
 
         DOM.patientsList.tBodies[0].innerHTML = "";
 
-        shared.sendRequest(SERVICE_PATH + "SearchAllPatients/", "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "SearchPatients/", "POST", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -1029,7 +1140,7 @@ Sofarch.Patient = (function () {
         }
     }
 
-    function showPatientDetails(patientId) {
+    function showPatientDetailsByPatientId(patientId) {
 
         shared.showLoader(DOM.loader);
 
@@ -1141,7 +1252,7 @@ Sofarch.Patient = (function () {
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
     }
-    
+
     var validateData = function () {
 
         var isValid = true;
@@ -1303,7 +1414,7 @@ Sofarch.Patient = (function () {
         patinetId = parseInt(DOM.patientCode.getAttribute('data-patient-id'));
 
         if (isNaN(patientId)) { patientId = 0;}
-            
+
         if (isNaN(patientId)) { patientId = 0; }
 
         if (patientId > 0) { return; }
@@ -1346,9 +1457,9 @@ Sofarch.Patient = (function () {
             var firstName = null;
             var middleName = null;
             var lastName = null;
-            var address = null;            
+            var address = null;
             var dateOfBirth = null;
-            var gender = null;            
+            var gender = null;
             var contactNo1 = null;
             var contactNo2 = null;
             var mobileNo1 = null;
@@ -1358,7 +1469,7 @@ Sofarch.Patient = (function () {
             var companyId = 0;
             var department = null;
             var designation = null;
-            
+
             var methodName = "AddPatient";
 
             patientId = parseInt(DOM.patientCode.getAttribute('data-patient-id'));
@@ -1367,7 +1478,7 @@ Sofarch.Patient = (function () {
             firstName = DOM.firstName.value;
             middleName = DOM.middleName.value;
             lastName = DOM.lastName.value;
-            address = DOM.address.value;            
+            address = DOM.address.value;
             gender = shared.getRadioSelectedValue(DOM.gender);
             dateOfBirth = DOM.dateOfBirth.value;
             contactNo1 = DOM.contactNo1.value;
@@ -1379,7 +1490,7 @@ Sofarch.Patient = (function () {
             companyId = DOM.companyName.getAttribute('data-employer-id');
             department = DOM.department.value;
             designation = DOM.designation.value;
-            
+
             if (isNaN(patientId)) { patientId = 0; }
             if (isNaN(companyId)) { companyId = 0; }
 
@@ -1434,7 +1545,7 @@ Sofarch.Patient = (function () {
                             text: "Patient Details Saved Successfully.",
                             type: "success"
                         }, function () {
-                            getPatients();
+                            addNewPatient();
                         });
                     }
                 }
@@ -1448,11 +1559,11 @@ Sofarch.Patient = (function () {
             });
         }
     }
-        
+
     /* ---- public methods ---- */
     function init() {
         cacheDOM();
-        applyPlugins();        
+        applyPlugins();
         bindEvents();
         loadData();
     }

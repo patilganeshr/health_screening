@@ -45,6 +45,68 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+                        <!-- Filter Options -->
+
+                        <div class="panel panel-default hide" id="SearchPatientPanel">
+
+                            <div class="panel-heading">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <h4 class="panel-title panel-title-align-middle">Search Case Paper Details</h4>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="panel-body">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Options</label>
+                                                <select id="SearchOptions" class="form-control"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Value</label>
+                                                <input type="text" id="SearchValue" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <button type="button" id="SearchPatient" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Filter Options -->
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
@@ -55,7 +117,7 @@
                                 <table id="PatientsList" class="table table-condesed">
                                     <thead>
                                         <tr>
-                                            <th class="text-center">Action</th>                                            
+                                            <th class="text-center">Action</th>
                                             <th class="text-center">Company Name</th>
                                             <th class="text-center">Emp Code</th>
                                             <th class="text-center">Patient Name</th>
@@ -124,7 +186,7 @@
                                     <!-- START OF GENERAL DETAILS TAB PANE -->
 
                                     <div role="tabpanel" class="tab-pane fade in active" id="GeneralDetails">
-    
+
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                                 <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
@@ -221,7 +283,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Email Id</label>
@@ -270,7 +332,7 @@
                                                         <input type="text" id="PANNo" class="form-control" />
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Department</label>
@@ -460,7 +522,7 @@
                                                 <th class="text-center">Exercise Name</th>
                                                 <th class="text-center">Frequency</th>
                                                 <th class="text-center">Action</th>
-                                                
+
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -471,7 +533,7 @@
                                             </div>
 
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                                
+
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Present Illness</label>
