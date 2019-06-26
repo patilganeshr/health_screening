@@ -143,6 +143,8 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetEmployerIdAndNameByName))
                 {
+                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, employerName);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())

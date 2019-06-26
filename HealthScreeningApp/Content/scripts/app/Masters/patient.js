@@ -470,7 +470,7 @@ Sofarch.Patient = (function () {
     function setCompanyName(name, id) {
 
         DOM.companyName.value = name;
-        DOM.companyName.setAttribute('data-company-id', id);
+        DOM.companyName.setAttribute('data-employer-id', id);
 
         shared.closeAutoCompleteList(DOM.searchCompanyList);
 
@@ -1042,7 +1042,7 @@ Sofarch.Patient = (function () {
             if (selectedPatient.length > 0) {
 
                 DOM.companyName.value = selectedPatient[0].EmployerName;
-                DOM.companyName.setAttribute('data-company-id', selectedPatient[0].EmployerId);
+                DOM.companyName.setAttribute('data-employer-id', selectedPatient[0].EmployerId);
                 DOM.patientCode.value = selectedPatient[0].PatientCode;
                 DOM.patientCode.setAttribute('data-patient-id', selectedPatient[0].PatientId);
                 shared.setSelectValue(DOM.title, selectedPatient[0].Title, null);
@@ -1308,11 +1308,15 @@ Sofarch.Patient = (function () {
 
         if (patientId > 0) { return; }
 
-        if (firstName !== "" && middleName !== "" && lastName !== "") {
+        if (firstName !== "" || middleName !== "" || lastName !== "") {
             patientName = firstName + ' ' + middleName + ' ' + lastName;
         }
 
+        patientName = patientName.trim();
+
         if (isNaN(companyId)) { companyId = 0; }
+
+        if (companyId === 0) { return; }
 
         shared.sendRequest(SERVICE_PATH + "IsPatientNameExists/" + companyId + '/' + patientName, "GET", true, "JSON", null, function (response) {
 
@@ -1331,7 +1335,7 @@ Sofarch.Patient = (function () {
         });
     }
 
-    function SavePatient() {
+    function savePatient() {
 
         if (validateData()) {
 
@@ -1372,7 +1376,7 @@ Sofarch.Patient = (function () {
             mobileNo2 = DOM.mobileNo2.value;
             emailId = DOM.emailId.value;
             panNo = DOM.panNo.value;
-            companyId = DOM.companyName.getAttribute('data-company-id');
+            companyId = DOM.companyName.getAttribute('data-employer-id');
             department = DOM.department.value;
             designation = DOM.designation.value;
             

@@ -50,7 +50,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@department", DbType.String, patient.Department);
                     database.AddInParameter(dbCommand, "@designation", DbType.String, patient.Designation);
                     database.AddInParameter(dbCommand, "@gender", DbType.String, patient.Gender);
-                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, patient.CompanyId);
+                    database.AddInParameter(dbCommand, "@employer_id", DbType.Int32, patient.EmployerId);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, patient.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, patient.CreatedByIP);
 
@@ -148,7 +148,7 @@ namespace SOFARCH.HealthScreening.DataModel
                 var patient = new Entities.Patient
                 {
                     PatientId = DRE.GetNullableInt32(reader, "patient_id", 0),
-                    PatientCode = DRE.GetNullableString(reader, "patient_code", null),
+                    PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
                     Title = DRE.GetNullableString(reader, "title", null),
                     FirstName = DRE.GetNullableString(reader, "first_name", null),
                     MiddleName = DRE.GetNullableString(reader, "middle_name", null),
@@ -166,8 +166,8 @@ namespace SOFARCH.HealthScreening.DataModel
                     PANNo = DRE.GetNullableString(reader, "pan_no", null),
                     Department = DRE.GetNullableString(reader, "department", null),
                     Designation = DRE.GetNullableString(reader, "designation", null),
-                    CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
-                    CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                    EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                    EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                     PatientPersonalHistory = patientPersonalHistory.GetPatientPersonalHistoriesByPatientId(DRE.GetInt32(reader, "patient_id")),
                     PatientExerciseHistories = patientExerciseHistory.GetPatientExerciseHistoriesByPatientId(DRE.GetInt32(reader, "patient_id"))
                 };
@@ -216,10 +216,10 @@ namespace SOFARCH.HealthScreening.DataModel
                     {
                         var patient = new Entities.Patient()
                         {
-                            PatientId = DRE.GetNullableInt32(reader, "@patient_id", null),
-                            PatientCode = DRE.GetNullableString(reader, "@patient_code", null),
-                            CompanyName = DRE.GetNullableString(reader, "@company_name", null),
-                            FullName = DRE.GetNullableString(reader, "@full_name", null)
+                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
+                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                            FullName = DRE.GetNullableString(reader, "full_name", null)
                         };
 
                         patients.Add(patient);
@@ -254,7 +254,7 @@ namespace SOFARCH.HealthScreening.DataModel
                         var patient = new Entities.Patient()
                         {
                             PatientId = DRE.GetNullableInt32(reader, "patient_id", 0),
-                            PatientCode = DRE.GetNullableString(reader, "patient_code", null),
+                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
                             Title = DRE.GetNullableString(reader, "title", null),
                             FirstName = DRE.GetNullableString(reader, "first_name", null),
                             MiddleName = DRE.GetNullableString(reader, "middle_name", null),
@@ -271,8 +271,8 @@ namespace SOFARCH.HealthScreening.DataModel
                             PANNo = DRE.GetNullableString(reader, "pan_no", null),
                             Department = DRE.GetNullableString(reader, "department", null),
                             Designation = DRE.GetNullableString(reader, "designation", null),
-                            CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
-                            CompanyName = DRE.GetNullableString(reader, "company_name", null)
+                            EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                            EmployerName = DRE.GetNullableString(reader, "employer_name", null)
                         };
 
                         patientInfo = patient;
@@ -312,7 +312,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@department", DbType.String, patient.Department);
                     database.AddInParameter(dbCommand, "@designation", DbType.String, patient.Designation);
                     database.AddInParameter(dbCommand, "@gender", DbType.String, patient.Gender);
-                    database.AddInParameter(dbCommand, "@company_id", DbType.Int32, patient.CompanyId);
+                    database.AddInParameter(dbCommand, "@employer_id", DbType.Int32, patient.EmployerId);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, patient.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, patient.ModifiedByIP);
 

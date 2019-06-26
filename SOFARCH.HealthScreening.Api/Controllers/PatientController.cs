@@ -29,7 +29,7 @@ namespace SOFARCH.HealthScreening.API.Controllers
         }
 
         [HttpGet]
-        [Route("IsPatientNameExists/{patientId}/{patientName}")]
+        [Route("IsPatientNameExists/{employerId}/{patientName}")]
         public bool IsPatientNameExists(Int32 employerId, string patientName)
         {
             return _patient.IsPatientNameExists(employerId, patientName);

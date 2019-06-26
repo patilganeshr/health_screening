@@ -38,9 +38,9 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string Gender { get; set; }
 
-        public string PatientCode { get; set; }
+        public Int32? PatientCode { get; set; }
 
-        public Int32? CompanyId { get; set; }
+        public Int32? EmployerId { get; set; }
 
         public string Title { get; set; }
 
@@ -54,7 +54,7 @@ namespace SOFARCH.HealthScreening.Entities
 
         public List<PatientExerciseHistory> PatientExerciseHistories { get; set; }
 
-        public string CompanyName { get; set; }
+        public string EmployerName { get; set; }
 
     }
 }
