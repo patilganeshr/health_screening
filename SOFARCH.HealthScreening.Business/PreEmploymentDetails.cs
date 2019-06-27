@@ -15,15 +15,20 @@ namespace SOFARCH.HealthScreening.Business
             _preEmploymentDetails = new DataModel.PreEmploymentDetails();
         }
 
-        public Entities.PreEmploymentDetails GetEmployeeDetails(Int32 employeeId)
+        public Entities.PreEmploymentDetails GetPatientAndTestDetails(Int32 patientId)
         {
-            return _preEmploymentDetails.GetEmployeeDetails(employeeId);
+            return _preEmploymentDetails.GetPatientAndTestDetails(patientId);
         }
 
         public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails()
         {
             return _preEmploymentDetails.GetAllPreEmploymentDetails();
         }
+        public List<Entities.PreEmploymentDetails> SearchPreEmploymentDetails(Entities.PreEmploymentDetails preEmploymentDetails)
+        {
+            return _preEmploymentDetails.SearchPreEmploymentDetails(preEmploymentDetails);
+        }
+
         public Int32 SavePreEmploymentDetails(Entities.PreEmploymentDetails preEmploymentDetails)
         {
             return _preEmploymentDetails.SavePreEmploymentDetails(preEmploymentDetails);

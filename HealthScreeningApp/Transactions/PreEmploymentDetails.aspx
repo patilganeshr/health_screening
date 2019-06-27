@@ -13,7 +13,7 @@
         <a href="#" id="SavePreEmploymentDetails"><i class="fa fa-save fa-fw"></i>Save</a>
         <a href="#" id="DeletePreEmploymentDetails"><i class="fa fa-remove fa-fw"></i>Delete</a>
         <a href="#" id="PrintPreEmploymentDetails"><i class="fa fa-print fa-fw"></i>Print</a>
-        <a href="#" id="FilterEmployee"><i class="fa fa-filter fa-fw"></i>Filter</a>
+        <a href="#" id="FilterPreEmploymentDetails"><i class="fa fa-filter fa-fw"></i>Filter</a>
         <a href="#" id="ExportEmpoyeeList"><i class="fa fa-cog fa-fw"></i>Export</a>
 
     </div>
@@ -45,6 +45,68 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+                        <!-- Filter Options -->
+
+                        <div class="panel panel-default hide" id="SearchPreEmploymentDetailsPanel">
+
+                            <div class="panel-heading">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <h4 class="panel-title panel-title-align-middle">Search Pre-Employment Details</h4>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="panel-body">
+
+                                <div class="row">
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Options</label>
+                                                <select id="SearchOptions" class="form-control"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Value</label>
+                                                <input type="text" id="SearchValue" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                                            <div class="form-group form-group-md">
+                                                <button type="button" id="SearchPreEmploymentDetails" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Filter Options -->
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
@@ -58,7 +120,7 @@
                                             <th class="text-center">Action</th>
                                             <th class="text-center">Company Name</th>
                                             <th class="text-center">Emp Code</th>
-                                            <th class="text-center">Employee Name</th>
+                                            <th class="text-center">Patient Name</th>
                                             <th class="text-center">Gender</th>
                                             <th class="text-center">Contact No.</th>
                                             <th class="text-center">Email Id</th>
@@ -104,7 +166,7 @@
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
-                                <h3 class="panel-title">Employee Details</h3>
+                                <h3 class="panel-title">Patient Details</h3>
                             </div>
 
                             <div class="panel-body">
@@ -112,7 +174,7 @@
                                 <!-- START OF MAIN NAV TABS -->
 
                                 <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#EmployeeDetails" aria-controls="EmployeeDetails" role="tab" data-toggle="tab" tabindex="10">Employee Details</a></li>
+                                    <li role="presentation" class="active"><a href="#PatientDetailsPanel" aria-controls="PatientDetailsPanel" role="tab" data-toggle="tab" tabindex="10">Patient Details</a></li>
                                     <li role="presentation"><a href="#GeneralTestDetails" aria-controls="GeneralTestDetails" role="tab" data-toggle="tab" tabindex="10">General Test Details</a></li>
                                     <li role="presentation"><a href="#InvestigationTestDetails" aria-controls="InvestigationTestDetails" role="tab" data-toggle="tab" tabindex="100">Investigation Test Details</a></li>
                                 </ul>
@@ -120,9 +182,9 @@
                                 <!-- START OF MAIN NAV TABS TAB CONTENT -->
                                 <div class="tab-content">
 
-                                    <!-- START OF EMPLOYEE DETAILS TAB PANE -->
+                                    <!-- START OF Patient DETAILS TAB PANE -->
 
-                                    <div role="tabpanel" class="tab-pane fade in active" id="EmployeeDetails">
+                                    <div role="tabpanel" class="tab-pane fade in active" id="PatientDetailsPanel">
 
                                         <div class="row">
 
@@ -131,19 +193,16 @@
                                                 <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Emp Code</label>
-                                                        <input type="text" id="EmployeeCode" class="form-control" />
+                                                        <input type="text" id="PatientCode" class="form-control" />
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     <div class="form-group form-group-sm">
-                                                        <label>Employee Name</label>
-                                                        <input type="text" id="EmployeeName" class="form-control" />
+                                                        <label>Patient Name</label>
+                                                        <input type="text" id="PatientName" class="form-control" />
                                                     </div>
-                                                </div>
-
-                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div id="SearchEmployeeList" class="autocompleteList"></div>
+                                                    <div id="SearchPatientList" class="autocompleteList"></div>
                                                 </div>
 
                                                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
@@ -188,14 +247,14 @@
                                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Company Code</label>
-                                                        <input type="text" id="CompanyCode" class="form-control" />
+                                                        <input type="text" id="EmployerCode" class="form-control" />
                                                     </div>
                                                 </div>
 
                                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Company Name</label>
-                                                        <input type="text" id="CompanyName" class="form-control" />
+                                                        <input type="text" id="EmployerName" class="form-control" />
                                                     </div>
                                                 </div>
 

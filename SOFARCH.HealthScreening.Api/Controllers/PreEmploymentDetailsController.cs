@@ -16,16 +16,23 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             _preEmploymentDetails = new Business.PreEmploymentDetails();
         }
 
-        [Route("GetEmployeeDetails/{employeeId}")]
-        public Entities.PreEmploymentDetails GetEmployeeDetails(Int32 employeeId)
+        [Route("GetPatientAndTestDetails/{patientId}")]
+        public Entities.PreEmploymentDetails GetPatientAndTestDetails(Int32 patientId)
         {
-            return _preEmploymentDetails.GetEmployeeDetails(employeeId);
+            return _preEmploymentDetails.GetPatientAndTestDetails(patientId);
         }
 
         [Route("GetAllPreEmploymentDetails")]
         public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails()
         {
             return _preEmploymentDetails.GetAllPreEmploymentDetails();
+        }
+
+        [HttpPost]
+        [Route("SearchPreEmploymentDetails")]
+        public List<Entities.PreEmploymentDetails> SearchPreEmploymentDetails(Entities.PreEmploymentDetails preEmploymentDetails)
+        {
+            return _preEmploymentDetails.SearchPreEmploymentDetails(preEmploymentDetails);
         }
 
         [HttpPost]

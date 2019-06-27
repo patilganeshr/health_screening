@@ -216,15 +216,18 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
-                        var patient = new Entities.Patient()
+                        while (reader.Read())
                         {
-                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
-                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
-                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
-                            FullName = DRE.GetNullableString(reader, "full_name", null)
-                        };
+                            var patient = new Entities.Patient()
+                            {
+                                PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                                PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
+                                EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                                FullName = DRE.GetNullableString(reader, "full_name", null)
+                            };
 
-                        patients.Add(patient);
+                            patients.Add(patient);
+                        }
                     }
                 }
             }

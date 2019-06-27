@@ -9,7 +9,6 @@ Sofarch.PreEmployment = (function () {
     var shared = new Shared();
     var CurrentFocus = -1;
 
-    var EmployeeDetails = {};
     var PreEmploymentDetails = [];
     var PreEmploymentTestDetails = [];
 
@@ -20,20 +19,25 @@ Sofarch.PreEmployment = (function () {
         DOM.loader = document.getElementById('Loader');
 
         DOM.viewMode = document.getElementById('ViewMode');
+        DOM.searchPreEmploymentDetailsPanel = document.getElementById('SearchPreEmploymentDetailsPanel');
+        DOM.searchOptions = document.getElementById('SearchOptions');
+        DOM.searchValue = document.getElementById('SearchValue');
+        DOM.searchPreEmploymentDetails = document.getElementById('SearchPreEmploymentDetails');
+
         DOM.preEmploymentDetailsList = document.getElementById('PreEmploymentDetailsList');
 
         DOM.editMode = document.getElementById('EditMode');
-        DOM.employeeDetails = document.getElementById('EmployeeDetails');
-        DOM.employeeCode = document.getElementById('EmployeeCode');
-        DOM.employeeName = document.getElementById('EmployeeName');
-        DOM.searchEmployeeList = document.getElementById('SearchEmployeeList');
+        DOM.patientDetailsPanel = document.getElementById('PatientDetailsPanel');
+        DOM.patientCode = document.getElementById('PatientCode');
+        DOM.patientName = document.getElementById('PatientName');
+        DOM.searchPatientList = document.getElementById('SearchPatientList');
         DOM.age = document.getElementById('Age');
-        DOM.gender = document.getElementsByName('Gender');
-        DOM.maritalStatus = document.getElementsByName('MaritalStatus');
+        DOM.gender = document.getElementById('Gender');
+        DOM.maritalStatus = document.getElementById('MaritalStatus');
         DOM.noOfSons = document.getElementById('NoOfSons');
         DOM.noOfDaughters = document.getElementById('NoOfDaughters');
-        DOM.companyCode = document.getElementById('CompanyCode');
-        DOM.companyName = document.getElementById('CompanyName');
+        DOM.employerCode = document.getElementById('EmployerCode');
+        DOM.employerName = document.getElementById('EmployerName');
         DOM.designation = document.getElementById('Designation');
         DOM.personalHistoryOfMajorIllness = document.getElementById('PersonalHistoryOfMajorIllness');
         DOM.drugAllergy= document.getElementById('DrugAllergy');
@@ -58,7 +62,7 @@ Sofarch.PreEmployment = (function () {
         DOM.savePreEmploymentDetails = document.getElementById('SavePreEmploymentDetails');
         DOM.deletePreEmploymentDetails = document.getElementById('DeletePreEmploymentDetails');
         DOM.printPreEmploymentDetails = document.getElementById('PrintPreEmploymentDetails');
-        DOM.filterEmployee = document.getElementById('FilterEmployee');
+        DOM.filterPreEmploymentDetails = document.getElementById('FilterPreEmploymentDetails');
         DOM.exportEmployeeList = document.getElementById('ExportEmployeeList');
 
     }
@@ -100,12 +104,14 @@ Sofarch.PreEmployment = (function () {
         DOM.editPreEmploymentDetails.addEventListener('click', editPreEmploymentDetails);
         DOM.savePreEmploymentDetails.addEventListener('click', savePreEmploymentDetails);
         DOM.deletePreEmploymentDetails.addEventListener('click', deletePreEmploymentDetails);
+        DOM.searchPreEmploymentDetails.addEventListener('click', searchPreEmploymentDetails);
+        DOM.filterPreEmploymentDetails.addEventListener('click', filterPreEmploymentDetails);
 
-        DOM.employeeName.onkeyup = function (e) {
+        DOM.patientName.onkeyup = function (e) {
 
             if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
-            showSearchEmployeeList(e);
+            showSearchPatientList(e);
 
         };
 
@@ -117,15 +123,15 @@ Sofarch.PreEmployment = (function () {
 
     }
 
-    function showSearchEmployeeList(e) {
+    function showSearchPatientList(e) {
 
         if (e.keyCode === 13) {
             CurrentFocus = -1;
-            showEmployeeNameOnEnterKey(e);
+            showPatientNameOnEnterKey(e);
             return;
         }
 
-        var dataAttributes = ['Employee-Id', 'Full-Name'];
+        var dataAttributes = ['Patient-Id', 'Patient-Code'];
 
         var parameters = {};
 
@@ -134,10 +140,10 @@ Sofarch.PreEmployment = (function () {
             Event: e,
             CurrentFocus: CurrentFocus,
             PostDataKeyValue: postMessage,
-            ElementToBeAppend: DOM.searchEmployeeList,
+            ElementToBeAppend: DOM.searchPatientList,
             DataAttributes: dataAttributes,
             PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetEmployeeIdAndNameByEmployeeName/" + DOM.employeeName.value + "/",
+            URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value + "/",
             DisplayName: "FullName"
         };
 
@@ -170,20 +176,22 @@ Sofarch.PreEmployment = (function () {
                         for (var s = 0; s < listCount; s++) {   
 
                             var li = document.createElement('li');
+                            var span = document.createElement('span');
                             var p = document.createElement('p');
 
                             li.classList.add('list-group-item');
                             li.classList.add('clearfix');
 
-                            li.setAttribute('id', autoCompleteList[s].EmployeeId);
+                            li.setAttribute('id', autoCompleteList[s].PatientId);
 
                             li.style.cursor = "pointer";
                             li.onclick = showEmployeeNameOnSelection;
-                            li.textContent = autoCompleteList[s].FullName;
+                            span.textContent = autoCompleteList[s].FullName;
 
                             p.classList.add('list-group-item-text');
-                            p.textContent = autoCompleteList[s].CompanyName;
+                            p.textContent = autoCompleteList[s].EmployerName;
 
+                            li.appendChild(span);
                             li.appendChild(p);
 
                             fragment.appendChild(li);
@@ -191,12 +199,12 @@ Sofarch.PreEmployment = (function () {
 
                         ul.appendChild(fragment);
 
-                        DOM.searchEmployeeList.appendChild(ul);
+                        DOM.searchPatientList.appendChild(ul);
 
-                        DOM.searchEmployeeList.style.width = e.target.offsetWidth + 'px';
-                        DOM.searchEmployeeList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
+                        DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
+                        DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
 
-                        DOM.searchEmployeeList.classList.add('autocompleteList-active');
+                        DOM.searchPatientList.classList.add('autocompleteList-active');
                         //DOM.itemsList.innerHTML = data;
 
                     }
@@ -210,36 +218,44 @@ Sofarch.PreEmployment = (function () {
 
         FLAG = "NEW ITEM";
 
-        setEmployeeName(e.target.textContent, e.target.id);
+        if (e.target.nodeName.toLowerCase() === "li") {
+            setPatientName(e.target.children[0].textContent, parseInt(e.target.id));
+        }
+        else if (e.target.nodeName.toLowerCase() === "span") {
+            setPatientName(e.target.textContent, parseInt(e.target.parentElement.id));
+        }
+        else if (e.target.nodeName.toLowerCase() === "p") {
+            setPatientName(e.target.parentElement.children[0].textContent, parseInt(e.target.parentElement.id));
+        }
 
     }
 
-    function showEmployeeNameOnEnterKey() {
+    function showPatientNameOnEnterKey() {
 
         FLAG = "NEW ITEM";
        
-        var li = DOM.searchEmployeeList.querySelectorAll('.autocompleteListItem-active');
+        var li = DOM.searchPatientList.querySelectorAll('.autocompleteListItem-active');
 
         var count = li.length;
 
         if (count) {
 
-            setEmployeeName(li[0].textContent, li[0].id);
+            setPatientName(li[0].children[0].textContent, parseInt(li[0].id));
         }
 
     }
 
-    function setEmployeeName(name, id) {
+    function setPatientName(name, id) {
 
-        DOM.employeeName.value = name;
+        DOM.patientName.value = name;
 
-        DOM.employeeName.setAttribute('data-employee-id', id);
+        DOM.patientName.setAttribute('data-patient-id', id);
 
-        shared.closeAutoCompleteList(DOM.searchEmployeeList);
+        shared.closeAutoCompleteList(DOM.searchPatientList);
 
-        DOM.employeeName.focus();
+        DOM.patientName.focus();
 
-        getEmployeeAndTestDetails(employeeId);
+        getPatientAndTestDetails(id);
     }
 
     var getSelectedRows = function () {
@@ -361,15 +377,15 @@ Sofarch.PreEmployment = (function () {
         return preEmploymentId;
     };
 
-    function getEmployeeAndTestDetails(employeeId) {
+    function getPatientAndTestDetails(patientId) {
 
-        //employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
+        //patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
         
-        if (isNaN(employeeId)) { employeeId = 0; }
+        if (isNaN(patientId)) { patientId = 0; }
 
-        if (DOM.employeeName.value !== "") {
+        if (DOM.patientName.value !== "") {
 
-            shared.sendRequest(SERVICE_PATH + "GetEmployeeDetails/" + employeeId, "GET", true, "JSON", null, function (response) {
+            shared.sendRequest(SERVICE_PATH + "GetPatientAndTestDetails/" + patientId, "GET", true, "JSON", null, function (response) {
 
                 if (response.status === 200) {
 
@@ -379,9 +395,9 @@ Sofarch.PreEmployment = (function () {
 
                         if (data !== undefined) {
 
-                            EmployeeDetails = data;
+                            PreEmploymentDetails = data;
 
-                            showEmployeeDetails();
+                            showPatientDetails(PreEmploymentDetails);
                         }
                     }
                 }
@@ -398,14 +414,14 @@ Sofarch.PreEmployment = (function () {
         shared.disableControls(DOM.editMode, false);
         shared.clearTables(DOM.editMode);
 
-        DOM.employeeName.setAttribute('data-employee-id', 0);
+        DOM.patientName.setAttribute('data-patient-id', 0);
         
         // Show panel;
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
 
         // Set focus
-        DOM.employeeName.focus();
+        DOM.patientName.focus();
 
         shared.hideLoader(DOM.loader);
     }
@@ -446,8 +462,19 @@ Sofarch.PreEmployment = (function () {
 
         shared.hideLoader(DOM.loader);
 
-        DOM.employeeName.focus();
+        DOM.patientName.focus();
     }
+
+    var getPatientId = function (selectedRows) {
+
+        var patientId = 0;
+
+        patientId = parseInt(selectedRows[0].getAttribute('data-patient-id'));
+
+        if (isNaN(patientId)) { patientId = 0; }
+
+        return patientId;
+    };
 
     function editPreEmploymentDetails() {
 
@@ -469,9 +496,9 @@ Sofarch.PreEmployment = (function () {
             }
             else {
 
-                var employeeId = getEmployeeId(selectedRows);
+                var preEmploymentId = getPreEmploymentId(selectedRows);
 
-                showPreEmploymentDetails(employeeId);
+                showPreEmploymentDetails(preEmploymentId);
             }
         }
         else {
@@ -481,7 +508,7 @@ Sofarch.PreEmployment = (function () {
         shared.hideLoader(DOM.loader);
 
         // Set Focus
-        DOM.employeeName.focus();
+        DOM.patientName.focus();
     }
 
     function deletePreEmploymentDetails() {
@@ -490,7 +517,7 @@ Sofarch.PreEmployment = (function () {
 
         try {
 
-            var tableBody = DOM.employeesList.tBodies[0];
+            var tableBody = DOM.preEmploymentDetailsList.tBodies[0];
 
             var selectedRows = getSelectedRows();
 
@@ -544,7 +571,7 @@ Sofarch.PreEmployment = (function () {
 
                             preEmployment = {
                                 PreEmploymentId: preEmploymentId,
-                                EmployeeId: parseInt(employeeId),
+                                PatientId: parseInt(patientId),
                                 PreEmploymentTestDetails: preEmploymentTestDetails,
                                 IsDeleted: true,
                                 DeletedBy: parseInt(LOGGED_USER),
@@ -564,7 +591,7 @@ Sofarch.PreEmployment = (function () {
                                             text: "Pre Employment deleted successfully.",
                                             type: "success"
                                         }, function () {
-                                            getPreEmploymentDetails();
+                                            addNewPreEmploymentDetails();
                                         });
                                     }
                                 }
@@ -587,6 +614,82 @@ Sofarch.PreEmployment = (function () {
 
             shared.hideLoader(DOM.loader);
         }
+    }
+
+        function fillSearchOption() {
+
+        var options = "";
+
+        options += "<option value='-1'> Choose Search Option </option>";
+        options += "<option value='FullName' selected='selected'> Patient Name</option>";
+        options += "<option value='EmployerName'> Company Name </option>";
+        options += "<option value='PatientCode'> Patient Code</option>";
+
+        DOM.searchOptions.innerHTML = options;
+    }
+
+    function filterPreEmploymentDetails() {
+
+        shared.showPanel(DOM.searchPreEmploymentDetailsPanel);
+
+        shared.clearInputs(DOM.searchPreEmploymentDetailsPanel);
+
+        fillSearchOption();
+
+        if (DOM.searchPreEmploymentDetailsPanel.classList.contains("hide")) {
+            DOM.searchPreEmploymentDetailsPanel.classList.remove('hide');
+            DOM.searchPreEmploymentDetailsPanel.classList.add('show');
+        }
+        else {
+            DOM.searchPreEmploymentDetailsPanel.classList.remove('show');
+            DOM.searchPreEmploymentDetailsPanel.classList.add('hide');
+        }
+
+        DOM.searchValue.focus();
+    }
+
+    function searchPreEmploymentDetails() {
+
+        shared.showLoader(DOM.loader);
+
+        DOM.preEmploymentDetailsList.tBodies[0].innerHTML = "";
+
+        PreEmploymentDetails.length = 0;
+
+        var searchParmater = {
+            FullName: null,
+            EmployerName: null,
+            PatientCode: null
+        };
+
+        var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
+        var searchValue = DOM.searchValue.value;
+
+        searchParmater[searchParameterName] = searchValue;
+
+        var postData = JSON.stringify(searchParmater);
+
+        shared.sendRequest(SERVICE_PATH + "SearchPreEmploymentDetails/", "POST", true, "JSON", postData, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        PreEmploymentDetails = _response;
+
+                        bindPreEmploymentDetails();
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
     }
 
     function getPreEmploymentDetails() {
@@ -632,11 +735,11 @@ Sofarch.PreEmployment = (function () {
 
             for (var r = 0; r < PreEmploymentDetails.length; r++) {
 
-                data = data + "<tr data-pre-employment-id=" + PreEmploymentDetails[r].PreEmploymentId + " data-employee-id=" + PreEmploymentDetails[r].EmployeeId + " >";
-                data = data + "<td><label class='label-tick'> <input type='checkbox' id='" + PreEmploymentDetails[r].EmployeeId + "' class='label-checkbox' name='SelectEmployee' /> <span class='label-text'></span> </label>" + "</td>";
-                data = data + "<td>" + PreEmploymentDetails[r].CompanyName + "</td>";
-                data = data + "<td>" + PreEmploymentDetails[r].EmployeeCode + "</td>";
-                data = data + "<td>" + PreEmploymentDetails[r].EmployeeName + "</td>";
+                data = data + "<tr data-pre-employment-id=" + PreEmploymentDetails[r].PreEmploymentId + " data-patient-id=" + PreEmploymentDetails[r].PatientId + " >";
+                data = data + "<td><label class='label-tick'> <input type='checkbox' id='" + PreEmploymentDetails[r].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
+                data = data + "<td>" + PreEmploymentDetails[r].EmployerName + "</td>";
+                data = data + "<td>" + PreEmploymentDetails[r].PatientCode + "</td>";
+                data = data + "<td>" + PreEmploymentDetails[r].PatientFullName + "</td>";
                 data = data + "<td>" + PreEmploymentDetails[r].Gender + "</td>";
                 data = data + "</tr>";
 
@@ -659,52 +762,49 @@ Sofarch.PreEmployment = (function () {
             });
 
             if (preEmploymentDetails.length) {
-
-                var preEmploymentTestDetails = PreEmploymentDetails[0].PreEmploymentTestDetails.filter(function (value, index, array) {
-                    return value.PreEmploymentId === preEmploymentId;
-                });
-
-                EmployeeDetails = preEmploymentDetails;
-                EmployeeDetails.PreEmploymentTestDetails = preEmploymentTestDetails;
-
-                showEmployeeDetails();
+                showPatientDetails(preEmploymentDetails[0]);
             }
+
         }
     }
 
-    function showEmployeeDetails() {
+    function showPatientDetails(preEmploymentDetails) {
 
         shared.showLoader(DOM.loader);
 
-        if (EmployeeDetails !== null) {
+        if (preEmploymentDetails !== undefined) {
 
-            DOM.employeeCode.value = EmployeeDetails.EmployeeCode;
-            DOM.employeeName.setAttribute('data-employee-id', EmployeeDetails.EmployeeId);
-            DOM.employeeName.setAttribute('data-pre-employment-id', EmployeeDetails.PreEmploymentId);
-            DOM.employeeName.value = EmployeeDetails.EmployeeFullName;
-            DOM.age.value = EmployeeDetails.Age;
-            DOM.gender.value = EmployeeDetails.Gender;
-            DOM.maritalStatus.value = EmployeeDetails.MaritalStatus;
-            DOM.noOfSons.value = EmployeeDetails.NoOfSons;
-            DOM.noOfDaughters.value = EmployeeDetails.NoOfDaughters;
-            DOM.companyCode.value = EmployeeDetails.CompanyCode;
-            DOM.companyName.value = EmployeeDetails.CompanyName;
-            DOM.designation.value = EmployeeDetails.Designation;
-            DOM.personalHistoryOfMajorIllness.value = EmployeeDetails.PersonalHistoryOfMajorIllness;
-            DOM.drugAllergy.value = EmployeeDetails.AllergicTo;
-            DOM.micturation.value = EmployeeDetails.Micturation;
-            DOM.bowels.value = EmployeeDetails.Bowels;
-            DOM.sleep.value = EmployeeDetails.Sleep;
-            DOM.alcohol.value = EmployeeDetails.Alcohol;
-            DOM.smoking.value = EmployeeDetails.Smoking;
-            DOM.mc.value = EmployeeDetails.MC;
-            DOM.familyHistoryOfMajorIllness.value = EmployeeDetails.FamilyHistory;
+            DOM.patientCode.value = preEmploymentDetails.PatientCode;
+            DOM.patientName.setAttribute('data-patient-id', preEmploymentDetails.PatientId);
+            DOM.patientName.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
+            DOM.patientName.value = preEmploymentDetails.PatientFullName;
+            DOM.age.value = preEmploymentDetails.Age;
+            DOM.gender.value = preEmploymentDetails.Gender;
+            DOM.maritalStatus.value = preEmploymentDetails.MaritalStatus;
+            DOM.noOfSons.value = preEmploymentDetails.NoOfSons;
+            DOM.noOfDaughters.value = preEmploymentDetails.NoOfDaughters;
+            DOM.employerCode.value = preEmploymentDetails.EmployerCode;
+            DOM.employerName.value = preEmploymentDetails.EmployerName;
+            DOM.designation.value = preEmploymentDetails.Designation;
+            DOM.personalHistoryOfMajorIllness.value = preEmploymentDetails.PersonalHistoryOfMajorIllness;
+            DOM.drugAllergy.value = preEmploymentDetails.AllergicTo;
+            DOM.micturation.value = preEmploymentDetails.Micturation;
+            DOM.bowels.value = preEmploymentDetails.Bowels;
+            DOM.sleep.value = preEmploymentDetails.Sleep;
+            DOM.alcohol.value = preEmploymentDetails.Alcohol;
+            DOM.smoking.value = preEmploymentDetails.Smoking;
+            DOM.mc.value = preEmploymentDetails.MC;
+            DOM.familyHistoryOfMajorIllness.value = preEmploymentDetails.FamilyHistory;
 
-            PreEmploymentTestDetails = EmployeeDetails.PreEmploymentTestDetails;
+            PreEmploymentTestDetails = preEmploymentDetails.PreEmploymentTestDetails;
 
-            bindTestDetails(true);
+            if (PreEmploymentTestDetails !== undefined) {
 
-            bindTestDetails(false);
+                bindTestDetails(true);
+
+                bindTestDetails(false);
+
+            }
         }
 
         shared.hideLoader(DOM.loader);
@@ -757,9 +857,9 @@ Sofarch.PreEmployment = (function () {
 
         var isValid = true;
 
-        //if (DOM.employeeCode.value === "") {
+        //if (DOM.patientCode.value === "") {
         //    isValid = false;
-        //    swal("Error!!!", "Please enter the Employee Code.", "error");
+        //    swal("Error!!!", "Please enter the Patient Code.", "error");
         //}
         //else if (DOM.title.selectedIndex === 0) {
         //    isValid = false;
@@ -842,100 +942,20 @@ Sofarch.PreEmployment = (function () {
         
         return PreEmploymentTestDetails;
     };
-
-    function checkIsEmployeeNameExists() {
-
-        var companyId = parseInt(DOM.companyName.getAttribute('data-company-id'));
-
-        var employeeName = "";
-        var firstName = undefined;
-        var middleName = undefined;
-        var lastName = undefined;
-        var employeeId = 0;
-
-        firstName = DOM.firstName.value;
-        middleName = DOM.middleName.value;
-        lastName = DOM.lastName.value;
-        employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
-
-        if (isNaN(employeeId)) { employeeId = 0;}
-            
-        if (isNaN(companyId)) { companyId = 0; }
-
-        if (employeeId > 0) { return; }
-
-        if (firstName !== "" && middleName !== "" && lastName !== "") {
-            employeeName = firstName + ' ' + middleName + ' ' + lastName;
-        }
-
-        if (isNaN(companyId)) { companyId = 0; }
-
-        shared.sendRequest(SERVICE_PATH + "IsEmployeeNameExists/" + companyId + '/' + employeeName, "GET", true, "JSON", null, function (response) {
-
-            if (response.status === 200) {
-
-                if (response.responseText) {
-
-                    DOM.firstName.focus();
-
-                    swal("Error", "This Employee Name is already exists.", "error");
-
-                }
-
-                //callback(isEmployeeNameExists);
-            }
-        });
-    }
-
-    function checkIsEmployeeCodeExists() {
-
-        var companyId = parseInt(DOM.companyName.getAttribute('data-company-id'));
-
-        var employeeName = "";
-        var employeeCode = "";
-
-        employeeCode = DOM.employeeCode.value;
-        employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
-
-        if (isNaN(employeeId)) { employeeId = 0;}
-            
-        if (isNaN(companyId)) { companyId = 0; }
-
-        if (employeeId > 0) { return; }
-
-        if (employeeCode !== "" && companyName !== "") {
-
-            shared.sendRequest(SERVICE_PATH + "IsEmployeeCodeExists/" + companyId + '/' + employeeCode, "GET", true, "JSON", null, function (response) {
-
-                if (response.status === 200) {
-
-                    if (response.responseText) {
-
-                        DOM.firstName.focus();
-
-                        swal("Error", "This Employee Name is already exists.", "error");
-
-                    }
-
-                    //callback(isEmployeeNameExists);
-                }
-            });
-        }
-    }
-
+    
     function savePreEmploymentDetails() {
 
         if (validateData()) {
 
             /* temp variable */
             var preEmploymentId = 0;
-            var employeeId = 0;
+            var patientId = 0;
             
-            preEmploymentId = parseInt(DOM.employeeCode.getAttribute('data-pre-employment-id'));
-            employeeId = parseInt(DOM.employeeName.getAttribute('data-employee-id'));
+            preEmploymentId = parseInt(DOM.patientCode.getAttribute('data-pre-employment-id'));
+            patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
             
             if (isNaN(preEmploymentId)) { preEmploymentId = 0; }
-            if (isNaN(employeeId)) { employeeId = 0; }
+            if (isNaN(patientId)) { patientId = 0; }
 
             var preEmploymentDetails = {};
 
@@ -947,7 +967,7 @@ Sofarch.PreEmployment = (function () {
 
             preEmploymentDetails = {
                 PreEmploymentId: preEmploymentId,
-                EmployeeId: employeeId,
+                PatientId: patientId,
                 DocNo: "",
                 PreEmploymentTestDetails: PreEmploymentTestDetails
             };

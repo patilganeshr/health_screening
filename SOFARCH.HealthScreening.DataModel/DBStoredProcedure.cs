@@ -618,9 +618,12 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeletePreEmploymentDetails { get { return "pre_employment_details_delete_pre_employment_details"; } }
 
-        public static string GetPreEmploymentEmployeeDetailsByEmployeeId { get { return "pre_employment_details_get_employee_details_by_employee_id"; } }
+        public static string GetPreEmploymentPatientDetailsByPatientId { get { return "pre_employment_details_get_patient_details_by_patient_id"; } }
 
         public static string GetAllPreEmploymentDetails { get { return "pre_employment_details_get_all_pre_employment_details"; } }
+
+        public static string SearchPreEmploymentDetails{ get { return "pre_employment_details_search_pre_employment_details"; } }
+
 
         #endregion
 
@@ -636,6 +639,34 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetPreEmploymentAllTestDetails { get { return "pre_employment_test_details_get_all_tests"; } }
 
         public static string GetPreEmploymentTestDetailsByPreEmploymentId { get { return "pre_employment_test_details_get_test_details_by_pre_employment_id"; } }
+
+        #endregion
+
+
+        #region Drug Dispense
+
+        public static string InsertDrugDispense { get { return "drug_dispenses_insert_drug_dispense"; } }
+
+        public static string UpdateDrugDispense { get { return "drug_dispenses_update_drug_dispense"; } }
+
+        public static string DeleteDrugDispense { get { return "drug_dispenses_delete_drug_dispense"; } }
+
+        public static string GetDrugDispenseDetailsById{ get { return "drug_dispenses_get_drug_dispense_details_by_id"; } }
+
+        public static string SearchDrugDispense { get { return "drug_dispenses_search_drug_dispenses"; } }
+
+        #endregion
+
+
+        #region Drug Dispense Drug Utilisation
+        public static string InsertDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_insert_drug_utilisation"; } }
+
+        public static string UpdateDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_update_drug_utilisation"; } }
+
+        public static string DeleteDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_delete_drug_utilisation"; } }
+
+        public static string GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId { get { return "drug_dispenses_get_drug_dispense_details_by_id"; } }
+
 
         #endregion
 

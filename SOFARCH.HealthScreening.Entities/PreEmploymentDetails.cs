@@ -11,13 +11,13 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? PreEmploymentId { get; set; }
 
-        public Int32? EmployeeId { get; set; }
+        public Int32? PatientId { get; set; }
 
         public string DocNo { get; set; }
 
-        public string EmployeeFullName { get; set; }
+        public string PatientFullName { get; set; }
 
-        public string EmployeeCode { get; set; }
+        public Int32? PatientCode { get; set; }
 
         public string Gender { get; set; }
 
@@ -29,11 +29,11 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? NoOfDaughters { get; set; }
 
-        public Int32? CompanyId { get; set; }
+        public Int32? EmployerId { get; set; }
 
-        public string CompanyCode { get; set; }
+        public Int32? EmployerCode { get; set; }
 
-        public string CompanyName { get; set; }
+        public string EmployerName { get; set; }
 
         public string Designation { get; set; }
 

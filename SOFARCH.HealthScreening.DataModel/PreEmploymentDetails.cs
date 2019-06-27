@@ -30,7 +30,7 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertPreEmploymentDetails))
                 {
                     database.AddInParameter(dbCommand, "@pre_employment_id", DbType.Int32, preEmploymentDetails.PreEmploymentId);
-                    database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, preEmploymentDetails.EmployeeId);
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, preEmploymentDetails.PatientId);
                     database.AddInParameter(dbCommand, "@doc_no", DbType.String, preEmploymentDetails.DocNo);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, preEmploymentDetails.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, preEmploymentDetails.CreatedByIP);
@@ -92,7 +92,7 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdatePreEmploymentDetails))
                 {
                     database.AddInParameter(dbCommand, "@pre_employment_id", DbType.Int32, preEmploymentDetails.PreEmploymentId);
-                    database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, preEmploymentDetails.EmployeeId);
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, preEmploymentDetails.PatientId);
                     database.AddInParameter(dbCommand, "@doc_no", DbType.String, preEmploymentDetails.DocNo);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, preEmploymentDetails.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, preEmploymentDetails.ModifiedByIP);
@@ -115,13 +115,13 @@ namespace SOFARCH.HealthScreening.DataModel
             return preEmploymentId;
         }
 
-        public Entities.PreEmploymentDetails GetEmployeeDetails(Int32 employeeId)
+        public Entities.PreEmploymentDetails GetPatientAndTestDetails(Int32 patientId)
         {
-            var employeeDetails = new Entities.PreEmploymentDetails();
+            var patientAndTestDetails = new Entities.PreEmploymentDetails();
 
-            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetPreEmploymentEmployeeDetailsByEmployeeId))
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetPreEmploymentPatientDetailsByPatientId))
             {
-                database.AddInParameter(dbCommand, "@employee_id", DbType.Int32, employeeId);
+                database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, patientId);
 
                 using (IDataReader reader = database.ExecuteReader(dbCommand))
                 {
@@ -129,20 +129,20 @@ namespace SOFARCH.HealthScreening.DataModel
                     {
                         var preEmploymentTestDetails = new DataModel.PreEmploymentTestDetails();
 
-                        var employee = new Entities.PreEmploymentDetails()
+                        var preEmployment = new Entities.PreEmploymentDetails()
                         {
                             PreEmploymentId = DRE.GetNullableInt32(reader, "pre_employment_id", 0),
-                            EmployeeId = DRE.GetNullableInt32(reader, "employee_id", null),
-                            EmployeeCode = DRE.GetNullableString(reader, "employee_code", null),
-                            EmployeeFullName = DRE.GetNullableString(reader, "full_name", null),
+                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
+                            PatientFullName = DRE.GetNullableString(reader, "full_name", null),
                             Gender = DRE.GetNullableString(reader, "gender", null),
                             Age = DRE.GetNullableInt32(reader, "age", null),
                             MaritalStatus = DRE.GetNullableString(reader, "marital_status", null),
                             NoOfSons = DRE.GetNullableInt32(reader, "no_of_sons", null),
                             NoOfDaughters = DRE.GetNullableInt32(reader, "no_of_daughters", null),
-                            CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
-                            CompanyCode = DRE.GetNullableString(reader, "company_code", null),
-                            CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                            EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                            EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
+                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                             Designation = DRE.GetNullableString(reader, "designation", null),
                             AllergicTo = DRE.GetNullableString(reader, "allergic_to", null),
                             Micturation = DRE.GetNullableString(reader, "micturation", null),
@@ -155,12 +155,12 @@ namespace SOFARCH.HealthScreening.DataModel
                             PreEmploymentTestDetails = preEmploymentTestDetails.GetAllTestDetails() 
                         };
 
-                        employeeDetails = employee;
+                        patientAndTestDetails = preEmployment;
                     }
                 }
             }
 
-            return employeeDetails;
+            return patientAndTestDetails;
         }
 
         public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails()
@@ -179,17 +179,17 @@ namespace SOFARCH.HealthScreening.DataModel
                         {
                             PreEmploymentId = DRE.GetNullableInt32(reader, "pre_employment_id", 0),
                             DocNo = DRE.GetNullableString(reader, "doc_no", null),
-                            EmployeeId = DRE.GetNullableInt32(reader, "employee_id", null),
-                            EmployeeCode = DRE.GetNullableString(reader, "employee_code", null),
-                            EmployeeFullName = DRE.GetNullableString(reader, "full_name", null),
+                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
+                            PatientFullName = DRE.GetNullableString(reader, "full_name", null),
                             Gender = DRE.GetNullableString(reader, "gender", null),
                             Age = DRE.GetNullableInt32(reader, "age", null),
                             MaritalStatus = DRE.GetNullableString(reader, "marital_status", null),
                             NoOfSons = DRE.GetNullableInt32(reader, "no_of_sons", null),
                             NoOfDaughters = DRE.GetNullableInt32(reader, "no_of_daughters", null),
-                            CompanyId = DRE.GetNullableInt32(reader, "company_id", null),
-                            CompanyCode = DRE.GetNullableString(reader, "company_code", null),
-                            CompanyName = DRE.GetNullableString(reader, "company_name", null),
+                            EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                            EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
+                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                             Designation = DRE.GetNullableString(reader, "designation", null),
                             AllergicTo = DRE.GetNullableString(reader, "allergic_to", null),
                             Micturation = DRE.GetNullableString(reader, "micturation", null),
@@ -208,6 +208,57 @@ namespace SOFARCH.HealthScreening.DataModel
             }
 
             return preEmploymentDetails;
+        }
+
+        public List<Entities.PreEmploymentDetails> SearchPreEmploymentDetails(Entities.PreEmploymentDetails preEmploymentDetails)
+        {
+            var preEmploymentDetailsList = new List<Entities.PreEmploymentDetails>();
+
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchPreEmploymentDetails))
+            {
+                database.AddInParameter(dbCommand, "@full_name", DbType.String, preEmploymentDetails.PatientFullName);
+                database.AddInParameter(dbCommand, "@employer_name", DbType.String, preEmploymentDetails.EmployerName);
+                database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, preEmploymentDetails.PatientCode);
+
+                using (IDataReader reader = database.ExecuteReader(dbCommand))
+                {
+                    while (reader.Read())
+                    {
+                        var preEmploymentTestDetails = new DataModel.PreEmploymentTestDetails();
+
+                        var preEmployment = new Entities.PreEmploymentDetails()
+                        {
+                            PreEmploymentId = DRE.GetNullableInt32(reader, "pre_employment_id", 0),
+                            DocNo = DRE.GetNullableString(reader, "doc_no", null),
+                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
+                            PatientFullName = DRE.GetNullableString(reader, "full_name", null),
+                            Gender = DRE.GetNullableString(reader, "gender", null),
+                            Age = DRE.GetNullableInt32(reader, "age", null),
+                            MaritalStatus = DRE.GetNullableString(reader, "marital_status", null),
+                            NoOfSons = DRE.GetNullableInt32(reader, "no_of_sons", null),
+                            NoOfDaughters = DRE.GetNullableInt32(reader, "no_of_daughters", null),
+                            EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                            EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
+                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                            Designation = DRE.GetNullableString(reader, "designation", null),
+                            AllergicTo = DRE.GetNullableString(reader, "allergic_to", null),
+                            Micturation = DRE.GetNullableString(reader, "micturation", null),
+                            Bowels = DRE.GetNullableString(reader, "bowels", null),
+                            Sleep = DRE.GetNullableString(reader, "sleep", null),
+                            Alcohol = DRE.GetNullableString(reader, "alcohol", null),
+                            Smoking = DRE.GetNullableString(reader, "smoking", null),
+                            MC = DRE.GetNullableString(reader, "mc", null),
+                            FamilyHistory = DRE.GetNullableString(reader, "family_history", null),
+                            PreEmploymentTestDetails = preEmploymentTestDetails.GetPreEmploymentTestDetailsByPreEmploymentId(DRE.GetInt32(reader, "pre_employment_id"))
+                        };
+
+                        preEmploymentDetailsList.Add(preEmployment);
+                    }
+                }
+            }
+
+            return preEmploymentDetailsList;
         }
 
         public Int32 SavePreEmploymentDetails(Entities.PreEmploymentDetails preEmploymentDetails)
