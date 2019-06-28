@@ -56,7 +56,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         private bool DeleteDrugDispenseDetails(Entities.DrugDispense drugDispense, DbTransaction dbTransaction)
         {
-            var IsDrugDispenseDeleted = 0;
+            var IsDrugDispenseDeleted = false;
 
             try
             {
@@ -116,6 +116,45 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugDispenseId;
         }
 
+        public List<Entities.DrugDispense> SearchDrguDispense(Entities.DrugDispense drugDispense)
+        {
+            var drugDispenses = new List<Entities.DrugDispense>();
+
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
+            {
+                database.AddInParameter(dbCommand, "@full_name", DbType.String, drugDispense.PatientName);
+                database.AddInParameter(dbCommand, "@employer_name", DbType.String, drugDispense.EmployerName);
+                database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, drugDispense.PatientCode);
+
+                using (IDataReader reader = database.ExecuteReader(dbCommand))
+                {
+                    while (reader.Read())
+                    {
+                        var drugUtlisation = new DataModel.DrugDispenseDrugUtilisation();
+
+                        var drugDispenseDetails = new Entities.DrugDispense()
+                        {
+                            DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", 0),
+                            DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
+                            DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
+                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                            PatientName = DRE.GetNullableString(reader, "full_name", null),
+                            EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                            EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
+                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                            WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                            DrugDispenseDrugUtilisations = drugUtlisation.GetDrugUtilisationByDrugDispenseId(DRE.GetInt32(reader, "drug_dispense_id"))
+                        };
+
+                        drugDispenses.Add(drugDispenseDetails);
+                    }
+                }
+            }
+
+            return drugDispenses;
+
+        }
+
         public Int32 SaveDrugDispenseDetails(Entities.DrugDispense drugDispense)
         {
             var drugDispenseId = 0;
@@ -162,7 +201,7 @@ namespace SOFARCH.HealthScreening.DataModel
                                 {
                                     DrugDispenseDrugUtilisation drugUtilisationDB = new DrugDispenseDrugUtilisation();
 
-                                    var result = drugUtilisationDB.DeletePreEmploymentTestDetails((int)preEmploymentDetails.PreEmploymentId, (int)preEmploymentDetails.DeletedBy, preEmploymentDetails.DeletedByIP, dbTransaction);
+                                    var result = drugUtilisationDB.DeleteDrugDispenseDrugUtilisationDetailsByDrugDispenseId((int)drugDispense.DrugDispenseId, (int)drugDispense.DeletedBy, drugDispense.DeletedByIP, dbTransaction);
 
                                     if (result)
                                     {
@@ -180,7 +219,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                                             drugUtilisation.DrugDispenseId = drugDispenseId;
 
-                                            drugDispenseDrugUtilisationId = drugUtilisationDB.SavePreEmploymentDetails(preEmploymentTestDetails, dbTransaction);
+                                            drugDispenseDrugUtilisationId = drugUtilisationDB.SaveDrugDispenseDrugUtilisation(drugUtilisation, dbTransaction);
 
                                             if (drugDispenseDrugUtilisationId < 0)
                                             {

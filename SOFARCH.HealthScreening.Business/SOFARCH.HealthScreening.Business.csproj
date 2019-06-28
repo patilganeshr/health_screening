@@ -57,6 +57,7 @@
     <Compile Include="Company.cs" />
     <Compile Include="Country.cs" />
     <Compile Include="Drug.cs" />
+    <Compile Include="DrugDispense.cs" />
     <Compile Include="DrugFormulation.cs" />
     <Compile Include="DrugGroup.cs" />
     <Compile Include="DrugRoutes.cs" />

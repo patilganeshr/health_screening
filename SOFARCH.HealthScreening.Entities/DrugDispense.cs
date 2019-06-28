@@ -18,5 +18,15 @@ namespace SOFARCH.HealthScreening.Entities
 
         public List<DrugDispenseDrugUtilisation> DrugDispenseDrugUtilisations { get; set; }
         
+        public string PatientName { get; set; }
+
+        public Int32? EmployerId { get; set; }
+
+        public Int32? EmployerCode { get; set; }
+
+        public string EmployerName { get; set; }
+
+        public string PatientCode { get; set; }
+
     }
 }

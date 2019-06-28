@@ -14,6 +14,8 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? DrugId { get; set; }
 
+        public string DrugName { get; set; }
+
         public decimal? DispenseQty { get; set; }
 
     }

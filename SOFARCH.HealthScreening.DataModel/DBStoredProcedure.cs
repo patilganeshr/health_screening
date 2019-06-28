@@ -636,6 +636,8 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string DeletePreEmploymentTestDetails { get { return "pre_employment_test_details_delete_pre_employment_test_details"; } }
 
+        public static string DeletePreEmploymentTestDetailsByPreEmploymentId { get { return "pre_employment_test_details_delete_pre_employment_test_details_by_pre_employment_id"; } }
+
         public static string GetPreEmploymentAllTestDetails { get { return "pre_employment_test_details_get_all_tests"; } }
 
         public static string GetPreEmploymentTestDetailsByPreEmploymentId { get { return "pre_employment_test_details_get_test_details_by_pre_employment_id"; } }
@@ -664,6 +666,8 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string UpdateDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_update_drug_utilisation"; } }
 
         public static string DeleteDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_delete_drug_utilisation"; } }
+
+        public static string DeleteDrugDispenseDrugUtilisationByDrugDispenseId{ get { return "drug_dispenses_drug_utilisation_delete_drug_utilisation_by_drug_dispense_id"; } }
 
         public static string GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId { get { return "drug_dispenses_get_drug_dispense_details_by_id"; } }
 

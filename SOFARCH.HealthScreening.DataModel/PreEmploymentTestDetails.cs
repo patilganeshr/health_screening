@@ -91,7 +91,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeletePreEmploymentTestDetails))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeletePreEmploymentTestDetailsByPreEmploymentId))
                 {
                     database.AddInParameter(dbCommand, "@pre_employment_id", DbType.Int32, preEmploymentId);
                     database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, deletedBy);

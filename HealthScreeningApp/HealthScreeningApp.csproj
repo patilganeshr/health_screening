@@ -518,6 +518,7 @@
     <Content Include="Content\scripts\app\sales\sales-return.js" />
     <Content Include="Content\scripts\app\shared\default.js" />
     <Content Include="Content\scripts\app\shared\masking.js" />
+    <Content Include="Content\scripts\app\transactions\drug-dispense.js" />
     <Content Include="Content\scripts\app\transactions\preemployment-details.js" />
     <Content Include="Content\scripts\vendor\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.js" />
@@ -666,7 +667,7 @@
     <Content Include="Masters\Employee.aspx" />
     <Content Include="Masters\Employer.aspx" />
     <Content Include="Masters\GSTCategory.aspx" />
-    <Content Include="Transactions\DrugUtilisation.aspx" />
+    <Content Include="Transactions\DrugDispense.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
     <Content Include="Transactions\PreEmploymentDetails.aspx" />
     <Content Include="Transactions\PurchaseBill.aspx" />
@@ -812,12 +813,12 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
-    <Compile Include="Transactions\DrugUtilisation.aspx.cs">
-      <DependentUpon>DrugUtilisation.aspx</DependentUpon>
+    <Compile Include="Transactions\DrugDispense.aspx.cs">
+      <DependentUpon>DrugDispense.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Transactions\DrugUtilisation.aspx.designer.cs">
-      <DependentUpon>DrugUtilisation.aspx</DependentUpon>
+    <Compile Include="Transactions\DrugDispense.aspx.designer.cs">
+      <DependentUpon>DrugDispense.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\PettyCashExpense.aspx.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
