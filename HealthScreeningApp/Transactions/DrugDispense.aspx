@@ -13,7 +13,7 @@
         <a href="#" id="DeleteDrugDispenseDetails"><i class="fa fa-remove fa-fw"></i>Delete</a>
         <a href="#" id="PrintDrugDispenseList"><i class="fa fa-print fa-fw"></i>Print</a>
         <a href="#" id="FilterDrugDispenseList"><i class="fa fa-filter fa-fw"></i>Filter</a>
-        
+
 
     </div>
 
@@ -168,10 +168,10 @@
                             </div>
 
                             <div class="panel-body">
-                            
+
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                    <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
                                         <div class="form-group form-group-md">
                                             <label>Fin. Year</label>
                                             <select id="FinancialYear" class="form-control"></select>
@@ -180,14 +180,14 @@
 
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
-                                            <label>Drug Dispense No.</label>
+                                            <label>Dispense No.</label>
                                             <input type="text" id="DrugDispenseNo" class="form-control" disabled="disabled" placeholder="Auto Generated" />
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-md">
-                                                        <label>Drug Dispense Date</label>
+                                                        <label>Dispense Date</label>
                                                         <div class="input-group date input-group-md" id="DrugDispenseDateDatePicker">
                                                             <input type="text" id="DrugDispenseDate" class="form-control" />
                                                             <span class="input-group-addon">
@@ -199,7 +199,7 @@
 
                                     <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
-                                            <label>Employee Code</label>
+                                            <label>Emp Code</label>
                                             <input type="text" id="PatientCode" class="form-control" />
                                         </div>
                                     </div>
@@ -212,7 +212,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-4 col-sm-3 col-xs-12">
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <div class="form-group form-group-md">
                                             <label>Company Name</label>
                                             <input type="text" id="EmployerName" class="form-control" />
@@ -224,7 +224,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
-                                            <label>Past Drug Dispense Details</label>
+                                            <label>Past Drug Dispense Date List</label>
                                             <select id="PastDrugDispenseDate" class="form-control"></select>
                                         </div>
                                     </div>
@@ -233,7 +233,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                     <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
-                                        <div class="form-group form-group-sm">
+                                        <div class="form-group form-group-md">
                                             <label>Search By Drug Name Or Drug Code</label>
                                             <input type="text" id="SearchDrugName" class="form-control" />
 
@@ -254,8 +254,8 @@
                                                     <th class="text-center">Action</th>
                                                     <th class="text-center">Drug Code</th>
                                                     <th class="text-center">Drug Name</th>
-                                                    <th class="text-center">Bal. Stock</th>
-                                                    <th class="text-center">Qty</th>
+                                                    <th class="text-center">Dispense Qty</th>
+                                                    <th class="text-center">Balance Qty</th>
                                                     <th class="text-center">Rate</th>
                                                     <th class="text-center">Amount</th>
                                                 </tr>
@@ -268,13 +268,13 @@
                                 </div>
 
                             </div>
-                        
+
                         </div>
 
-                    
+
                     </div>
 
-                
+
                 </div>
 
             </div>

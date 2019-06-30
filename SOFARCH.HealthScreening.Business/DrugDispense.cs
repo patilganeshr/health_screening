@@ -16,6 +16,11 @@ namespace SOFARCH.HealthScreening.Business
             _drugDispense = new DataModel.DrugDispense();
         }
 
+        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
+        {
+            return _drugDispense.GetDrugDetailsByDrugId(drugId);
+        }
+
         public List<Entities.DrugDispense> SearchDrguDispense(Entities.DrugDispense drugDispense)
         {
             return _drugDispense.SearchDrguDispense(drugDispense);

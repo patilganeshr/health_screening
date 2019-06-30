@@ -181,15 +181,15 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #region WorkingPeriod
 
-        public static string InsertWorkingPeriod { get { return "usp_working_periods_insert_working_period"; } }
+        public static string InsertWorkingPeriod { get { return "working_periods_insert_working_period"; } }
 
-        public static string UpdateWorkingPeriod { get { return "usp_working_periods_update_working_period"; } }
+        public static string UpdateWorkingPeriod { get { return "working_periods_update_working_period"; } }
 
-        public static string DeleteWorkingPeriod { get { return "usp_working_periods_delete_working_period"; } }
+        public static string DeleteWorkingPeriod { get { return "working_periods_delete_working_period"; } }
 
-        public static string GetAllWorkingPeriods { get { return "usp_working_periods_get_all_working_period"; } }
+        public static string GetAllWorkingPeriods { get { return "working_periods_get_all"; } }
 
-        public static string GetListOfFinancialYearsById { get { return "usp_working_periods_get_list_of_financial_years_by_id"; } }
+        public static string GetListOfFinancialYearsById { get { return "working_periods_get_list_of_financial_years_by_id"; } }
 
         #endregion
 
@@ -668,6 +668,8 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string DeleteDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_delete_drug_utilisation"; } }
 
         public static string DeleteDrugDispenseDrugUtilisationByDrugDispenseId{ get { return "drug_dispenses_drug_utilisation_delete_drug_utilisation_by_drug_dispense_id"; } }
+
+        public static string GetDrugDetailsByDrugId { get { return "drug_dispenses_drug_utilisation_get_drugs_details_by_drug_id"; } }
 
         public static string GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId { get { return "drug_dispenses_get_drug_dispense_details_by_id"; } }
 

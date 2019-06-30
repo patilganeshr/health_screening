@@ -16,6 +16,12 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             _drugDispense = new Business.DrugDispense();
         }
 
+        [Route("GetDrugDetailsByDrugId/{drugId}")]
+        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
+        {
+            return _drugDispense.GetDrugDetailsByDrugId(drugId);
+        }
+
         [HttpPost]
         [Route("SearchDrugDispense")]
         public List<Entities.DrugDispense> SearchDrguDispense(Entities.DrugDispense drugDispense)
@@ -24,7 +30,7 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         }
 
         [HttpPost]
-        [Route("SaveDrugDispense")]
+        [Route("SaveDrugDispenseDetails")]
         public Int32 SaveDrugDispenseDetails(Entities.DrugDispense drugDispense)
         {
             return _drugDispense.SaveDrugDispenseDetails(drugDispense);

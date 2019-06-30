@@ -22,7 +22,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="workingPeriod"></param>
         /// <returns></returns>
@@ -66,7 +66,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="workingPeriod"></param>
         /// <returns></returns>
@@ -107,7 +107,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         public List<Entities.WorkingPeriod> GetAllWorkingPeriods()
@@ -151,7 +151,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="workingPeriodId"></param>
         /// <returns></returns>
@@ -176,9 +176,9 @@ namespace SOFARCH.HealthScreening.DataModel
 
             return financialYear;
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="workingPeriod"></param>
         /// <returns></returns>

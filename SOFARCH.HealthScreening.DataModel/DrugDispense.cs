@@ -116,11 +116,18 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugDispenseId;
         }
 
+        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
+        {
+            var drugDetails = new DrugDispenseDrugUtilisation();
+
+            return drugDetails.GetDrugDetailsByDrugId(drugId);
+        }
+
         public List<Entities.DrugDispense> SearchDrguDispense(Entities.DrugDispense drugDispense)
         {
             var drugDispenses = new List<Entities.DrugDispense>();
 
-            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
+            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugDetailsByDrugId))
             {
                 database.AddInParameter(dbCommand, "@full_name", DbType.String, drugDispense.PatientName);
                 database.AddInParameter(dbCommand, "@employer_name", DbType.String, drugDispense.EmployerName);
@@ -138,6 +145,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
                             DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
                             PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
                             PatientName = DRE.GetNullableString(reader, "full_name", null),
                             EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
                             EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
