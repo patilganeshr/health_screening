@@ -127,40 +127,86 @@ namespace SOFARCH.HealthScreening.DataModel
         {
             var drugDispenses = new List<Entities.DrugDispense>();
 
-            using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugDetailsByDrugId))
+            try
             {
-                database.AddInParameter(dbCommand, "@full_name", DbType.String, drugDispense.PatientName);
-                database.AddInParameter(dbCommand, "@employer_name", DbType.String, drugDispense.EmployerName);
-                database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, drugDispense.PatientCode);
-
-                using (IDataReader reader = database.ExecuteReader(dbCommand))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
                 {
-                    while (reader.Read())
+                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, drugDispense.PatientName);
+                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, drugDispense.EmployerName);
+                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, drugDispense.PatientCode);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
-                        var drugUtlisation = new DataModel.DrugDispenseDrugUtilisation();
-
-                        var drugDispenseDetails = new Entities.DrugDispense()
+                        while (reader.Read())
                         {
-                            DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", 0),
-                            DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
-                            DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
-                            PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
-                            PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
-                            PatientName = DRE.GetNullableString(reader, "full_name", null),
-                            EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
-                            EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
-                            EmployerName = DRE.GetNullableString(reader, "employer_name", null),
-                            WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
-                            DrugDispenseDrugUtilisations = drugUtlisation.GetDrugUtilisationByDrugDispenseId(DRE.GetInt32(reader, "drug_dispense_id"))
-                        };
+                            var drugUtlisation = new DataModel.DrugDispenseDrugUtilisation();
 
-                        drugDispenses.Add(drugDispenseDetails);
+                            var drugDispenseDetails = new Entities.DrugDispense()
+                            {
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", 0),
+                                DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
+                                DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
+                                PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                                PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
+                                PatientName = DRE.GetNullableString(reader, "full_name", null),
+                                EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                                EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
+                                EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                                WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                                DrugDispenseDrugUtilisations = drugUtlisation.GetDrugUtilisationByDrugDispenseId(DRE.GetInt32(reader, "drug_dispense_id"))
+                            };
+
+                            drugDispenses.Add(drugDispenseDetails);
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
             return drugDispenses;
+        }
 
+        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        {
+            var drugDetails = new DrugDispenseDrugUtilisation();
+
+            return drugDetails.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        }
+
+        public List<Entities.DrugDispense> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
+        {
+            var drugDispenseDates = new List<Entities.DrugDispense>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetPastDrugDispenseDatesByPatientId))
+                {
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, patientId);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var drugDispenseDate = new Entities.DrugDispense()
+                            {
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
+                                DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null)
+                            };
+
+                            drugDispenseDates.Add(drugDispenseDate);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDispenseDates;
         }
 
         public Int32 SaveDrugDispenseDetails(Entities.DrugDispense drugDispense)

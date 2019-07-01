@@ -26,6 +26,16 @@ namespace SOFARCH.HealthScreening.Business
             return _drugDispense.SearchDrguDispense(drugDispense);
         }
 
+        public List<Entities.DrugDispense> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
+        {
+            return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
+        }
+
+        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        {
+            return _drugDispense.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        }
+
         public Int32 SaveDrugDispenseDetails(Entities.DrugDispense drugDispense)
         {
             return _drugDispense.SaveDrugDispenseDetails(drugDispense);

@@ -29,6 +29,18 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _drugDispense.SearchDrguDispense(drugDispense);
         }
 
+        [Route("GetPastDrugDispenseDatesByPatientId/{patientId}")]
+        public List<Entities.DrugDispense> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
+        {
+            return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
+        }
+
+        [Route("GetDrugUtilisationByDrugDispenseId/{drugDispenseId}")]
+        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        {
+            return _drugDispense.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        }
+
         [HttpPost]
         [Route("SaveDrugDispenseDetails")]
         public Int32 SaveDrugDispenseDetails(Entities.DrugDispense drugDispense)

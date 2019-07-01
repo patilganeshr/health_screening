@@ -657,6 +657,8 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string SearchDrugDispense { get { return "drug_dispenses_search_drug_dispenses"; } }
 
+        public static string GetPastDrugDispenseDatesByPatientId { get { return "drug_dispenses_get_past_drug_dispense_dates_by_patient_id"; } }
+
         #endregion
 
 
@@ -671,7 +673,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string GetDrugDetailsByDrugId { get { return "drug_dispenses_drug_utilisation_get_drugs_details_by_drug_id"; } }
 
-        public static string GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId { get { return "drug_dispenses_get_drug_dispense_details_by_id"; } }
+        public static string GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId { get { return "drug_dispenses_drug_utilisation_get_details_by_drug_dispense_id"; } }
 
 
         #endregion

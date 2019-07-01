@@ -9,7 +9,7 @@ Sofarch.DrugDispense = (function () {
     var shared = new Shared();
     var CurrentFocus = -1;
 
-    var DrugDispenses = [];
+    var DrugDispenseDetails = [];
     var DrugsUtilisation = [];
 
     /* ---- private method ---- */
@@ -117,6 +117,12 @@ Sofarch.DrugDispense = (function () {
 
         };
 
+        DOM.pastDrugDispenseDate.onchange = function (e) {
+
+            getDrugDetailsByDrugDispenseId(e);
+
+        };
+
     }
 
     function loadData() {
@@ -174,7 +180,7 @@ Sofarch.DrugDispense = (function () {
             ElementToBeAppend: DOM.searchPatientList,
             DataAttributes: dataAttributes,
             PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value + "/",
+            URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value,
             DisplayName: "FullName"
         };
 
@@ -291,6 +297,7 @@ Sofarch.DrugDispense = (function () {
 
         DOM.patientName.focus();
 
+        fillPastDrugDispenseDate(id);
     }
 
     function showSearchDrugList(e) {
@@ -805,7 +812,7 @@ Sofarch.DrugDispense = (function () {
 
         shared.showLoader(DOM.loader);
 
-        DOM.DrugDispenseDetailsList.tBodies[0].innerHTML = "";
+        DOM.drugDispenseDetailsList.tBodies[0].innerHTML = "";
 
         DrugDispenseDetails.length = 0;
 
@@ -877,7 +884,7 @@ Sofarch.DrugDispense = (function () {
 
     function bindDrugDispenseDetails() {
 
-        var tableBody = DOM.DrugDispenseDetailsList.tBodies[0];
+        var tableBody = DOM.drugDispenseDetailsList.tBodies[0];
 
         tableBody.innerHTML = "";
 
@@ -906,18 +913,69 @@ Sofarch.DrugDispense = (function () {
         }
     }
 
-    function showDrugDispenseList(drugDispenseId) {
+    function showDrugDispenseList() {
 
-        if (DrugDispenseDetails.length) {
+        shared.showPanel(DOM.viewMode);
+        shared.hidePanel(DOM.editMode);
 
-            var drugDispenseDetails = DrugDispenseDetails.filter(function (value, index, array) {
-                return value.DrugDispenseId === drugDispenseId;
-            });
+        filterDrugDispenseDetails();
 
-            if (drugDispenseDetails.length) {
-                showDrugDispenseDetails(drugDispenseDetails[0]);
+        DOM.drugDispenseDetailsList.tBodies[0].innerHTML = "";
+
+    }
+
+    function fillPastDrugDispenseDate(patientId) {
+
+        DOM.pastDrugDispenseDate.options.length = 0;
+
+        shared.showLoader(DOM.loader);
+
+        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetPastDrugDispenseDatesByPatientId/' + parseInt(patientId), DOM.pastDrugDispenseDate, "DrugDispenseDate", "DrugDispenseId", "Choose Date", function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    shared.setSelectOptionByIndex(DOM.pastDrugDispenseDate, parseInt(0));
+                    shared.setSelect2ControlsText(DOM.pastDrugDispenseDate);
+
+                    //DOM.searchByFinancialYear.innerHTML = DOM.searchByFinancialYear.innerHTML + DOM.financialYear.innerHTML;
+                }
             }
+        });
 
+        shared.hideLoader(DOM.loader);
+    }
+
+    function getDrugDetailsByDrugDispenseId(e) {
+
+        var drugDispenseId = parseInt(e.target.value);
+
+        if (isNaN(drugDispenseId)) { drugDispenseId = 0; }
+
+        if (drugDispenseId > 0) {
+
+            shared.sendRequest(SERVICE_PATH + "GetDrugUtilisationByDrugDispenseId/" + drugDispenseId, "GET", true, "JSON", null, function (response) {
+
+                if (response.status === 200) {
+
+                    if (response.responseText !== undefined) {
+
+                        DrugsUtilisation = JSON.parse(response.responseText);
+
+                        if (DrugsUtilisation.length) {
+
+                            for (var d = 0; d < DrugsUtilisation.length; d++) {
+
+                                bindDrugDetails(DrugsUtilisation[d]);
+                            }
+                        }
+                    }
+                }
+
+                shared.hideLoader(DOM.loader);
+
+            });
         }
     }
 
@@ -933,30 +991,32 @@ Sofarch.DrugDispense = (function () {
 
             if (drugDispenseDetails.length) {
 
-                DOM.drugDispenseNo.value = drugDispenseDetails.DrugDispenseNo;
-                DOM.drugDispenseNo.setAttribute('data-drug-dispense-id', drugDispenseDetails.DrugDispenseId);
-                DOM.drugDispenseDate.value = drugDispenseDetails.DrugDispenseDate;
-                DOM.patientCode.value = drugDispenseDetails.PatientCode;
-                DOM.patientName.setAttribute('data-patient-id', drugDispenseDetails.PatientId);
-                DOM.patientName.value = drugDispenseDetails.PatientName;
-                DOM.employerCode.value = drugDispenseDetails.EmployerCode;
-                DOM.employerName.value = drugDispenseDetails.EmployerName;
-                DOM.employerName.setAttribute('data-employer-id', drugDispenseDetails.EmployerId);
+                shared.setSelectValue(DOM.financialYear, null, drugDispenseDetails[0].WorkingPeriodId);
+                shared.setSelect2ControlsText(DOM.financialYear);
+                DOM.drugDispenseNo.value = drugDispenseDetails[0].DrugDispenseNo;
+                DOM.drugDispenseNo.setAttribute('data-drug-dispense-id', drugDispenseDetails[0].DrugDispenseId);
+                DOM.drugDispenseDate.value = drugDispenseDetails[0].DrugDispenseDate;
+                DOM.patientCode.value = drugDispenseDetails[0].PatientCode;
+                DOM.patientName.setAttribute('data-patient-id', drugDispenseDetails[0].PatientId);
+                DOM.patientName.value = drugDispenseDetails[0].PatientName;
+                //DOM.employerCode.value = drugDispenseDetails.EmployerCode;
+                DOM.employerName.value = drugDispenseDetails[0].EmployerName;
+                DOM.employerName.setAttribute('data-employer-id', drugDispenseDetails[0].EmployerId);
 
-                DrugsUtilisation = drugDispenseDetails.DrugDispenseDrugUtilisations;
+                DrugsUtilisation = drugDispenseDetails[0].DrugDispenseDrugUtilisations;
 
                 if (DrugsUtilisation.length) {
 
-                    for (var d = 0; d < DrugsUtilisation.length; d++) {
+                    var drugUtilisation = DrugsUtilisation.filter(function (value) {
+                        return value.DrugDispenseId === drugDispenseId;
+                    });
 
-                        var drugUtilisation = DrugsUtilisation.filter(function (value) {
-                            return value.DrugDispenseId === drugDispenseId;
-                        });
+                    for (var d = 0; d < drugUtilisation.length; d++) {
 
                         if (drugUtilisation.length) {
-                            bindDrugDetails(drugUtilisation[0]);
-                        }
 
+                            bindDrugDetails(drugUtilisation[d]);
+                        }
                     }
                 }
             }
@@ -1069,15 +1129,24 @@ Sofarch.DrugDispense = (function () {
 
         var tableRow = e.target.parentElement.parentElement;
 
+        var tableBody = tableRow.parentElement;
+
+        var tableRows = tableBody.children;
+
         var dispenseQty = parseFloat(e.target.value);
         var purchaseRate = parseFloat(tableRow.children[5].textContent);
         var amount = 0;
 
         tableRow.children[6].textContent = dispenseQty * purchaseRate;
 
-        setTimeout(function () {
-            DOM.searchDrugName.focus();
-        }, 200);
+        if (tableRow.rowIndex === tableRows.length) {
+
+            setTimeout(function () {
+                DOM.searchDrugName.focus();
+            }, 200);
+
+        }
+
     }
 
     var validateData = function () {
@@ -1133,11 +1202,13 @@ Sofarch.DrugDispense = (function () {
         var drugId = 0;
         var dispenseQty = 0;
 
+        DrugsUtilisation.length = 0;
+
         if (tableRows.length) {
 
             for (var tr = 0; tr < tableRows.length; tr++) {
 
-                var dispenseQtyInput = tableRows[tr].children[4].children[0];
+                var dispenseQtyInput = tableRows[tr].children[3].children[0];
                 drugUtilisationId = parseInt(tableRows[tr].getAttribute('data-drug-utilisation-id'));
                 drugDispenseId = parseInt(DOM.drugDispenseNo.getAttribute('data-drug-dispense-id'));
                 drugId = parseInt(tableRows[tr].getAttribute('data-drug-id'));
@@ -1180,7 +1251,7 @@ Sofarch.DrugDispense = (function () {
             /* temp variable */
             var drugDispenseId = 0;
             var patientId = 0;
-            var drguDispenseDate = null;
+            var drugDispenseDate = null;
             var workingPeriodId = 0;
 
             drugDispenseId = parseInt(DOM.drugDispenseNo.getAttribute('data-drug-dispense-id'));
@@ -1193,8 +1264,6 @@ Sofarch.DrugDispense = (function () {
             if (isNaN(workingPeriodId)) { workingPeriodId = 0; }
 
             var drugDispense = {};
-
-            DrugDispenses.length = 0;
 
             saveDrugUtilisationDetails();
 
