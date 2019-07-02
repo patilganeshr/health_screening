@@ -166,7 +166,7 @@ var LMS_Core = (function () {
 
         //    var string = data.MenuGroup + " \n " + data.Designation + " \n " + data.Address + " \n " + data.Email;
         //    alert(string);
-        //}        
+        //}
     }
 
     function ServiceFailed1(result) {
@@ -343,7 +343,7 @@ var LMS_Core = (function () {
                     element.append($("<option></option>").val(val['' + valueField + '']).html(val['' + textField + '']));
                 });
 
-                if (isCallBack == true) {
+                if (isCallBack === true) {
                     callback(response);
                 }
             }
@@ -453,7 +453,7 @@ var LMS_Core = (function () {
             }
         }
     }
-    
+
     var setSelect2MultipleControlsText = function (selectControl, selectedValues) {
 
         var selectControlID = selectControl.id;
@@ -494,7 +494,7 @@ var LMS_Core = (function () {
             }
         }
     }
-    
+
     var disableRadioOptions = function (nameOfControl, IsDisabled) {
 
         var selectedValue = "";
@@ -937,7 +937,7 @@ var LMS_Core = (function () {
         }
     }
 
-    //Return true if input value contains letters and numbers  
+    //Return true if input value contains letters and numbers
     var checkAlphaNumeric = function (inputValue) {
         var IsValid = true;
 
@@ -1114,7 +1114,7 @@ var LMS_Core = (function () {
         }
     }
 
-    //Except numbers 
+    //Except numbers
     var checkExceptNumbers = function (event) {
 
         event = event || window.event;

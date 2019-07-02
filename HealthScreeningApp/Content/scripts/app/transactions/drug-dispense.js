@@ -715,7 +715,7 @@ Sofarch.DrugDispense = (function () {
 
                                 if (drugDispenseDetails.length) {
 
-                                    if (drugDispenseDetails[0].DrugDispenseDrugUtilisations.DrugUtilisationId > 0) {
+                                    if (drugDispenseDetails[0].DrugDispenseDrugUtilisations.length) {
 
                                         drugUtilisation = {
                                             DrugDispenseId: drugDispenseId,
@@ -731,8 +731,7 @@ Sofarch.DrugDispense = (function () {
 
                             drugDispense = {
                                 DrugDispenseId: drugDispenseId,
-                                PatientId: parseInt(patientId),
-                                DrugDispenseDrugUtilisations: drugDispenseDrugUtilisations,
+                                DrugDispenseDrugUtilisations: null,
                                 IsDeleted: true,
                                 DeletedBy: parseInt(LOGGED_USER),
                                 DeletedByIP: IP_ADDRESS

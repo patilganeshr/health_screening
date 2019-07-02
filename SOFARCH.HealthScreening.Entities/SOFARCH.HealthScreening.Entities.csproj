@@ -49,6 +49,7 @@
     <Compile Include="Branch.cs" />
     <Compile Include="Brand.cs" />
     <Compile Include="City.cs" />
+    <Compile Include="PurchaseBillReturnItem.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientAddress.cs" />
     <Compile Include="ClientAddressContact.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="PurchaseBill.cs" />
     <Compile Include="PurchaseBillCharge.cs" />
     <Compile Include="PurchaseBillItem.cs" />
+    <Compile Include="PurchaseBillReturn.cs" />
     <Compile Include="Report.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RolePermission.cs" />

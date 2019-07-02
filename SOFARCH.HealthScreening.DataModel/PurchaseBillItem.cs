@@ -9,8 +9,6 @@ using System.Data.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using DRE = DataRecordExtensions.DataRecordExtensions;
-using SOFARCH.HealthScreening.Entities;
-using System.CodeDom;
 
 namespace SOFARCH.HealthScreening.DataModel
 {

@@ -77,6 +77,7 @@
     <Compile Include="PurchaseBill.cs" />
     <Compile Include="PurchaseBillCharge.cs" />
     <Compile Include="PurchaseBillItem.cs" />
+    <Compile Include="PurchaseBillReturn.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="RolePermission.cs" />
     <Compile Include="State.cs" />

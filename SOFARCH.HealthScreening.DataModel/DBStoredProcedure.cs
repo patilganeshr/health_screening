@@ -678,6 +678,40 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
+        #region Purchase Bill Return
+
+        public static string InsertPurchaseBillReturn { get { return "purchase_bills_return_insert_purchase_bill_return"; } }
+
+        public static string UpdatePurchaseBillReturn { get { return "purchase_bills_return_update_purchase_bill_return"; } }
+
+        public static string DeletePurchaseBillReturn { get { return "purchase_bills_return_delete_purchase_bill_return"; } }
+
+        public static string GetPurchaseBillNos { get { return "purchase_bills_return_get_purchase_bill_nos"; } }
+
+        public static string GetPurchaseBillInfoByPurchaseBillId{ get { return "purchase_bills_return_get_purchase_bill_details_by_purchase_bill_id"; } }
+
+        public static string GetPurchaseBillReturnDetailsByReturnId { get { return "purchase_bills_return_get_return_details_by_return_id"; } }
+
+        public static string SearchPurchaseBillsReturn { get { return "purchase_bills_return_search_purchase_bills_return"; } }
+
+        #endregion
+
+        #region Purchase Bill Items
+
+        public static string InsertPurchaseBillItemReturn { get { return "purchase_bill_items_return_insert_purchase_bill_item_return"; } }
+
+        public static string UpdatePurchaseBillItemReturn { get { return "purchase_bill_items_return_update_purchase_bill_item_return"; } }
+
+        public static string DeletePurchaseBillItemReturn { get { return "purchase_bill_items_return_delete_purchase_bill_item_return"; } }
+
+        public static string DeletePurchaseBillItemsReturnByReturnId { get { return "purchase_bill_items_return_delete_by_purchase_bill_return_id"; } }
+
+        public static string GetPurchaseBillItemReturnDetailsByPurchaseBillId { get { return "purchase_bill_items_return_get_item_details_by_purchase_bill_id"; } }
+
+        public static string GetPurchaseBillItemReturnDetailsByReturnId { get { return "purchase_bill_items_return_get_item_return_details_by_return_id"; } }
+
+        #endregion
+
     }
 
 }

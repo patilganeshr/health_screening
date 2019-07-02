@@ -508,6 +508,7 @@
     <Content Include="Content\scripts\app\purchase\job-work.js" />
     <Content Include="Content\scripts\app\purchase\outward-details.js" />
     <Content Include="Content\scripts\app\purchase\pkg-slip.js" />
+    <Content Include="Content\scripts\app\purchase\purchase-bill-return.js" />
     <Content Include="Content\scripts\app\purchase\purchase-bill.js" />
     <Content Include="Content\scripts\app\purchase\purchase-order.js" />
     <Content Include="Content\scripts\app\purchase\stock-details.js" />
@@ -671,6 +672,7 @@
     <Content Include="Transactions\PettyCashExpense.aspx" />
     <Content Include="Transactions\PreEmploymentDetails.aspx" />
     <Content Include="Transactions\PurchaseBill.aspx" />
+    <Content Include="Transactions\PurchaseBillReturn.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -840,6 +842,13 @@
     </Compile>
     <Compile Include="Transactions\PurchaseBill.aspx.designer.cs">
       <DependentUpon>PurchaseBill.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\PurchaseBillReturn.aspx.cs">
+      <DependentUpon>PurchaseBillReturn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PurchaseBillReturn.aspx.designer.cs">
+      <DependentUpon>PurchaseBillReturn.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
