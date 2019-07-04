@@ -13,7 +13,9 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? PatientId { get; set; }
 
-        public string DocNo { get; set; }
+        public Int32? PreEmploymentCodeNo { get; set; }
+
+        public string ConsultDate { get; set; }
 
         public string PatientFullName { get; set; }
 
@@ -37,6 +39,8 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string Designation { get; set; }
 
+        public string IdentificationMark { get; set; }
+
         public string AllergicTo { get; set; }
 
         public string Micturation { get; set; }
@@ -50,6 +54,8 @@ namespace SOFARCH.HealthScreening.Entities
         public string Smoking { get; set; }
 
         public string MC { get; set; }
+
+        public string PastHistory { get; set; }
 
         public string FamilyHistory { get; set; }
 

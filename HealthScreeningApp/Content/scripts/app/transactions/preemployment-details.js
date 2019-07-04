@@ -31,6 +31,8 @@ Sofarch.PreEmployment = (function () {
         DOM.patientCode = document.getElementById('PatientCode');
         DOM.patientName = document.getElementById('PatientName');
         DOM.searchPatientList = document.getElementById('SearchPatientList');
+        DOM.financialYear = document.getElementById('FinancialYear');
+        DOM.consultDate = document.getElementById('ConsultDate');
         DOM.age = document.getElementById('Age');
         DOM.gender = document.getElementById('Gender');
         DOM.maritalStatus = document.getElementById('MaritalStatus');
@@ -39,6 +41,7 @@ Sofarch.PreEmployment = (function () {
         DOM.employerCode = document.getElementById('EmployerCode');
         DOM.employerName = document.getElementById('EmployerName');
         DOM.designation = document.getElementById('Designation');
+        DOM.identificationMark = document.getElementById('IdentificationMark');
         DOM.personalHistoryOfMajorIllness = document.getElementById('PersonalHistoryOfMajorIllness');
         DOM.drugAllergy= document.getElementById('DrugAllergy');
         DOM.micturation= document.getElementById('Micturation');
@@ -65,11 +68,21 @@ Sofarch.PreEmployment = (function () {
         DOM.filterPreEmploymentDetails = document.getElementById('FilterPreEmploymentDetails');
         DOM.exportEmployeeList = document.getElementById('ExportEmployeeList');
 
+        /*cache the jquery element */
+        DOM.$consultDateDatePicker = $('#ConsultDateDatePicker');
+
     }
 
     function applyPlugins() {
 
         $('select').select2();
+
+        var currentDate = new Date();
+
+        DOM.$consultDateDatePicker.datetimepicker({
+            format: 'DD/MMM/YYYY',
+            defaultDate: moment(currentDate).format("DD/MMM/YYYY")
+        });
 
     }
 
@@ -119,8 +132,31 @@ Sofarch.PreEmployment = (function () {
 
     function loadData() {
 
+        getFinancialYear();
+
         addNewPreEmploymentDetails();
 
+    }
+
+    function getFinancialYear() {
+
+        shared.showLoader(DOM.loader);
+
+        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetAllWorkingPeriods', DOM.financialYear, "FinancialYear", "WorkingPeriodId", "Choose Year", function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    shared.setSelectOptionByIndex(DOM.financialYear, parseInt(1));
+                    shared.setSelect2ControlsText(DOM.financialYear);
+
+                    //DOM.searchByFinancialYear.innerHTML = DOM.searchByFinancialYear.innerHTML + DOM.financialYear.innerHTML;
+                }
+            }
+        });
+
+        //shared.hideLoader(DOM.loader);
     }
 
     function showSearchPatientList(e) {
@@ -148,7 +184,7 @@ Sofarch.PreEmployment = (function () {
         };
 
         shared.showAutoCompleteItemsList(parameters, function (response) {
-        
+
             if (response !== undefined) {
 
                 if (response >= 0) {
@@ -156,7 +192,7 @@ Sofarch.PreEmployment = (function () {
                     CurrentFocus = response;
                 }
                 else {
-                                        
+
                     CurrentFocus = -1;
 
                     var autoCompleteList = response;
@@ -173,7 +209,7 @@ Sofarch.PreEmployment = (function () {
 
                         ul.classList.add('list-group');
 
-                        for (var s = 0; s < listCount; s++) {   
+                        for (var s = 0; s < listCount; s++) {
 
                             var li = document.createElement('li');
                             var span = document.createElement('span');
@@ -233,7 +269,7 @@ Sofarch.PreEmployment = (function () {
     function showPatientNameOnEnterKey() {
 
         FLAG = "NEW ITEM";
-       
+
         var li = DOM.searchPatientList.querySelectorAll('.autocompleteListItem-active');
 
         var count = li.length;
@@ -380,7 +416,7 @@ Sofarch.PreEmployment = (function () {
     function getPatientAndTestDetails(patientId) {
 
         //patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
-        
+
         if (isNaN(patientId)) { patientId = 0; }
 
         if (DOM.patientName.value !== "") {
@@ -415,7 +451,11 @@ Sofarch.PreEmployment = (function () {
         shared.clearTables(DOM.editMode);
 
         DOM.patientName.setAttribute('data-patient-id', 0);
-        
+
+        var currentDate = new Date();
+
+        DOM.consultDate.value = moment(currentDate).format("DD/MMM/YYYY");
+
         // Show panel;
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
@@ -778,8 +818,11 @@ Sofarch.PreEmployment = (function () {
             DOM.patientName.setAttribute('data-patient-id', preEmploymentDetails.PatientId);
             DOM.patientName.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
             DOM.patientName.value = preEmploymentDetails.PatientFullName;
+            DOM.consultDate.value = preEmploymentDetails.ConsultDate;
             DOM.age.value = preEmploymentDetails.Age;
             DOM.gender.value = preEmploymentDetails.Gender;
+            DOM.designation.value = preEmploymentDetails.Designation;
+            DOM.identificationMark.value = preEmploymentDetails.IdentificationMark;
             DOM.maritalStatus.value = preEmploymentDetails.MaritalStatus;
             DOM.noOfSons.value = preEmploymentDetails.NoOfSons;
             DOM.noOfDaughters.value = preEmploymentDetails.NoOfDaughters;
@@ -794,7 +837,10 @@ Sofarch.PreEmployment = (function () {
             DOM.alcohol.value = preEmploymentDetails.Alcohol;
             DOM.smoking.value = preEmploymentDetails.Smoking;
             DOM.mc.value = preEmploymentDetails.MC;
+            DOM.personalHistoryOfMajorIllness.value = preEmploymentDetails.PastHistory;
             DOM.familyHistoryOfMajorIllness.value = preEmploymentDetails.FamilyHistory;
+            shared.setSelectValue(DOM.financialYear, null, preEmploymentDetails.WorkingPeriodId);
+            shared.setSelect2ControlsText(DOM.financialYear);
 
             PreEmploymentTestDetails = preEmploymentDetails.PreEmploymentTestDetails;
 
@@ -939,10 +985,10 @@ Sofarch.PreEmployment = (function () {
                 PreEmploymentTestDetails.push(preEmploymentTestDetails);
             }
         }
-        
+
         return PreEmploymentTestDetails;
     };
-    
+
     function savePreEmploymentDetails() {
 
         if (validateData()) {
@@ -950,10 +996,42 @@ Sofarch.PreEmployment = (function () {
             /* temp variable */
             var preEmploymentId = 0;
             var patientId = 0;
-            
+            var consultDate = null;
+            var maritalStatus = null;
+            var noOfSons = 0;
+            var nofOfDaughters = 0;
+            var designation = null;
+            var identificationMark = null;
+            var pastHistory = null;
+            var drugAllergy = null;
+            var micturation = null;
+            var bowels = null;
+            var sleep = null;
+            var alcohol = null;
+            var smoking = null;
+            var mc = null;
+            var familyHistory = null;
+            var workingPeriodId = 0;
+
             preEmploymentId = parseInt(DOM.patientCode.getAttribute('data-pre-employment-id'));
             patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
-            
+            consultDate = DOM.consultDate.value;
+            maritalStatus = DOM.maritalStatus.value;
+            noOfSons = DOM.noOfSons.value;
+            noOfDaughters = DOM.noOfDaughters.value;
+            designation = DOM.designation.value;
+            identificationMark = DOM.identificationMark.value;
+            drugAllergy = DOM.drugAllergy.value;
+            micturation = DOM.micturation.value;
+            bowels = DOM.bowels.value;
+            sleep = DOM.sleep.value;
+            alcohol = DOM.alcohol.value;
+            smoking = DOM.smoking.value;
+            mc = DOM.mc.value;
+            pastHistory = DOM.personalHistoryOfMajorIllness.value;
+            familyHistory = DOM.familyHistoryOfMajorIllness.value;
+            workingPeriodId = parseInt(DOM.financialYear.options[DOM.financialYear.selectedIndex].value);
+
             if (isNaN(preEmploymentId)) { preEmploymentId = 0; }
             if (isNaN(patientId)) { patientId = 0; }
 
@@ -968,7 +1046,22 @@ Sofarch.PreEmployment = (function () {
             preEmploymentDetails = {
                 PreEmploymentId: preEmploymentId,
                 PatientId: patientId,
-                DocNo: "",
+                ConsultDate: consultDate,
+                MaritalStatus: maritalStatus,
+                NoOfSons: noOfSons,
+                NoOfDaughters: nofOfDaughters,
+                Designation: designation,
+                IdentificationMark: identificationMark,
+                AllergicTo: drugAllergy,
+                Micturation: micturation,
+                Bowels: bowels,
+                Sleep: sleep,
+                Smoking: smoking,
+                Alcohol: alcohol,
+                MC: mc,
+                PastHistory: pastHistory,
+                FamilyHistory: familyHistory,
+                WorkingPeriodId: workingPeriodId,
                 PreEmploymentTestDetails: PreEmploymentTestDetails
             };
 
@@ -1007,11 +1100,11 @@ Sofarch.PreEmployment = (function () {
             });
         }
     }
-        
+
     /* ---- public methods ---- */
     function init() {
         cacheDOM();
-        applyPlugins();        
+        applyPlugins();
         bindEvents();
         loadData();
     }

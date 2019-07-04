@@ -28,6 +28,7 @@ Sofarch.PurchaseBill = (function () {
 
         DOM.editMode = document.getElementById('EditMode');
 
+        DOM.financialYear = document.getElementById('FinancialYear');
         DOM.purchaseBillNo = document.getElementById('PurchaseBillNo');
         DOM.purchaseBillDate = document.getElementById('PurchaseBillDate');
         DOM.vendor = document.getElementById('Vendor');

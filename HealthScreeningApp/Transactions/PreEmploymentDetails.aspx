@@ -190,6 +190,29 @@
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-md">
+                                                        <label>Fin. Year</label>
+                                                        <select id="FinancialYear" class="form-control"></select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Consult Date</label>
+                                                        <div class="input-group date input-group-md" id="ConsultDateDatePicker">
+                                                            <input type="text" id="ConsultDate" class="form-control" />
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                                                 <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Emp Code</label>
@@ -264,6 +287,14 @@
                                                         <input id="Designation" class="form-control" />
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Identification Mark</label>
+                                                        <input id="IdentificationMark" class="form-control" />
+                                                    </div>
+                                                </div>
+
                                             </div>
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -425,7 +456,7 @@
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
                                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        
+
                                                         <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
                                                             <div class="form-group form-group-md">
                                                                 <label>Other Details</label>
