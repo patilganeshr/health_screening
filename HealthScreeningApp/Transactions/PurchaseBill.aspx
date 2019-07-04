@@ -100,7 +100,7 @@
                         <!-- Filter Options -->
 
                     </div>
-                    
+
                 </div>
 
                 <div class="row">
@@ -123,6 +123,7 @@
                                             <th class="text-center">Bill date</th>
                                             <th class="text-center">Qty</th>
                                             <th class="text-center">Amount</th>
+                                            <th class="text-center">Fin Year</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -169,6 +170,13 @@
                             <div class="panel-body">
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                        <div class="form-group form-group-md">
+                                            <label>Fin. Year</label>
+                                            <select id="FinancialYear" class="form-control"></select>
+                                        </div>
+                                    </div>
 
                                     <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
                                         <div class="form-group form-group-sm">
@@ -275,8 +283,8 @@
 
                             <div class="panel-body">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    
-                                    
+
+
                                     <div class="form-horizontal">
 
                                         <div class="pull-right">

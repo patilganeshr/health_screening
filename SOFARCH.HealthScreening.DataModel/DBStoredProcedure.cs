@@ -696,7 +696,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
-        #region Purchase Bill Items
+        #region Purchase Bill Items Return
 
         public static string InsertPurchaseBillItemReturn { get { return "purchase_bill_items_return_insert_purchase_bill_item_return"; } }
 
@@ -710,6 +710,24 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string GetPurchaseBillItemReturnDetailsByReturnId { get { return "purchase_bill_items_return_get_item_return_details_by_return_id"; } }
 
+        #endregion
+
+        #region Prescriptions
+        public static string Insertprescription { get { return "insert_prescription"; } }
+
+        public static string GetListOfAll { get { return "prescription_get_list"; } }
+        #endregion
+
+
+        #region PettyCase
+
+        public static string InsertPettycase { get { return "pettycase_insert_pettycase"; } }
+
+        public static string UpdatePettycase { get { return "PettyCase_update_PettyCase"; } }
+
+        public static string GetListOfAllPettycase { get { return "Petty_cash_get_list"; } }
+
+        public static string Deletepettycase { get { return "pettycase_delete_pettycase"; } }
         #endregion
 
     }

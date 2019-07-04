@@ -83,6 +83,8 @@
     <Compile Include="MedicalTestParameters.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ModeOfPayment.cs" />
+    <Compile Include="Pettycash.cs" />
+    <Compile Include="Precautions.cs" />
     <Compile Include="PreEmploymentDetails.cs" />
     <Compile Include="PreEmploymentTestDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

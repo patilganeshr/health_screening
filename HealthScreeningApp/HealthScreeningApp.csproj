@@ -520,7 +520,9 @@
     <Content Include="Content\scripts\app\shared\default.js" />
     <Content Include="Content\scripts\app\shared\masking.js" />
     <Content Include="Content\scripts\app\transactions\drug-dispense.js" />
+    <Content Include="Content\scripts\app\transactions\pettycash.js" />
     <Content Include="Content\scripts\app\transactions\preemployment-details.js" />
+    <Content Include="Content\scripts\app\transactions\prescription.js" />
     <Content Include="Content\scripts\vendor\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.min.js" />
@@ -669,8 +671,10 @@
     <Content Include="Masters\Employer.aspx" />
     <Content Include="Masters\GSTCategory.aspx" />
     <Content Include="Transactions\DrugDispense.aspx" />
+    <Content Include="Transactions\PettyCash.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
     <Content Include="Transactions\PreEmploymentDetails.aspx" />
+    <Content Include="Transactions\PrescriptionDetails.aspx" />
     <Content Include="Transactions\PurchaseBill.aspx" />
     <Content Include="Transactions\PurchaseBillReturn.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -822,6 +826,13 @@
     <Compile Include="Transactions\DrugDispense.aspx.designer.cs">
       <DependentUpon>DrugDispense.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\PettyCash.aspx.cs">
+      <DependentUpon>PettyCash.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PettyCash.aspx.designer.cs">
+      <DependentUpon>PettyCash.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Transactions\PettyCashExpense.aspx.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -835,6 +846,13 @@
     </Compile>
     <Compile Include="Transactions\PreEmploymentDetails.aspx.designer.cs">
       <DependentUpon>PreEmploymentDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\PrescriptionDetails.aspx.cs">
+      <DependentUpon>PrescriptionDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PrescriptionDetails.aspx.designer.cs">
+      <DependentUpon>PrescriptionDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\PurchaseBill.aspx.cs">
       <DependentUpon>PurchaseBill.aspx</DependentUpon>

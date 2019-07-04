@@ -109,7 +109,9 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\MedicalTestController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PettyCashController.cs" />
     <Compile Include="Controllers\PreEmploymentDetailsController.cs" />
+    <Compile Include="Controllers\PrescriptionController.cs" />
     <Compile Include="Controllers\PurchaseBillController.cs" />
     <Compile Include="Controllers\PurchaseBillReturnController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
