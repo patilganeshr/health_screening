@@ -20,9 +20,9 @@ namespace SOFARCH.HealthScreening.Business
             return _preEmploymentDetails.GetPatientAndTestDetails(patientId);
         }
 
-        public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails()
+        public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails(string preEmploymentOrHealthCheckup)
         {
-            return _preEmploymentDetails.GetAllPreEmploymentDetails();
+            return _preEmploymentDetails.GetAllPreEmploymentDetails(preEmploymentOrHealthCheckup);
         }
         public List<Entities.PreEmploymentDetails> SearchPreEmploymentDetails(Entities.PreEmploymentDetails preEmploymentDetails)
         {

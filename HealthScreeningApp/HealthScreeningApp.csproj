@@ -521,6 +521,7 @@
     <Content Include="Content\scripts\app\shared\masking.js" />
     <Content Include="Content\scripts\app\transactions\drug-dispense.js" />
     <Content Include="Content\scripts\app\transactions\pettycash.js" />
+    <Content Include="Content\scripts\app\transactions\health-checkup.js" />
     <Content Include="Content\scripts\app\transactions\preemployment-details.js" />
     <Content Include="Content\scripts\app\transactions\prescription.js" />
     <Content Include="Content\scripts\vendor\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
@@ -673,6 +674,7 @@
     <Content Include="Transactions\DrugDispense.aspx" />
     <Content Include="Transactions\PettyCash.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
+    <Content Include="Transactions\HealthCheckup.aspx" />
     <Content Include="Transactions\PreEmploymentDetails.aspx" />
     <Content Include="Transactions\PrescriptionDetails.aspx" />
     <Content Include="Transactions\PurchaseBill.aspx" />
@@ -839,6 +841,13 @@
     </Compile>
     <Compile Include="Transactions\PettyCashExpense.aspx.designer.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\HealthCheckup.aspx.cs">
+      <DependentUpon>HealthCheckup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\HealthCheckup.aspx.designer.cs">
+      <DependentUpon>HealthCheckup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\PreEmploymentDetails.aspx.cs">
       <DependentUpon>PreEmploymentDetails.aspx</DependentUpon>

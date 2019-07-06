@@ -71,15 +71,9 @@ Sofarch.Patient = (function () {
         DOM.unMarried = document.getElementById('UnMarried');
         DOM.noOfSons = document.getElementById('NoOfSons');
         DOM.noOfDaughters = document.getElementById('NoOfDaughters');
-        DOM.smoking = document.getElementsByName('Smoking');
-        DOM.smokingYes = document.getElementById('SmokingYes');
-        DOM.smokingNo = document.getElementById('SmokingNo');
-        DOM.alcohol = document.getElementsByName('Alcohol');
-        DOM.alcoholYes = document.getElementById('AlcoholYes');
-        DOM.alcoholNo = document.getElementById('AlcoholNo');
-        DOM.tobacco = document.getElementsByName('Tobacco');
-        DOM.tobaccoYes = document.getElementById('TobaccoYes');
-        DOM.tobaccoNo = document.getElementById('TobaccoNo');
+        DOM.smoking = document.getElementById('Smoking');
+        DOM.alcohol = document.getElementById('Alcohol');
+        DOM.tobacco = document.getElementById('Tobacco');
         DOM.bloodGroup = document.getElementById('BloodGroup');
         DOM.diet = document.getElementById('Diet');
         DOM.allergicTo = document.getElementById('AllergicTo');
@@ -1210,30 +1204,9 @@ Sofarch.Patient = (function () {
             }
             DOM.noOfSons.value = patientPersonalHistory.NoOfSons;
             DOM.noOfDaughters.value = patientPersonalHistory.NoOfDaughters;
-            if (patientPersonalHistory.Smoking.toLowerCase() === "no") {
-                DOM.smokingNo.checked = true;
-                DOM.smokingYes.checked = false;
-            }
-            else {
-                DOM.smokingNo.checked = false;
-                DOM.smokingYes.checked = true;
-            }
-            if (patientPersonalHistory.Alcohol.toLowerCase() === "no") {
-                DOM.alcoholNo.checked = true;
-                DOM.alcoholYes.checked = false;
-            }
-            else {
-                DOM.alcoholNo.checked = false;
-                DOM.alcoholYes.checked = true;
-            }
-            if (patientPersonalHistory.Tobacco.toLowerCase() === "no") {
-                DOM.tobaccoNo.checked = true;
-                DOM.tobaccoYes.checked = false;
-            }
-            else {
-                DOM.tobaccoNo.checked = false;
-                DOM.tobaccoYes.checked = true;
-            }
+            DOM.smoking.value = patientPersonalHistory.Smoking;
+            DOM.alcohol.value = patientPersonalHistory.Alcohol;
+            DOM.tobacco.value = patientPersonalHistory.Tobacco;
             shared.setSelectValue(DOM.bloodGroup, null, parseInt(patientPersonalHistory.BloodGroupId));
             shared.setSelect2ControlsText(DOM.bloodGroup);
             DOM.diet.value = patientPersonalHistory.Diet;
@@ -1304,9 +1277,9 @@ Sofarch.Patient = (function () {
         var maritalStatus = null;
         var noOfSons = 0;
         var noOfDaughters = 0;
-        var isSmoking = false;
-        var isAlcohol = false;
-        var isTobacco = false;
+        var smoking = null;
+        var alcohol = null;
+        var tobacco = null;
         var bloodGroupId = 0;
         var bloodGroupFactorId = 0;
         var diet = null;
@@ -1335,9 +1308,9 @@ Sofarch.Patient = (function () {
         maritalStatus = shared.getRadioSelectedValue(DOM.maritalStatus);
         noOfSons = parseInt(DOM.noOfSons.value);
         noOfDaughters = parseInt(DOM.noOfDaughters.value);
-        DOM.smokingYes.checked ? isSmoking = true : false;
-        DOM.alcoholYes.checked ? isAlcohol = true : false;
-        DOM.tobaccoYes.checked ? isTobacco = true : false;
+        smoking = DOM.smoking.value;
+        alcohol = DOM.alcohol.value;
+        tobacco = DOM.tobacco.value;
         bloodGroupId = DOM.bloodGroup.options[DOM.bloodGroup.selectedIndex].value;
         bloodGroupFactorId = DOM.bloodGroup.options[DOM.bloodGroup.selectedIndex].getAttribute('data-bloodgroupfactorid');
         diet = DOM.diet.value;
@@ -1364,9 +1337,9 @@ Sofarch.Patient = (function () {
             MaritalStatus: maritalStatus,
             NoOfSons: noOfSons,
             NoOfDaughters: noOfDaughters,
-            IsSmoking: isSmoking,
-            IsAlcohol: isAlcohol,
-            IsTobacco: isTobacco,
+            Smoking: smoking,
+            Alcohol: alcohol,
+            Tobacco: tobacco,
             BloodGroupId: bloodGroupId,
             BloodGroupFactorId: bloodGroupFactorId,
             Diet: diet,

@@ -13,6 +13,8 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? PatientId { get; set; }
 
+        public string PreEmploymentOrHealthCheckup { get; set; }
+
         public Int32? PreEmploymentCodeNo { get; set; }
 
         public string ConsultDate { get; set; }

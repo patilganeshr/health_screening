@@ -1,7 +1,7 @@
 ﻿
 var Sofarch = {};
 
-Sofarch.PreEmployment = (function () {
+Sofarch.HealthCheckup = (function () {
 
     //placeholder for cached DOM elements
     var DOM = {};
@@ -740,7 +740,7 @@ Sofarch.PreEmployment = (function () {
 
         DOM.preEmploymentDetailsList.tBodies[0].innerHTML = "";
 
-        shared.sendRequest(SERVICE_PATH + "GetAllPreEmploymentDetails/P/", "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "GetAllPreEmploymentDetails/H/", "GET", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -995,8 +995,8 @@ Sofarch.PreEmployment = (function () {
 
             /* temp variable */
             var preEmploymentId = 0;
+            var preEmploymentOrHealthCheckup = "H";
             var patientId = 0;
-            var preEmploymentOrHealthCheckup = "P";
             var consultDate = null;
             var maritalStatus = null;
             var noOfSons = 0;
@@ -1118,4 +1118,4 @@ Sofarch.PreEmployment = (function () {
 }());
 
 
-Sofarch.PreEmployment.init();
+Sofarch.HealthCheckup.init();
