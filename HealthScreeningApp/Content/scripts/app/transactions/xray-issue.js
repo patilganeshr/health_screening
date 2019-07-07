@@ -1,7 +1,7 @@
 ﻿
 var Sofarch = {};
 
-Sofarch.DrugDispense = (function () {
+Sofarch.XRayIssue = (function () {
 
         //placeholder for cached DOM elements
     var DOM = {};
@@ -9,8 +9,8 @@ Sofarch.DrugDispense = (function () {
     var shared = new Shared();
     var CurrentFocus = -1;
 
-    var DrugDispenseDetails = [];
-    var DrugsUtilisation = [];
+    var XRayIssueDetails = [];
+    var XRayFilmsUsed = [];
 
     /* ---- private method ---- */
     //cache DOM elements
@@ -19,38 +19,42 @@ Sofarch.DrugDispense = (function () {
         DOM.loader = document.getElementById('Loader');
 
         DOM.viewMode = document.getElementById('ViewMode');
-        DOM.searchDrugDispenseDetailsPanel = document.getElementById('SearchDrugDispenseDetailsPanel');
+        DOM.searchXRayIssueDetailsPanel = document.getElementById('SearchXRayIssueDetailsPanel');
         DOM.searchOptions = document.getElementById('SearchOptions');
         DOM.searchValue = document.getElementById('SearchValue');
-        DOM.searchDrugDispenseDetails = document.getElementById('SearchDrugDispenseDetails');
+        DOM.searchXRayIssueDetails = document.getElementById('SearchXRayIssueDetails');
 
-        DOM.drugDispenseDetailsList = document.getElementById('DrugDispenseDetailsList');
+        DOM.xrayIssueDetailsList = document.getElementById('XRayIssueDetailsList');
 
         DOM.editMode = document.getElementById('EditMode');
-        DOM.drugDispenseDetailsPanel = document.getElementById('DrugDispenseDetailsPanel');
+        DOM.xrayIssueDetailsPanel = document.getElementById('XRayIssueDetailsPanel');
         DOM.financialYear = document.getElementById('FinancialYear');
-        DOM.drugDispenseNo = document.getElementById('DrugDispenseNo');
-        DOM.drugDispenseDate = document.getElementById('DrugDispenseDate');
+        DOM.xrayIssueNo = document.getElementById('XRayIssueNo');
+        DOM.xrayIssueDate = document.getElementById('XRayIssueDate');
         DOM.patientCode = document.getElementById('PatientCode');
         DOM.patientName = document.getElementById('PatientName');
         DOM.searchPatientList = document.getElementById('SearchPatientList');
         DOM.employerName = document.getElementById('EmployerName');
-        DOM.pastDrugDispenseDate = document.getElementById('PastDrugDispenseDate');
+        DOM.partOfBodyToXRay = document.getElementById('PartOfBodyToXRay');
+        DOM.isECGDone = document.getElementById('IsECGDone');
+        DOM.purpose = document.getElementById('Purpose');
+        DOM.impression = document.getElementById('Impression');
+        DOM.pastXRayIssueDate = document.getElementById('PastXRayIssueDate');
         DOM.searchDrugName = document.getElementById('SearchDrugName');
         DOM.searchDrugList = document.getElementById('SearchDrugList');
-        DOM.drugUtilisationList = document.getElementById('DrugUtilisationList');
+        DOM.xrayFilmUsedList = document.getElementById('XRayFilmUsedList');
 
-        DOM.addNewDrugDispenseDetails = document.getElementById('AddNewDrugDispenseDetails');
-        DOM.showDrugDispenseList = document.getElementById('ShowDrugDispenseList');
-        DOM.viewDrugDispenseDetails = document.getElementById('ViewDrugDispenseDetails');
-        DOM.editDrugDispenseDetails = document.getElementById('EditDrugDispenseDetails');
-        DOM.saveDrugDispenseDetails = document.getElementById('SaveDrugDispenseDetails');
-        DOM.deleteDrugDispenseDetails = document.getElementById('DeleteDrugDispenseDetails');
-        DOM.printDrugDispenseDetails = document.getElementById('PrintDrugDispenseList');
-        DOM.filterDrugDispenseDetails = document.getElementById('FilterDrugDispenseList');
+        DOM.addNewXRayIssueDetails = document.getElementById('AddNewXRayIssueDetails');
+        DOM.showXRayIssueList = document.getElementById('ShowXRayIssueList');
+        DOM.viewXRayIssueDetails = document.getElementById('ViewXRayIssueDetails');
+        DOM.editXRayIssueDetails = document.getElementById('EditXRayIssueDetails');
+        DOM.saveXRayIssueDetails = document.getElementById('SaveXRayIssueDetails');
+        DOM.deleteXRayIssueDetails = document.getElementById('DeleteXRayIssueDetails');
+        DOM.printXRayIssueDetails = document.getElementById('PrintXRayIssueList');
+        DOM.filterXRayIssueDetails = document.getElementById('FilterXRayIssueList');
 
         /*cache the jquery element */
-        DOM.$drugDispenseDateDatePicker = $('#DrugDispenseDateDatePicker');
+        DOM.$drugDispenseDateDatePicker = $('#XRayIssueDateDatePicker');
 
     }
 
@@ -92,14 +96,14 @@ Sofarch.DrugDispense = (function () {
 
     function bindEvents() {
 
-        DOM.addNewDrugDispenseDetails.addEventListener('click', addNewDrugDispenseDetails);
-        DOM.showDrugDispenseList.addEventListener('click', showDrugDispenseList);
-        DOM.viewDrugDispenseDetails.addEventListener('click', viewDrugDispenseDetails);
-        DOM.editDrugDispenseDetails.addEventListener('click', editDrugDispenseDetails);
-        DOM.saveDrugDispenseDetails.addEventListener('click', saveDrugDispenseDetails);
-        DOM.deleteDrugDispenseDetails.addEventListener('click', deleteDrugDispenseDetails);
-        DOM.searchDrugDispenseDetails.addEventListener('click', searchDrugDispenseDetails);
-        DOM.filterDrugDispenseDetails.addEventListener('click', filterDrugDispenseDetails);
+        DOM.addNewXRayIssueDetails.addEventListener('click', addNewXRayIssueDetails);
+        DOM.showXRayIssueList.addEventListener('click', showXRayIssueList);
+        DOM.viewXRayIssueDetails.addEventListener('click', viewXRayIssueDetails);
+        DOM.editXRayIssueDetails.addEventListener('click', editXRayIssueDetails);
+        DOM.saveXRayIssueDetails.addEventListener('click', saveXRayIssueDetails);
+        DOM.deleteXRayIssueDetails.addEventListener('click', deleteXRayIssueDetails);
+        DOM.searchXRayIssueDetails.addEventListener('click', searchXRayIssueDetails);
+        DOM.filterXRayIssueDetails.addEventListener('click', filterXRayIssueDetails);
 
         DOM.patientName.onkeydown = function (e) {
 
@@ -117,9 +121,9 @@ Sofarch.DrugDispense = (function () {
 
         };
 
-        DOM.pastDrugDispenseDate.onchange = function (e) {
+        DOM.pastXRayIssueDate.onchange = function (e) {
 
-            getDrugDetailsByDrugDispenseId(e);
+            getXRayIssueDetailsByXRayIssueId(e);
 
         };
 
@@ -129,7 +133,7 @@ Sofarch.DrugDispense = (function () {
 
         getFinancialYear();
 
-        addNewDrugDispenseDetails();
+        addNewXRayIssueDetails();
 
     }
 
@@ -297,7 +301,7 @@ Sofarch.DrugDispense = (function () {
 
         DOM.patientName.focus();
 
-        fillPastDrugDispenseDate(id);
+        fillPastXRayIssueDate(id);
     }
 
     function showSearchDrugList(e) {
@@ -325,7 +329,7 @@ Sofarch.DrugDispense = (function () {
             ElementToBeAppend: DOM.searchDrugList,
             DataAttributes: dataAttributes,
             PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetDrugIdAndDrugNameByDrugName/D/" + DOM.searchDrugName.value + "/",
+            URL: SERVICE_PATH + "GetDrugIdAndDrugNameByDrugName/X/" + DOM.searchDrugName.value + "/",
             DisplayName: "DrugName"
         };
 
@@ -424,28 +428,28 @@ Sofarch.DrugDispense = (function () {
 
         DOM.searchDrugName.focus();
 
-        getDrugDetailsByDrugId(parseInt(id));
+        getFilmDetailsByDrugId(parseInt(id));
     }
 
-    function getDrugDetailsByDrugId(drugId) {
+    function getFilmDetailsByDrugId(drugId) {
 
-        var drugUtilisationId = 0;
-        var drugDispenseId = 0;
+        var xrayFilmUsedId = 0;
+        var xrayIssueId = 0;
         var dispenseQty = 0;
         var drugName = name;
-        var drugUtilisation = {};
+        var xrayFilmUsed = {};
 
         if (drugId > 0) {
 
-            shared.sendRequest(SERVICE_PATH + "GetDrugDetailsByDrugId/" + drugId, "GET", true, "JSON", null, function (response) {
+            shared.sendRequest(SERVICE_PATH + "GetFilmDetailsByDrugId/" + drugId, "GET", true, "JSON", null, function (response) {
 
                 if (response.status === 200) {
 
                     if (response.responseText !== undefined) {
 
-                        drugUtilisation = JSON.parse(response.responseText);
+                        xrayFilmUsed = JSON.parse(response.responseText);
 
-                        bindDrugDetails(drugUtilisation);
+                        bindDrugDetails(xrayFilmUsed);
                     }
                 }
             });
@@ -476,11 +480,11 @@ Sofarch.DrugDispense = (function () {
         return selectedRows;
     };
 
-    function getSelectedDrugDispenseDetails() {
+    function getSelectedXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
-        var selectedRows = getSelectedRows(DOM.drugDispenseDetailsList);
+        var selectedRows = getSelectedRows(DOM.xrayIssueDetailsList);
 
         if (selectedRows.length > 0) {
 
@@ -496,11 +500,11 @@ Sofarch.DrugDispense = (function () {
 
                 var currentTableRow = selectedRows[0];
 
-                var drugDispenseId = parseInt(currentTableRow.getAttribute('data-drug-dispense-id'));
+                var xrayIssueId = parseInt(currentTableRow.getAttribute('data-xray-issue-id'));
 
-                if (isNaN(drugDispenseId)) { drugDispenseId = 0; }
+                if (isNaN(xrayIssueId)) { xrayIssueId = 0; }
 
-                showDrugDispenseDetailsById(drugDispenseId);
+                showXRayIssueDetailsById(xrayIssueId);
             }
         }
         else {
@@ -595,18 +599,18 @@ Sofarch.DrugDispense = (function () {
 
     };
 
-    var getDrugDispenseId = function (selectedRows) {
+    var getXRayIssueId = function (selectedRows) {
 
-        var drugDispenseId = 0;
+        var xrayIssueId = 0;
 
-        drugDispenseId = parseInt(selectedRows[0].getAttribute('data-drug-dispense-id'));
+        xrayIssueId = parseInt(selectedRows[0].getAttribute('data-xray-issue-id'));
 
-        if (isNaN(drugDispenseId)) { drugDispenseId = 0; }
+        if (isNaN(xrayIssueId)) { xrayIssueId = 0; }
 
-        return drugDispenseId;
+        return xrayIssueId;
     };
 
-    function addNewDrugDispenseDetails() {
+    function addNewXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
@@ -616,11 +620,11 @@ Sofarch.DrugDispense = (function () {
         shared.clearTables(DOM.editMode);
 
         DOM.patientName.setAttribute('data-patient-id', 0);
-        DOM.drugDispenseNo.setAttribute('data-drug-dispense-id', 0);
+        DOM.xrayIssueNo.setAttribute('data-xray-issue-id', 0);
 
         var currentDate = new Date();
 
-        DOM.drugDispenseDate.value = moment(currentDate).format("DD/MMM/YYYY");
+        DOM.xrayIssueDate.value = moment(currentDate).format("DD/MMM/YYYY");
 
         // Show panel;
         shared.showPanel(DOM.editMode);
@@ -632,7 +636,7 @@ Sofarch.DrugDispense = (function () {
         shared.hideLoader(DOM.loader);
     }
 
-    function viewDrugDispenseDetails() {
+    function viewXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
@@ -642,7 +646,7 @@ Sofarch.DrugDispense = (function () {
 
         shared.disableControls(DOM.editMode, true);
 
-        getSelectedDrugDispenseDetails();
+        getSelectedXRayIssueDetails();
 
         shared.hideLoader(DOM.loader);
 
@@ -660,7 +664,7 @@ Sofarch.DrugDispense = (function () {
         return patientId;
     };
 
-    function editDrugDispenseDetails() {
+    function editXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
@@ -670,7 +674,7 @@ Sofarch.DrugDispense = (function () {
 
         shared.disableControls(DOM.editMode, false);
 
-        getSelectedDrugDispenseDetails();
+        getSelectedXRayIssueDetails();
 
         shared.hideLoader(DOM.loader);
 
@@ -678,17 +682,17 @@ Sofarch.DrugDispense = (function () {
         DOM.patientName.focus();
     }
 
-    function deleteDrugDispenseDetails() {
+    function deleteXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
         try {
 
-            var selectedRows = getSelectedRows(DOM.drugDispenseDetailsList);
+            var selectedRows = getSelectedRows(DOM.xrayIssueDetailsList);
 
-            var drugDispenseId = getDrugDispenseId(selectedRows);
+            var xrayIssueId = getXRayIssueId(selectedRows);
 
-            if (drugDispenseId > 0) {
+            if (xrayIssueId > 0) {
 
                 swal({
                     title: "Are you sure",
@@ -705,20 +709,20 @@ Sofarch.DrugDispense = (function () {
 
                         if (isConfirm) {
 
-                            var drugDispenseDrugUtilisations = [];
+                            var xrayFilmsUsed = [];
 
-                            if (DrugDispenseDetails.length) {
+                            if (XRayIssueDetails.length) {
 
-                                var drugDispenseDetails = DrugDispenseDetails.filter(function (value, index, array) {
-                                    return value.DrugDispenseId === parseInt(drugDispenseId);
+                                var xrayIssueDetails = XRayIssueDetails.filter(function (value, index, array) {
+                                    return value.XRayIssueId === parseInt(xrayIssueId);
                                 });
 
-                                if (drugDispenseDetails.length) {
+                                if (xrayIssueDetails.length) {
 
-                                    if (drugDispenseDetails[0].DrugDispenseDrugUtilisations.length) {
+                                    if (xrayIssueDetails[0].XRayFilmsUsed.length) {
 
-                                        drugUtilisation = {
-                                            DrugDispenseId: drugDispenseId,
+                                        xrayFilmUsed = {
+                                            XRayIssueId: xrayIssueId,
                                             IsDeleted: true,
                                             DeletedBy: parseInt(LOGGED_USER),
                                             DeletedByIP: IP_ADDRESS
@@ -727,19 +731,19 @@ Sofarch.DrugDispense = (function () {
                                 }
                             }
 
-                            var drugDispense = {};
+                            var xrayIssue = {};
 
-                            drugDispense = {
-                                DrugDispenseId: drugDispenseId,
-                                DrugDispenseDrugUtilisations: null,
+                            xrayIssue = {
+                                XRayIssueId: xrayIssueId,
+                                XRayFilmsUsed: null,
                                 IsDeleted: true,
                                 DeletedBy: parseInt(LOGGED_USER),
                                 DeletedByIP: IP_ADDRESS
                             };
 
-                            var postData = JSON.stringify(drugDispense);
+                            var postData = JSON.stringify(xrayIssue);
 
-                            shared.sendRequest(SERVICE_PATH + 'SaveDrugDispenseDetails', "POST", true, "JSON", postData, function (response) {
+                            shared.sendRequest(SERVICE_PATH + 'SaveXRayIssueDetails', "POST", true, "JSON", postData, function (response) {
 
                                 if (response.status === 200) {
 
@@ -747,10 +751,10 @@ Sofarch.DrugDispense = (function () {
 
                                         swal({
                                             title: "Success",
-                                            text: "Drug Dispense deleted successfully.",
+                                            text: "XRay Issued deleted successfully.",
                                             type: "success"
                                         }, function () {
-                                            addNewDrugDispenseDetails();
+                                            addNewXRayIssueDetails();
                                         });
                                     }
                                 }
@@ -787,33 +791,33 @@ Sofarch.DrugDispense = (function () {
         DOM.searchOptions.innerHTML = options;
     }
 
-    function filterDrugDispenseDetails() {
+    function filterXRayIssueDetails() {
 
-        shared.showPanel(DOM.searchDrugDispenseDetailsPanel);
+        shared.showPanel(DOM.searchXRayIssueDetailsPanel);
 
-        shared.clearInputs(DOM.searchDrugDispenseDetailsPanel);
+        shared.clearInputs(DOM.searchXRayIssueDetailsPanel);
 
         fillSearchOption();
 
-        if (DOM.searchDrugDispenseDetailsPanel.classList.contains("hide")) {
-            DOM.searchDrugDispenseDetailsPanel.classList.remove('hide');
-            DOM.searchDrugDispenseDetailsPanel.classList.add('show');
+        if (DOM.searchXRayIssueDetailsPanel.classList.contains("hide")) {
+            DOM.searchXRayIssueDetailsPanel.classList.remove('hide');
+            DOM.searchXRayIssueDetailsPanel.classList.add('show');
         }
         else {
-            DOM.searchDrugDispenseDetailsPanel.classList.remove('show');
-            DOM.searchDrugDispenseDetailsPanel.classList.add('hide');
+            DOM.searchXRayIssueDetailsPanel.classList.remove('show');
+            DOM.searchXRayIssueDetailsPanel.classList.add('hide');
         }
 
         DOM.searchValue.focus();
     }
 
-    function searchDrugDispenseDetails() {
+    function searchXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
-        DOM.drugDispenseDetailsList.tBodies[0].innerHTML = "";
+        DOM.xrayIssueDetailsList.tBodies[0].innerHTML = "";
 
-        DrugDispenseDetails.length = 0;
+        XRayIssueDetails.length = 0;
 
         var searchParmater = {
             FullName: null,
@@ -828,7 +832,7 @@ Sofarch.DrugDispense = (function () {
 
         var postData = JSON.stringify(searchParmater);
 
-        shared.sendRequest(SERVICE_PATH + "SearchDrugDispense/", "POST", true, "JSON", postData, function (response) {
+        shared.sendRequest(SERVICE_PATH + "SearchXRayIssue/", "POST", true, "JSON", postData, function (response) {
 
             if (response.status === 200) {
 
@@ -838,9 +842,9 @@ Sofarch.DrugDispense = (function () {
 
                     if (_response !== undefined) {
 
-                        DrugDispenseDetails = _response;
+                        XRayIssueDetails = _response;
 
-                        bindDrugDispenseDetails();
+                        bindXRayIssueDetails();
                     }
                 }
             }
@@ -851,15 +855,15 @@ Sofarch.DrugDispense = (function () {
         shared.hideLoader(DOM.loader);
     }
 
-    function getDrugDispenseDetails() {
+    function getXRayIssueDetails() {
 
         shared.showLoader(DOM.loader);
 
-        DrugDispenseDetails.length = 0;
+        XRayIssueDetails.length = 0;
 
-        DOM.drugDispenseDetailsList.tBodies[0].innerHTML = "";
+        DOM.xrayIssueDetailsList.tBodies[0].innerHTML = "";
 
-        shared.sendRequest(SERVICE_PATH + "GetAllDrugDispenseDetails/", "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "GetAllXRayIssueDetails/", "GET", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -869,9 +873,9 @@ Sofarch.DrugDispense = (function () {
 
                     if (data !== undefined) {
 
-                        DrugDispenseDetails = data;
+                        XRayIssueDetails = data;
 
-                        bindDrugDispenseDetails();
+                        bindXRayIssueDetails();
                     }
 
                     shared.hideLoader(DOM.loader);
@@ -881,25 +885,25 @@ Sofarch.DrugDispense = (function () {
         });
     }
 
-    function bindDrugDispenseDetails() {
+    function bindXRayIssueDetails() {
 
-        var tableBody = DOM.drugDispenseDetailsList.tBodies[0];
+        var tableBody = DOM.xrayIssueDetailsList.tBodies[0];
 
         tableBody.innerHTML = "";
 
         // Check the pre employment has values
-        if (DrugDispenseDetails.length) {
+        if (XRayIssueDetails.length) {
 
             var data = "";
 
-            for (var r = 0; r < DrugDispenseDetails.length; r++) {
+            for (var r = 0; r < XRayIssueDetails.length; r++) {
 
-                data = data + "<tr data-drug-dispense-id=" + DrugDispenseDetails[r].DrugDispenseId + " data-patient-id=" + DrugDispenseDetails[r].PatientId + " >";
-                data = data + "<td> <label class='label-tick'> <input type='checkbox' id='" + DrugDispenseDetails[r].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
-                data = data + "<td>" + DrugDispenseDetails[r].EmployerName + "</td>";
-                data = data + "<td>" + DrugDispenseDetails[r].PatientCode + "</td>";
-                data = data + "<td>" + DrugDispenseDetails[r].PatientName + "</td>";
-                data = data + "<td>" + DrugDispenseDetails[r].Gender + "</td>";
+                data = data + "<tr data-xray-issue-id=" + XRayIssueDetails[r].XRayIssueId + " data-patient-id=" + XRayIssueDetails[r].PatientId + " >";
+                data = data + "<td> <label class='label-tick'> <input type='checkbox' id='" + XRayIssueDetails[r].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].EmployerName + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].PatientCode + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].PatientName + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].Gender + "</td>";
                 data = data + "</tr>";
 
             }
@@ -912,31 +916,31 @@ Sofarch.DrugDispense = (function () {
         }
     }
 
-    function showDrugDispenseList() {
+    function showXRayIssueList() {
 
         shared.showPanel(DOM.viewMode);
         shared.hidePanel(DOM.editMode);
 
-        filterDrugDispenseDetails();
+        filterXRayIssueDetails();
 
-        DOM.drugDispenseDetailsList.tBodies[0].innerHTML = "";
+        DOM.xrayIssueDetailsList.tBodies[0].innerHTML = "";
 
     }
 
-    function fillPastDrugDispenseDate(patientId) {
+    function fillPastXRayIssuedDate(patientId) {
 
-        DOM.pastDrugDispenseDate.options.length = 0;
+        DOM.pastXRayIssueDate.options.length = 0;
 
         shared.showLoader(DOM.loader);
 
-        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetPastDrugDispenseDatesByPatientId/' + parseInt(patientId), DOM.pastDrugDispenseDate, "DrugDispenseDate", "DrugDispenseId", "Choose Date", function (response) {
+        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetPastXRayIssueDatesByPatientId/' + parseInt(patientId), DOM.pastXRayIssueDate, "XRayIssueDate", "XRayIssueId", "Choose Date", function (response) {
 
             if (response.status === 200) {
 
                 if (response.responseText !== undefined) {
 
-                    shared.setSelectOptionByIndex(DOM.pastDrugDispenseDate, parseInt(0));
-                    shared.setSelect2ControlsText(DOM.pastDrugDispenseDate);
+                    shared.setSelectOptionByIndex(DOM.pastXRayIssueDate, parseInt(0));
+                    shared.setSelect2ControlsText(DOM.pastXRayIssueDate);
 
                     //DOM.searchByFinancialYear.innerHTML = DOM.searchByFinancialYear.innerHTML + DOM.financialYear.innerHTML;
                 }
@@ -946,27 +950,27 @@ Sofarch.DrugDispense = (function () {
         shared.hideLoader(DOM.loader);
     }
 
-    function getDrugDetailsByDrugDispenseId(e) {
+    function getDrugDetailsByXRayIssueId(e) {
 
-        var drugDispenseId = parseInt(e.target.value);
+        var xrayIssueId = parseInt(e.target.value);
 
-        if (isNaN(drugDispenseId)) { drugDispenseId = 0; }
+        if (isNaN(xrayIssueId)) { xrayIssueId = 0; }
 
-        if (drugDispenseId > 0) {
+        if (xrayIssueId > 0) {
 
-            shared.sendRequest(SERVICE_PATH + "GetDrugUtilisationByDrugDispenseId/" + drugDispenseId, "GET", true, "JSON", null, function (response) {
+            shared.sendRequest(SERVICE_PATH + "GetFilmUsedDetailsByXRayIssueId/" + xrayIssueId, "GET", true, "JSON", null, function (response) {
 
                 if (response.status === 200) {
 
                     if (response.responseText !== undefined) {
 
-                        DrugsUtilisation = JSON.parse(response.responseText);
+                        XRayFilmsUsed = JSON.parse(response.responseText);
 
-                        if (DrugsUtilisation.length) {
+                        if (XRayFilmsUsed.length) {
 
-                            for (var d = 0; d < DrugsUtilisation.length; d++) {
+                            for (var d = 0; d < XRayFilmsUsed.length; d++) {
 
-                                bindDrugDetails(DrugsUtilisation[d]);
+                                bindDrugDetails(XRayFilmsUsed[d]);
                             }
                         }
                     }
@@ -978,43 +982,49 @@ Sofarch.DrugDispense = (function () {
         }
     }
 
-    function showDrugDispenseDetailsById(drugDispenseId) {
+    function showXRayIssueDetailsById(xrayIssueId) {
 
         shared.showLoader(DOM.loader);
 
-        if (DrugDispenseDetails.length) {
+        if (XRayIssueDetails.length) {
 
-            var drugDispenseDetails = DrugDispenseDetails.filter(function (value, index, array) {
-                return value.DrugDispenseId === drugDispenseId;
+            var xrayIssueDetails = XRayIssueDetails.filter(function (value, index, array) {
+                return value.XRayIssueId === xrayIssueId;
             });
 
-            if (drugDispenseDetails.length) {
+            if (xrayIssueDetails.length) {
 
-                shared.setSelectValue(DOM.financialYear, null, drugDispenseDetails[0].WorkingPeriodId);
+                shared.setSelectValue(DOM.financialYear, null, xrayIssueDetails[0].WorkingPeriodId);
                 shared.setSelect2ControlsText(DOM.financialYear);
-                DOM.drugDispenseNo.value = drugDispenseDetails[0].DrugDispenseNo;
-                DOM.drugDispenseNo.setAttribute('data-drug-dispense-id', drugDispenseDetails[0].DrugDispenseId);
-                DOM.drugDispenseDate.value = drugDispenseDetails[0].DrugDispenseDate;
-                DOM.patientCode.value = drugDispenseDetails[0].PatientCode;
-                DOM.patientName.setAttribute('data-patient-id', drugDispenseDetails[0].PatientId);
-                DOM.patientName.value = drugDispenseDetails[0].PatientName;
+                DOM.xrayIssueNo.value = xrayIssueDetails[0].XRayIssueNo;
+                DOM.xrayIssueNo.setAttribute('data-xray-issue-id', xrayIssueDetails[0].XRayIssueId);
+                DOM.xrayIssueDate.value = xrayIssueDetails[0].XRayIssueDate;
+                DOM.partOfBodyToXRay.value = xrayIssueDetails[0].PartOfBodyToXRay;
+                if (xrayIssueDetails[0].IsECGDone) {
+                    DOM.isECGDone.checked = true;
+                }
+                DOM.purpose.value = xrayIssueDetails[0].Purpose;
+                DOM.impression.value = xrayIssueDetails[0].Impression;
+                DOM.patientCode.value = xrayIssueDetails[0].PatientCode;
+                DOM.patientName.setAttribute('data-patient-id', xrayIssueDetails[0].PatientId);
+                DOM.patientName.value = xrayIssueDetails[0].PatientName;
                 //DOM.employerCode.value = drugDispenseDetails.EmployerCode;
-                DOM.employerName.value = drugDispenseDetails[0].EmployerName;
-                DOM.employerName.setAttribute('data-employer-id', drugDispenseDetails[0].EmployerId);
+                DOM.employerName.value = xrayIssueDetails[0].EmployerName;
+                DOM.employerName.setAttribute('data-employer-id', xrayIssueDetails[0].EmployerId);
 
-                DrugsUtilisation = drugDispenseDetails[0].DrugDispenseDrugUtilisations;
+                XRayFilmsUsed = xrayIssueDetails[0].XRayFilmsUsed;
 
-                if (DrugsUtilisation.length) {
+                if (XRayFilmsUsed.length) {
 
-                    var drugUtilisation = DrugsUtilisation.filter(function (value) {
-                        return value.DrugDispenseId === drugDispenseId;
+                    var xrayFilmUsed = XRayFilmsUsed.filter(function (value) {
+                        return value.XRayIssueId === xrayIssueId;
                     });
 
-                    for (var d = 0; d < drugUtilisation.length; d++) {
+                    for (var d = 0; d < xrayFilmUsed.length; d++) {
 
-                        if (drugUtilisation.length) {
+                        if (xrayFilmUsed.length) {
 
-                            bindDrugDetails(drugUtilisation[d]);
+                            bindDrugDetails(xrayFilmUsed[d]);
                         }
                     }
                 }
@@ -1027,28 +1037,28 @@ Sofarch.DrugDispense = (function () {
         shared.hidePanel(DOM.viewMode);
     }
 
-    function bindDrugDetails(drugUtilisation) {
+    function bindDrugDetails(xrayFilmUsed) {
 
-        var table = DOM.drugUtilisationList;
+        var table = DOM.xrayFilmUsedList;
 
         var tableBody = table.tBodies[0];
 
         var data = "";
 
-        if (drugUtilisation !== undefined) {
+        if (xrayFilmUsed !== undefined) {
 
             var tableRow = document.createElement('tr');
 
-            tableRow.setAttribute('data-drug-utilisation-id', drugUtilisation.DrugUtilisationId);
-            tableRow.setAttribute('data-drug-id', drugUtilisation.DrugId);
+            tableRow.setAttribute('data-xray-film-used-id', xrayFilmUsed.XRayFilmUsedId);
+            tableRow.setAttribute('data-drug-id', xrayFilmUsed.DrugId);
 
-            data += "<td class='text-center'> <button type='button' class='btn btn-sm btn-danger' id='" + drugUtilisation.DrugId + "'><i class='fa fa-fw fa-remove'></i></button></td>";
-            data += "<td class='text-center'>" + drugUtilisation.DrugCode + "</td>";
-            data += "<td class='text-center'>" + drugUtilisation.DrugName + "</td>";
-            data += "<td class='text-center'> <input type='text' id='" + drugUtilisation.DrugId + "' class='form-control' value='" + drugUtilisation.DispenseQty + "'/> </td>";
-            data += "<td class='text-center'>" + drugUtilisation.BalanceQty + "</td>";
-            data += "<td class='text-right'>" + drugUtilisation.PurchaseRate + "</td>";
-            data += "<td class='text-right'>" + drugUtilisation.Amount + "</td>";
+            data += "<td class='text-center'> <button type='button' class='btn btn-sm btn-danger' id='" + xrayFilmUsed.DrugId + "'><i class='fa fa-fw fa-remove'></i></button></td>";
+            data += "<td class='text-center'>" + xrayFilmUsed.DrugCode + "</td>";
+            data += "<td class='text-center'>" + xrayFilmUsed.DrugName + "</td>";
+            data += "<td class='text-center'> <input type='text' id='" + xrayFilmUsed.DrugId + "' class='form-control' value='" + xrayFilmUsed.DispenseQty + "'/> </td>";
+            data += "<td class='text-center'>" + xrayFilmUsed.BalanceQty + "</td>";
+            data += "<td class='text-right'>" + xrayFilmUsed.PurchaseRate + "</td>";
+            data += "<td class='text-right'>" + xrayFilmUsed.Amount + "</td>";
 
             tableRow.innerHTML = data;
 
@@ -1061,7 +1071,7 @@ Sofarch.DrugDispense = (function () {
 
     function addEventsToTableElements() {
 
-        var table = DOM.drugUtilisationList;
+        var table = DOM.xrayFilmUsedList;
 
         var tableBody = table.tBodies[0];
 
@@ -1104,15 +1114,15 @@ Sofarch.DrugDispense = (function () {
     function removeItem(e) {
 
         // Remove the item from the Table only if the purchase bill item id is 0
-        var tableBody = DOM.drugUtilisationList.tBodies[0];
+        var tableBody = DOM.xrayFilmUsedList.tBodies[0];
 
         var tableRow = e.currentTarget.parentElement.parentElement;
 
-        var drugUtilisationId = parseInt(tableRow.getAttribute('data-drug-utilisation-id'));
+        var xrayFilmUsedId = parseInt(tableRow.getAttribute('data-xray-film-used-id'));
 
-        if (isNaN(drugUtilisationId)) { drugUtilisationId = parseInt(0); }
+        if (isNaN(xrayFilmUsedId)) { xrayFilmUsedId = parseInt(0); }
 
-        if (drugUtilisationId === 0) {
+        if (xrayFilmUsedId === 0) {
 
             tableBody.removeChild(tableRow);
         }
@@ -1188,114 +1198,130 @@ Sofarch.DrugDispense = (function () {
         return isValid;
     };
 
-    var saveDrugUtilisationDetails = function () {
+    var saveXRayFilmUsedDetails = function () {
 
-        var table = DOM.drugUtilisationList;
+        var table = DOM.xrayFilmUsedList;
 
         var tableBody = table.tBodies[0];
 
         var tableRows = tableBody.children;
 
-        var drugUtilisationId = 0;
-        var drugDispenseId = 0;
+        var xrayFilmUsedId = 0;
+        var xrayIssueId = 0;
         var drugId = 0;
         var dispenseQty = 0;
+        var rate = 0;
 
-        DrugsUtilisation.length = 0;
+        XRayFilmsUsed.length = 0;
 
         if (tableRows.length) {
 
             for (var tr = 0; tr < tableRows.length; tr++) {
 
                 var dispenseQtyInput = tableRows[tr].children[3].children[0];
-                drugUtilisationId = parseInt(tableRows[tr].getAttribute('data-drug-utilisation-id'));
-                drugDispenseId = parseInt(DOM.drugDispenseNo.getAttribute('data-drug-dispense-id'));
+                xrayFilmUsedId = parseInt(tableRows[tr].getAttribute('data-xray-film-used-id'));
+                xrayIssueId = parseInt(DOM.xrayIssueNo.getAttribute('data-xray-issue-id'));
                 drugId = parseInt(tableRows[tr].getAttribute('data-drug-id'));
                 dispenseQty = parseFloat(dispenseQtyInput.value);
+                rate = parseFloat(tableRows[tr].children[4].textContent);
 
-                if (isNaN(drugUtilisationId)) { drugUtilisationId = 0; }
-                if (isNaN(drugDispenseId)) { drugDispenseId = 0; }
+                if (isNaN(xrayFilmUsedId)) { xrayFilmUsedId = 0; }
+                if (isNaN(xrayIssueId)) { xrayIssueId = 0; }
                 if (isNaN(drugId)) { drugId = 0; }
+                if (isNaN(rate)) { rate = 0; }
 
-                drugUtilisation = {
-                    DrugUtilisationId: drugUtilisationId,
-                    DrugDispenseId: drugDispenseId,
+                xrayFilmUsed = {
+                    XRayFilmUsedId: xrayFilmUsedId,
+                    XRayIssueId: xrayIssueId,
                     DrugId: drugId,
                     DispenseQty: dispenseQty,
+                    Rate: rate,
                     IsDeleted: false
                 };
 
-                if (drugUtilisationId === parseInt(0)) {
+                if (xrayFilmUsedId === parseInt(0)) {
 
-                    drugUtilisation.CreatedBy = parseInt(LOGGED_USER);
-                    drugUtilisation.CreatedByIP = IP_ADDRESS;
+                    xrayFilmUsed.CreatedBy = parseInt(LOGGED_USER);
+                    xrayFilmUsed.CreatedByIP = IP_ADDRESS;
                 }
                 else {
 
-                    drugUtilisation.ModifiedBy = parseInt(LOGGED_USER);
-                    drugUtilisation.ModifiedByIP = IP_ADDRESS;
+                    xrayFilmUsed.ModifiedBy = parseInt(LOGGED_USER);
+                    xrayFilmUsed.ModifiedByIP = IP_ADDRESS;
                 }
 
-                DrugsUtilisation.push(drugUtilisation);
+                XRayFilmsUsed.push(xrayFilmUsed);
             }
         }
 
-        return DrugsUtilisation;
+        return XRayFilmsUsed;
     };
 
-    function saveDrugDispenseDetails() {
+    function saveXRayIssueDetails() {
 
         if (validateData()) {
 
             /* temp variable */
-            var drugDispenseId = 0;
+            var xrayIssueId = 0;
             var patientId = 0;
-            var drugDispenseDate = null;
+            var xrayIssueDate = null;
+            var partOfBodyToXRay = null;
+            var isECGDone = false;
+            var purpose = null;
+            var impression = null;
             var workingPeriodId = 0;
 
-            drugDispenseId = parseInt(DOM.drugDispenseNo.getAttribute('data-drug-dispense-id'));
+            xrayIssueId = parseInt(DOM.xrayIssueNo.getAttribute('data-xray-issue-id'));
             patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
-            drugDispenseDate = DOM.drugDispenseDate.value;
+            xrayIssueDate = DOM.xrayIssueDate.value;
+            partOfBodyToXRay = DOM.partOfBodyToXRay.value;
+            if (DOM.isECGDone.checked) { isECGDone = true; }
+            purpose = DOM.purpose.value;
+            impression = DOM.impression.value;
             workingPeriodId = parseInt( DOM.financialYear.options[DOM.financialYear.selectedIndex].value);
 
-            if (isNaN(drugDispenseId)) { drugDispenseId = 0; }
+            if (isNaN(xrayIssueId)) { xrayIssueId = 0; }
             if (isNaN(patientId)) { patientId = 0; }
             if (isNaN(workingPeriodId)) { workingPeriodId = 0; }
 
-            var drugDispense = {};
+            var xrayIssue = {};
 
-            saveDrugUtilisationDetails();
+            saveXRayFilmUsedDetails();
 
-            drugDispense = {
-                DrugDispenseId: drugDispenseId,
+            xrayIssue = {
+                XRayIssueId: xrayIssueId,
                 PatientId: patientId,
-                DrugDispenseDate: drugDispenseDate,
+                XRayIssueDate: xrayIssueDate,
+                PartOfBodyToXRay: partOfBodyToXRay,
+                IsECGDone: isECGDone,
+                Purpose: purpose,
+                Impression: impression,
                 workingPeriodId: workingPeriodId,
-                DrugDispenseDrugUtilisations: DrugsUtilisation
+                XRayFilmsUsed: XRayFilmsUsed
             };
 
-            if (parseInt(drugDispenseId) === parseInt(0)) {
+            if (parseInt(xrayIssueId) === parseInt(0)) {
 
-                drugDispense.CreatedBy = parseInt(LOGGED_USER);
-                drugDispense.CreatedByIP = IP_ADDRESS;
+                xrayIssue.CreatedBy = parseInt(LOGGED_USER);
+                xrayIssue.CreatedByIP = IP_ADDRESS;
             }
             else {
 
-                drugDispense.ModifiedBy = parseInt(LOGGED_USER);
-                drugDispense.ModifiedByIP = IP_ADDRESS;
+                xrayIssue.ModifiedBy = parseInt(LOGGED_USER);
+                xrayIssue.ModifiedByIP = IP_ADDRESS;
             }
 
-            var postData = JSON.stringify(drugDispense);
+            var postData = JSON.stringify(xrayIssue);
 
-            shared.sendRequest(SERVICE_PATH + "SaveDrugDispenseDetails", "POST", true, "JSON", postData, function (response) {
+            shared.sendRequest(SERVICE_PATH + "SaveXRayIssueDetails", "POST", true, "JSON", postData, function (response) {
                 if (response.status === 200) {
                     if (parseInt(response.responseText) > parseInt(0)) {
                         swal({
                             title: "Success",
-                            text: "Drug Dispense Details saved successfully.",
+                            text: "XRay Issue Details saved successfully.",
                             type: "success"
                         }, function () {
-                            addNewDrugDispenseDetails();
+                            addNewXRayIssueDetails();
                         });
                     }
                 }
@@ -1327,4 +1353,4 @@ Sofarch.DrugDispense = (function () {
 }());
 
 
-Sofarch.DrugDispense.init();
+Sofarch.XRayIssue.init();

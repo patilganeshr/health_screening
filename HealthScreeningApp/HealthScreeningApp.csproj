@@ -519,6 +519,7 @@
     <Content Include="Content\scripts\app\sales\sales-return.js" />
     <Content Include="Content\scripts\app\shared\default.js" />
     <Content Include="Content\scripts\app\shared\masking.js" />
+    <Content Include="Content\scripts\app\transactions\xray-issue.js" />
     <Content Include="Content\scripts\app\transactions\drug-dispense.js" />
     <Content Include="Content\scripts\app\transactions\pettycash.js" />
     <Content Include="Content\scripts\app\transactions\health-checkup.js" />
@@ -671,6 +672,7 @@
     <Content Include="Masters\Employee.aspx" />
     <Content Include="Masters\Employer.aspx" />
     <Content Include="Masters\GSTCategory.aspx" />
+    <Content Include="Transactions\XRayIssue.aspx" />
     <Content Include="Transactions\DrugDispense.aspx" />
     <Content Include="Transactions\PettyCash.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
@@ -820,6 +822,13 @@
     </Compile>
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\XRayIssue.aspx.cs">
+      <DependentUpon>XRayIssue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\XRayIssue.aspx.designer.cs">
+      <DependentUpon>XRayIssue.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\DrugDispense.aspx.cs">
       <DependentUpon>DrugDispense.aspx</DependentUpon>

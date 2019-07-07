@@ -67,6 +67,8 @@
     <Compile Include="DBConnect.cs" />
     <Compile Include="DBStoredProcedure.cs" />
     <Compile Include="Drug.cs" />
+    <Compile Include="XRayFilmUsed.cs" />
+    <Compile Include="XRayIssue.cs" />
     <Compile Include="DrugDispense.cs" />
     <Compile Include="DrugDispenseDrugUtilisation.cs" />
     <Compile Include="DrugFormulation.cs" />

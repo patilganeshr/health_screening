@@ -112,13 +112,17 @@ Sofarch.HealthCheckup = (function () {
     function bindEvents() {
 
         DOM.addNewPreEmploymentDetails.addEventListener('click', addNewPreEmploymentDetails);
-        DOM.showPreEmploymentDetails.addEventListener('click', getPreEmploymentDetails);
+        DOM.showPreEmploymentDetails.addEventListener('click', showPreEmploymentList);
         DOM.viewPreEmploymentDetails.addEventListener('click', viewPreEmploymentDetails);
         DOM.editPreEmploymentDetails.addEventListener('click', editPreEmploymentDetails);
         DOM.savePreEmploymentDetails.addEventListener('click', savePreEmploymentDetails);
         DOM.deletePreEmploymentDetails.addEventListener('click', deletePreEmploymentDetails);
         DOM.searchPreEmploymentDetails.addEventListener('click', searchPreEmploymentDetails);
         DOM.filterPreEmploymentDetails.addEventListener('click', filterPreEmploymentDetails);
+
+        DOM.familyHistoryOfMajorIllness.onblur = function (e) {
+            setActiveTabAndFocus(e);
+        };
 
         DOM.patientName.onkeydown = function (e) {
 
@@ -137,6 +141,121 @@ Sofarch.HealthCheckup = (function () {
         addNewPreEmploymentDetails();
 
     }
+
+    function setDefaultActiveTabAndFocus() {
+
+        //Get the current active tab list
+        var tabs = document.querySelectorAll('.nav-tabs li');
+
+        if (tabs.length) {
+
+            for (var t = 0; t < tabs.length; t++) {
+
+                tabs[t].classList.remove('active');
+            }
+        }
+
+        var tabPanes = document.querySelectorAll('.tab-pane');
+
+        for (var tp = 0; tp < tabPanes.length; tp++) {
+
+            tabPanes[tp].classList.remove('in');
+            tabPanes[tp].classList.remove('active');
+        }
+
+        tabs[0].classList.add('active');
+
+        tabPanes[0].classList.add('in');
+        tabPanes[0].classList.add('active');
+
+    }
+
+    function setActiveTabAndFocus(e) {
+
+        //Get the current active tab list
+        var tabs = document.querySelectorAll('.nav-tabs li');
+
+        if (tabs.length) {
+
+            for (var t = 0; t < tabs.length; t++) {
+
+                tabs[t].classList.remove('active');
+            }
+        }
+
+        var tabPanes = document.querySelectorAll('.tab-pane');
+
+        for (var tp = 0; tp < tabPanes.length; tp++) {
+
+            tabPanes[tp].classList.remove('in');
+            tabPanes[tp].classList.remove('active');
+        }
+
+        var currentActiveTab = getCurrentActiveTab(e);
+
+        var nextTab = currentActiveTab.nextElementSibling;
+
+        var linkName;
+
+        if (nextTab !== null) {
+
+            linkName = nextTab.id;
+
+            var currentTab = document.querySelectorAll('.nav-tabs li a[href="#' + linkName + '"]');
+
+            var firstInput = nextTab.querySelectorAll('input[type="text"]');
+
+            currentActiveTab.classList.remove('in');
+            currentActiveTab.classList.remove('active');
+
+            currentTab[0].parentElement.classList.add('active');
+
+            nextTab.classList.add('in');
+            nextTab.classList.add('active');
+
+            firstInput[0].focus();
+
+            //setTimeout(function () {
+            //    firstInput.focus();
+            //}, 2000);
+
+        }
+    }
+
+    var getCurrentActiveTab = function (e) {
+
+        //Find all tab panes
+        var tabPanes = document.querySelectorAll('.tab-pane');
+
+        var currentTab;
+
+        for (var tp = 0; tp < tabPanes.length; tp++) {
+
+            //Find the element
+            var element = tabPanes[tp].querySelectorAll('input[id="' + e.target.id + '"]')[0];
+
+            if (element !== undefined) {
+
+                //Set the active tab
+                currentTab = tabPanes[tp];
+
+                //if found exit for loop
+                break;
+            }
+        }
+
+        //var currentTab = e.target.parentElement.parentElement.parentElement.parentElement;
+
+        //if (currentTab.nodeName === "tab") {
+        //    currentTab = e.target.parentElement.parentElement.parentElement.parentElement;
+        //}
+        //else {
+        //    currentTab = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+        //}
+
+        return currentTab;
+
+    };
 
     function getFinancialYear() {
 
@@ -164,6 +283,11 @@ Sofarch.HealthCheckup = (function () {
         if (e.keyCode === 13) {
             CurrentFocus = -1;
             showPatientNameOnEnterKey(e);
+            return;
+        }
+        else if (e.keyCode === 9) {
+            CurrentFocus = -1;
+            shared.closeAutoCompleteList(DOM.searchPatientList);
             return;
         }
 
@@ -318,90 +442,6 @@ Sofarch.HealthCheckup = (function () {
         return selectedRows;
     };
 
-    function setActiveTabAndFocus(e) {
-
-        //Get the current active tab list
-        var tabs = document.querySelectorAll('.nav-tabs li');
-
-        if (tabs.length) {
-
-            for (var t = 0; t < tabs.length; t++) {
-
-                tabs[t].classList.remove('active');
-            }
-        }
-
-        var tabPanes = document.querySelectorAll('.tab-pane');
-
-        for (var tp = 0; tp < tabPanes.length; tp++) {
-
-            tabPanes[tp].classList.remove('active');
-        }
-
-        var currentActiveTab = getCurrentActiveTab(e);
-
-        var nextTab = currentActiveTab.nextElementSibling;
-
-        var linkName;
-
-        if (nextTab !== null) {
-
-            linkName = nextTab.id;
-
-            var currentTab = document.querySelectorAll('.nav-tabs li a[href="#' + linkName + '"]');
-
-            var firstInput = nextTab.querySelectorAll('input[type="text"]');
-
-            currentActiveTab.classList.remove('active');
-
-            currentTab[0].parentElement.classList.add('active');
-
-            nextTab.classList.add('active');
-
-            firstInput[0].focus();
-
-            //setTimeout(function () {
-            //    firstInput.focus();
-            //}, 2000);
-
-        }
-    }
-
-    var getCurrentActiveTab = function (e) {
-
-        //Find all tab panes
-        var tabPanes = document.querySelectorAll('.tab-pane');
-
-        var currentTab;
-
-        for (var tp = 0; tp < tabPanes.length; tp++) {
-
-            //Find the element
-            var element = tabPanes[tp].querySelectorAll('input[id="' + e.target.id + '"]')[0];
-
-            if (element !== undefined) {
-
-                //Set the active tab
-                currentTab = tabPanes[tp];
-
-                //if found exit for loop
-                break;
-            }
-        }
-
-        //var currentTab = e.target.parentElement.parentElement.parentElement.parentElement;
-
-        //if (currentTab.nodeName === "tab") {
-        //    currentTab = e.target.parentElement.parentElement.parentElement.parentElement;
-        //}
-        //else {
-        //    currentTab = e.target.parentElement.parentElement.parentElement.parentElement.parentElement;
-        //}
-
-        return currentTab;
-
-    };
-
     var getPreEmploymentId = function (selectedRows) {
 
         var preEmploymentId = 0;
@@ -461,9 +501,21 @@ Sofarch.HealthCheckup = (function () {
         shared.hidePanel(DOM.viewMode);
 
         // Set focus
+        setDefaultActiveTabAndFocus();
+
         DOM.patientName.focus();
 
         shared.hideLoader(DOM.loader);
+    }
+
+    function showPreEmploymentList() {
+
+        shared.showPanel(DOM.viewMode);
+        shared.hidePanel(DOM.editMode);
+
+        filterPreEmploymentDetails();
+
+        DOM.preEmploymentDetailsList.tBodies[0].innerHTML = "";
     }
 
     function viewPreEmploymentDetails() {
@@ -661,7 +713,7 @@ Sofarch.HealthCheckup = (function () {
         var options = "";
 
         options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='FullName' selected='selected'> Patient Name</option>";
+        options += "<option value='PatientFullName' selected='selected'> Patient Name</option>";
         options += "<option value='EmployerName'> Company Name </option>";
         options += "<option value='PatientCode'> Patient Code</option>";
 
@@ -697,7 +749,8 @@ Sofarch.HealthCheckup = (function () {
         PreEmploymentDetails.length = 0;
 
         var searchParmater = {
-            FullName: null,
+            PreEmploymentOrHealthCheckup: 'H',
+            PatientFullName: null,
             EmployerName: null,
             PatientCode: null
         };
@@ -740,7 +793,7 @@ Sofarch.HealthCheckup = (function () {
 
         DOM.preEmploymentDetailsList.tBodies[0].innerHTML = "";
 
-        shared.sendRequest(SERVICE_PATH + "GetAllPreEmploymentDetails/H/", "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "GetAllPreEmploymentDetails/P/", "GET", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -995,8 +1048,8 @@ Sofarch.HealthCheckup = (function () {
 
             /* temp variable */
             var preEmploymentId = 0;
-            var preEmploymentOrHealthCheckup = "H";
             var patientId = 0;
+            var preEmploymentOrHealthCheckup = "H";
             var consultDate = null;
             var maritalStatus = null;
             var noOfSons = 0;
@@ -1088,7 +1141,7 @@ Sofarch.HealthCheckup = (function () {
                             text: "Employee Details saved successfully.",
                             type: "success"
                         }, function () {
-                            getPreEmploymentDetails();
+                            addNewPreEmploymentDetails();
                         });
                     }
                 }
