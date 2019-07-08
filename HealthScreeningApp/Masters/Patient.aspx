@@ -406,7 +406,28 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Smoking</label>
+                                                        <input type="text" id="Smoking" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Alcohol</label>
+                                                        <input type="text" id="Alcohol" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Tobacco</label>
+                                                        <input type="text" id="Tobacco" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <%--<div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                                     <label>Smoking</label>
                                                     <div class="form-group form-group-sm">
                                                         <label class="lable-tick">
@@ -446,7 +467,7 @@
                                                             <span class="label-text">No</span>
                                                         </label>
                                                     </div>
-                                                </div>
+                                                </div>--%>
 
                                             </div>
 

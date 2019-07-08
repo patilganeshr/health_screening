@@ -37,6 +37,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@vendor_id", DbType.Int32, purchaseBill.VendorId);
                     database.AddInParameter(dbCommand, "@purchase_bill_amount", DbType.Decimal, purchaseBill.PurchaseBillAmount);
                     database.AddInParameter(dbCommand, "@remarks", DbType.String, purchaseBill.Remarks);
+                    database.AddInParameter(dbCommand, "@working_period_id", DbType.Int32, purchaseBill.WorkingPeriodId);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, purchaseBill.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, purchaseBill.CreatedByIP);
 
@@ -54,7 +55,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return purchaseBillId;
         }
 
@@ -84,7 +85,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return isDeleted;
         }
 
@@ -131,7 +132,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             var purchaseBill = new Entities.PurchaseBill
                             {
                                 PurchaseBillId = DRE.GetNullableInt32(reader, "purchase_bill_id", 0),
-                                PurchaseBillNo = DRE.GetNullableString(reader, "purchase_bill_no", null)                                
+                                PurchaseBillNo = DRE.GetNullableString(reader, "purchase_bill_no", null)
                             };
 
                             purchaseBills.Add(purchaseBill);
@@ -165,7 +166,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-        
+
             return purchaseBills;
         }
 
@@ -181,7 +182,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
-                        purchaseBills = GetPurchaseBills(reader);   
+                        purchaseBills = GetPurchaseBills(reader);
                     }
                 }
             }
@@ -213,6 +214,8 @@ namespace SOFARCH.HealthScreening.DataModel
                     TotalBillQty = DRE.GetNullableDecimal(reader, "total_bill_qty", 0),
                     TotalBillAmount = DRE.GetNullableDecimal(reader, "total_bill_amount", 0),
                     Remarks = DRE.GetNullableString(reader, "remarks", null),
+                    WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                    FinancialYear = DRE.GetNullableString(reader, "financial_year", null),
                     PurchaseBillItems = purchaseBillItem.GetPurchaseBillItemDetailsByPurchaseBillId(DRE.GetInt32(reader, "purchase_bill_id"))
                 };
 
@@ -236,6 +239,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@vendor_id", DbType.Int32, purchaseBill.VendorId);
                     database.AddInParameter(dbCommand, "@purchase_bill_amount", DbType.Decimal, purchaseBill.PurchaseBillAmount);
                     database.AddInParameter(dbCommand, "@remarks", DbType.String, purchaseBill.Remarks);
+                    database.AddInParameter(dbCommand, "@working_period_id", DbType.Int32, purchaseBill.WorkingPeriodId);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, purchaseBill.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, purchaseBill.ModifiedByIP);
 
@@ -256,7 +260,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
             return purchaseBillId;
         }
-        
+
         public Int32 SavePurchaseBill(Entities.PurchaseBill purchaseBill)
         {
             var purchaseBillId = 0;
@@ -273,7 +277,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     {
                         var purchaseBillItemId = 0;
                         var purchaseBillChargeId = 0;
-                        
+
                         if (purchaseBill != null)
                         {
                             if (purchaseBill.PurchaseBillId == null || purchaseBill.PurchaseBillId == 0)

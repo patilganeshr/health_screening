@@ -519,8 +519,12 @@
     <Content Include="Content\scripts\app\sales\sales-return.js" />
     <Content Include="Content\scripts\app\shared\default.js" />
     <Content Include="Content\scripts\app\shared\masking.js" />
+    <Content Include="Content\scripts\app\transactions\xray-issue.js" />
     <Content Include="Content\scripts\app\transactions\drug-dispense.js" />
+    <Content Include="Content\scripts\app\transactions\pettycash.js" />
+    <Content Include="Content\scripts\app\transactions\health-checkup.js" />
     <Content Include="Content\scripts\app\transactions\preemployment-details.js" />
+    <Content Include="Content\scripts\app\transactions\prescription.js" />
     <Content Include="Content\scripts\vendor\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.js" />
     <Content Include="Content\scripts\vendor\bootstrap-touchspin\jquery.bootstrap-touchspin.min.js" />
@@ -668,9 +672,13 @@
     <Content Include="Masters\Employee.aspx" />
     <Content Include="Masters\Employer.aspx" />
     <Content Include="Masters\GSTCategory.aspx" />
+    <Content Include="Transactions\XRayIssue.aspx" />
     <Content Include="Transactions\DrugDispense.aspx" />
+    <Content Include="Transactions\PettyCash.aspx" />
     <Content Include="Transactions\PettyCashExpense.aspx" />
+    <Content Include="Transactions\HealthCheckup.aspx" />
     <Content Include="Transactions\PreEmploymentDetails.aspx" />
+    <Content Include="Transactions\PrescriptionDetails.aspx" />
     <Content Include="Transactions\PurchaseBill.aspx" />
     <Content Include="Transactions\PurchaseBillReturn.aspx" />
     <Content Include="ViewSwitcher.ascx" />
@@ -815,12 +823,26 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\XRayIssue.aspx.cs">
+      <DependentUpon>XRayIssue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\XRayIssue.aspx.designer.cs">
+      <DependentUpon>XRayIssue.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Transactions\DrugDispense.aspx.cs">
       <DependentUpon>DrugDispense.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Transactions\DrugDispense.aspx.designer.cs">
       <DependentUpon>DrugDispense.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\PettyCash.aspx.cs">
+      <DependentUpon>PettyCash.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PettyCash.aspx.designer.cs">
+      <DependentUpon>PettyCash.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\PettyCashExpense.aspx.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
@@ -829,12 +851,26 @@
     <Compile Include="Transactions\PettyCashExpense.aspx.designer.cs">
       <DependentUpon>PettyCashExpense.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\HealthCheckup.aspx.cs">
+      <DependentUpon>HealthCheckup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\HealthCheckup.aspx.designer.cs">
+      <DependentUpon>HealthCheckup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Transactions\PreEmploymentDetails.aspx.cs">
       <DependentUpon>PreEmploymentDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Transactions\PreEmploymentDetails.aspx.designer.cs">
       <DependentUpon>PreEmploymentDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Transactions\PrescriptionDetails.aspx.cs">
+      <DependentUpon>PrescriptionDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\PrescriptionDetails.aspx.designer.cs">
+      <DependentUpon>PrescriptionDetails.aspx</DependentUpon>
     </Compile>
     <Compile Include="Transactions\PurchaseBill.aspx.cs">
       <DependentUpon>PurchaseBill.aspx</DependentUpon>
@@ -859,25 +895,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApplicationFiles\Barcode\Barcode.pdf" />
-    <Content Include="ApplicationFiles\SalesReturn\Bills\1\CreditSalesReturnBills\BillNo_1.pdf" />
-    <Content Include="ApplicationFiles\SalesReturn\Bills\1\CreditSalesReturnBills\BillNo_332222.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\BillNo_10.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\BillNo_21.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\BillNo_7.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\BillNo_8.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CashSalesBillsBillNo_5347.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CashSalesBills\BillNo_5348.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CashSalesBills\BillNo_5912.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CashSalesBills\BillNo_5933.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CashSalesBills\BillNo_7065.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CreditSalesBills\BillNo_33189.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CreditSalesBills\BillNo_33217.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\1\CreditSalesBills\BillNo_33222.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\BillNo_1.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\BillNo_2.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\BillNo_4.pdf" />
-    <Content Include="ApplicationFiles\Sales\Bills\BillNo_5.pdf" />
     <Content Include="Content\css\vendor\bootstrap\bootstrap-theme.css.map" />
     <Content Include="Content\css\vendor\bootstrap\bootstrap-theme.min.css.map" />
     <Content Include="Content\css\vendor\bootstrap\bootstrap.css.map" />
@@ -936,10 +953,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ApplicationFiles\Barcode\" />
     <Folder Include="ApplicationFiles\JobWork\KaragirBills\1\18-19\" />
     <Folder Include="ApplicationFiles\SalesReturn\Bills\1\CashSalesReturnBills\" />
+    <Folder Include="ApplicationFiles\SalesReturn\Bills\1\CreditSalesReturnBills\" />
     <Folder Include="ApplicationFiles\SalesReturn\Bills\4\CashSalesReturnBills\" />
     <Folder Include="ApplicationFiles\SalesReturn\Bills\4\CreditSalesReturnBills\" />
+    <Folder Include="ApplicationFiles\Sales\Bills\1\CashSalesBills\" />
+    <Folder Include="ApplicationFiles\Sales\Bills\1\CreditSalesBills\" />
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>

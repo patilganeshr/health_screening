@@ -9,20 +9,20 @@ namespace SOFARCH.HealthScreening.Business
     public class Drug
     {
         private readonly DataModel.Drug _drug;
-        
+
         public Drug()
         {
             _drug = new DataModel.Drug();
         }
 
-        public List<Entities.Drug> GetDrugIdAndDrugName()
+        public List<Entities.Drug> GetDrugIdAndDrugName(string drugOrXRay)
         {
-            return _drug.GetDrugIdAndDrugName();
+            return _drug.GetDrugIdAndDrugName(drugOrXRay);
         }
 
-        public List<Entities.Drug> GetDrugIdAndDrugName(string drugName)
+        public List<Entities.Drug> GetDrugIdAndDrugNameByDrugName(string drugOrXRay, string drugName)
         {
-            return _drug.GetDrugIdAndDrugName(drugName);
+            return _drug.GetDrugIdAndDrugNameByDrugName(drugOrXRay, drugName);
         }
 
         public List<Entities.Drug> SearchDrugsAll()

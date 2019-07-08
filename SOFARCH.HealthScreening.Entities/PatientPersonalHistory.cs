@@ -26,11 +26,11 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string WeightUnit { get; set; }
 
-        public bool? IsSmoking { get; set; }
+        public string Smoking { get; set; }
 
-        public bool? IsAlcohol { get; set; }
+        public string Alcohol { get; set; }
 
-        public bool? IsTobacco { get; set; }
+        public string Tobacco { get; set; }
 
         public Int32? BloodGroupId { get; set; }
 
@@ -57,12 +57,6 @@ namespace SOFARCH.HealthScreening.Entities
         public string PastHistory { get; set; }
 
         public string FamilyHistory { get; set; }
-
-        public string Smoking { get; set; }
-
-        public string Alcohol { get; set; }
-
-        public string Tobacco { get; set; }
 
     }
 }

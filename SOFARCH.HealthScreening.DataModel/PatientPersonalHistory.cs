@@ -23,7 +23,7 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
                 /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientPersonalHistory"></param>
         /// <returns></returns>
@@ -44,9 +44,9 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "height_unit", DbType.String, patientPersonalHistory.HeightUnit);
                     database.AddInParameter(dbCommand, "emp_weight", DbType.Decimal, patientPersonalHistory.PatientWeight);
                     database.AddInParameter(dbCommand, "weight_unit", DbType.String, patientPersonalHistory.WeightUnit);
-                    database.AddInParameter(dbCommand, "smoking", DbType.Boolean, patientPersonalHistory.IsSmoking);
-                    database.AddInParameter(dbCommand, "alcohol", DbType.Boolean, patientPersonalHistory.IsAlcohol);
-                    database.AddInParameter(dbCommand, "tobacco", DbType.Boolean, patientPersonalHistory.IsTobacco);
+                    database.AddInParameter(dbCommand, "smoking", DbType.String, patientPersonalHistory.Smoking);
+                    database.AddInParameter(dbCommand, "alcohol", DbType.String, patientPersonalHistory.Alcohol);
+                    database.AddInParameter(dbCommand, "tobacco", DbType.String, patientPersonalHistory.Tobacco);
                     database.AddInParameter(dbCommand, "blood_group_id", DbType.Int32, patientPersonalHistory.BloodGroupId);
                     database.AddInParameter(dbCommand, "blood_group_factor_id", DbType.Int32, patientPersonalHistory.BloodGroupFactorId);
                     database.AddInParameter(dbCommand, "diet", DbType.String, patientPersonalHistory.Diet);
@@ -77,12 +77,12 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-          
+
             return patientPersonalHistoryId;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientPersonalHistory"></param>
         /// <returns></returns>
@@ -112,13 +112,13 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-      
+
             return isDeleted;
         }
 
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="BranchId"></param>
         /// <returns></returns>
@@ -175,12 +175,12 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-           
+
             return patientPersonalHistoryInfo;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientPersonalHistory"></param>
         /// <returns></returns>
@@ -201,9 +201,9 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "height_unit", DbType.String, patientPersonalHistory.HeightUnit);
                     database.AddInParameter(dbCommand, "emp_weight", DbType.Decimal, patientPersonalHistory.PatientWeight);
                     database.AddInParameter(dbCommand, "weight_unit", DbType.String, patientPersonalHistory.WeightUnit);
-                    database.AddInParameter(dbCommand, "smoking", DbType.Boolean, patientPersonalHistory.IsSmoking);
-                    database.AddInParameter(dbCommand, "alcohol", DbType.Boolean, patientPersonalHistory.IsAlcohol);
-                    database.AddInParameter(dbCommand, "tobacco", DbType.Boolean, patientPersonalHistory.IsTobacco);
+                    database.AddInParameter(dbCommand, "smoking", DbType.String, patientPersonalHistory.Smoking);
+                    database.AddInParameter(dbCommand, "alcohol", DbType.String, patientPersonalHistory.Alcohol);
+                    database.AddInParameter(dbCommand, "tobacco", DbType.String, patientPersonalHistory.Tobacco);
                     database.AddInParameter(dbCommand, "blood_group_id", DbType.Int32, patientPersonalHistory.BloodGroupId);
                     database.AddInParameter(dbCommand, "blood_group_factor_id", DbType.Int32, patientPersonalHistory.BloodGroupFactorId);
                     database.AddInParameter(dbCommand, "diet", DbType.String, patientPersonalHistory.Diet);
@@ -234,12 +234,12 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return patientPersonalHistoryId;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="patientPersonalHistory"></param>
         /// <returns></returns>

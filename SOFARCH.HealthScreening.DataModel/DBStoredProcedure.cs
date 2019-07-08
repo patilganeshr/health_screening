@@ -696,7 +696,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
-        #region Purchase Bill Items
+        #region Purchase Bill Items Return
 
         public static string InsertPurchaseBillItemReturn { get { return "purchase_bill_items_return_insert_purchase_bill_item_return"; } }
 
@@ -711,6 +711,59 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetPurchaseBillItemReturnDetailsByReturnId { get { return "purchase_bill_items_return_get_item_return_details_by_return_id"; } }
 
         #endregion
+
+        #region Prescriptions
+        public static string Insertprescription { get { return "insert_prescription"; } }
+
+        public static string GetListOfAll { get { return "prescription_get_list"; } }
+        #endregion
+
+
+        #region PettyCase
+
+        public static string InsertPettycase { get { return "pettycase_insert_pettycase"; } }
+
+        public static string UpdatePettycase { get { return "PettyCase_update_PettyCase"; } }
+
+        public static string GetListOfAllPettycase { get { return "Petty_cash_get_list"; } }
+
+        public static string Deletepettycase { get { return "pettycase_delete_pettycase"; } }
+
+        #endregion
+
+        #region XRay Issue
+
+        public static string InsertXRayIssue { get { return "xrays_issue_insert_xrays_issue"; } }
+
+        public static string UpdateXRayIssue { get { return "xrays_issue_update_xrays_issue"; } }
+
+        public static string DeleteXRayIssue { get { return "xrays_issue_delete_xray_issue"; } }
+
+        public static string GetXRayIssueDetailsById { get { return "xrays_issue_get_details_by_xray_issue_id"; } }
+
+        public static string SearchXRayIssue { get { return "xrays_issue_search_xrays_issue"; } }
+
+        public static string GetPastXRayIssuedDatesByPatientId { get { return "xray_issues_get_past_xray_issue_dates_by_patient_idrug_dispenses_get_past_drug_dispense_dates_by_patient_id"; } }
+
+        #endregion
+
+
+        #region XRay Films Used
+        public static string InsertXRayFilmsUsed { get { return "xrays_films_used_insert_xray_film_used"; } }
+
+        public static string UpdateXRayFilmsUsed { get { return "xrays_films_used_update_xray_film_used"; } }
+
+        public static string DeleteXRayFilmsUsed { get { return "xrays_films_used_delete_xray_film_used"; } }
+
+        public static string DeleteXRayFilmsUsedByXRayIssueId { get { return "xrays_films_used_delete_film_used_by_xray_issue_id"; } }
+
+        public static string GetXRayFilmsUsedDetailsByDrugId { get { return "xrays_films_used_get_film_details_by_drug_id"; } }
+
+        public static string GetXRayFilmsUsedDetailsByXRayIssueId { get { return "xrays_films_used_get_details_by_xray_issue_id"; } }
+
+
+        #endregion
+
 
     }
 

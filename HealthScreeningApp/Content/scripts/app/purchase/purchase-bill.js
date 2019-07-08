@@ -28,6 +28,7 @@ Sofarch.PurchaseBill = (function () {
 
         DOM.editMode = document.getElementById('EditMode');
 
+        DOM.financialYear = document.getElementById('FinancialYear');
         DOM.purchaseBillNo = document.getElementById('PurchaseBillNo');
         DOM.purchaseBillDate = document.getElementById('PurchaseBillDate');
         DOM.vendor = document.getElementById('Vendor');
@@ -116,11 +117,11 @@ Sofarch.PurchaseBill = (function () {
         };
 
         DOM.searchDrugName.onkeyup = function (e) {
-            
+
             if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
             showSearchDrugList(e);
-            
+
         };
 
         DOM.purchaseBillAmount.onblur = function (e) {
@@ -132,8 +133,31 @@ Sofarch.PurchaseBill = (function () {
 
     function loadData() {
 
+        getFinancialYear();
+
         addNewPurchaseBill();
 
+    }
+
+    function getFinancialYear() {
+
+        shared.showLoader(DOM.loader);
+
+        shared.fillDropdownWithCallback(SERVICE_PATH + 'GetAllWorkingPeriods', DOM.financialYear, "FinancialYear", "WorkingPeriodId", "Choose Year", function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    shared.setSelectOptionByIndex(DOM.financialYear, parseInt(1));
+                    shared.setSelect2ControlsText(DOM.financialYear);
+
+                    //DOM.searchByFinancialYear.innerHTML = DOM.searchByFinancialYear.innerHTML + DOM.financialYear.innerHTML;
+                }
+            }
+        });
+
+        //shared.hideLoader(DOM.loader);
     }
 
     var getSelectedRows = function (element) {
@@ -198,7 +222,7 @@ Sofarch.PurchaseBill = (function () {
         shared.hideLoader(DOM.loader);
 
     }
-        
+
     function showSearchVendorList(e) {
 
         if (e.keyCode === 13) {
@@ -224,7 +248,7 @@ Sofarch.PurchaseBill = (function () {
         };
 
         shared.showAutoCompleteItemsList(parameters, function (response) {
-        
+
             if (response !== undefined) {
 
                 if (response >= 0) {
@@ -232,7 +256,7 @@ Sofarch.PurchaseBill = (function () {
                     CurrentFocus = response;
                 }
                 else {
-                                        
+
                     CurrentFocus = -1;
 
                     var autoCompleteList = response;
@@ -293,7 +317,7 @@ Sofarch.PurchaseBill = (function () {
     function showVendorNameOnEnterKey() {
 
         FLAG = "NEW ITEM";
-       
+
         var li = DOM.searchVendorList.querySelectorAll('.autocompleteListItem-active');
 
         var count = li.length;
@@ -326,7 +350,7 @@ Sofarch.PurchaseBill = (function () {
         var dataAttributes = ['Drug-Id', 'Drug-Name', 'Drug-Code'];
 
         var parameters = {};
-            
+
         parameters = {
 
             Event: e,
@@ -373,7 +397,7 @@ Sofarch.PurchaseBill = (function () {
                             li.classList.add('clearfix');
 
                             li.setAttribute('id', SearchItemsList[s].DrugId);
-                            
+
                             li.style.cursor = "pointer";
                             li.onclick = showDrugNameOnSelection;
                             li.textContent = SearchItemsList[s].DrugName;
@@ -416,7 +440,7 @@ Sofarch.PurchaseBill = (function () {
     function showDrugNameOnEnterKey() {
 
         FLAG = "NEW ITEM";
-       
+
         var li = DOM.searchDrugList.querySelectorAll('.autocompleteListItem-active');
 
         var count = li.length;
@@ -483,7 +507,7 @@ Sofarch.PurchaseBill = (function () {
         options += "<option value='billno' selected='selected'> Purchase Bill No.</option>";
         //options += "<option value='gstno'> GST No. </option>";
         //options += "<option value='panno'> PAN No.</option>";
-        
+
         DOM.searchOptions.innerHTML = options;
     }
 
@@ -553,7 +577,7 @@ Sofarch.PurchaseBill = (function () {
 
         shared.showLoader(DOM.loader);
 
-        var purchaseBillNo = null;      
+        var purchaseBillNo = null;
         var purchaseBillId = 0;
         var vendorId = 0;
 
@@ -612,7 +636,7 @@ Sofarch.PurchaseBill = (function () {
         shared.clearTextAreas(DOM.editMode);
         shared.clearSelect(DOM.editMode);
         shared.clearTables(DOM.editMode);
-        
+
         shared.disableControls(DOM.editMode, false);
 
         PurchaseBills.length = 0;
@@ -631,7 +655,7 @@ Sofarch.PurchaseBill = (function () {
 
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
-        
+
         DOM.purchaseBillNo.focus();
 
         shared.hideLoader(DOM.loader);
@@ -660,7 +684,7 @@ Sofarch.PurchaseBill = (function () {
 
         DOM.purchaseBillNo.focus();
 
-        shared.hideLoader(DOM.loader);        
+        shared.hideLoader(DOM.loader);
     }
 
     function editPurchaseBill() {
@@ -784,7 +808,7 @@ Sofarch.PurchaseBill = (function () {
 
                 DOM.purchaseBillNo.value = bills[0].PurchaseBillNo;
                 DOM.purchaseBillNo.setAttribute('data-purchase-bill-id', parseInt(purchaseBillId));
-                DOM.purchaseBillDate.value = bills[0].PurchaseBillDate;                
+                DOM.purchaseBillDate.value = bills[0].PurchaseBillDate;
                 DOM.vendor.value = bills[0].VendorName;
                 DOM.vendor.setAttribute('data-client-address-id', parseInt(bills[0].VendorId));
                 DOM.adjustedAmount.value = bills[0].AdjustedAmount;
@@ -808,7 +832,7 @@ Sofarch.PurchaseBill = (function () {
                     calculateTotalItemAmount();
 
                 }
-                
+
                 //bindBillCharges(purchaseBillId);
 
             }
@@ -818,7 +842,7 @@ Sofarch.PurchaseBill = (function () {
             shared.hidePanel(DOM.viewMode);
         }
     }
-    
+
     var validatePurchaseBillItemDetails = function () {
 
         var isValidData = true;
@@ -909,11 +933,11 @@ Sofarch.PurchaseBill = (function () {
                             ratePerPack1 = parseFloat(parseFloat(inputs[4].value).toFixed(2));
                             expiryDate = inputs[5].value;
                             taxPercent = parseFloat(parseFloat(inputs[6].value).toFixed(2));
-                            
+
                             if (isNaN(purchaseBillItemId)) { purchaseBillItemId = parseInt(0); }
                             if (isNaN(purchaseBillId)) { purchaseBillId = parseInt(0); }
                             if (isNaN(drugId)) { drugId = parseInt(0); }
-                            
+
                             var billItem = {};
 
                             billItem = {
@@ -927,7 +951,7 @@ Sofarch.PurchaseBill = (function () {
                                 RatePerPack1: ratePerPack1,
                                 ExpiryDate: expiryDate,
                                 TaxPercent: taxPercent,
-                                IsDeleted: false       
+                                IsDeleted: false
                             };
 
                             if (tableRows[tr].style.display === "none") {
@@ -968,7 +992,7 @@ Sofarch.PurchaseBill = (function () {
             }
         }
     }
-    
+
     function getMaxSrNo(data, maxSrNo) {
 
         var _maxSrNo = maxSrNo;
@@ -1001,11 +1025,11 @@ Sofarch.PurchaseBill = (function () {
 
     //    var goodsReceipts = purchaseBill[0].GoodsReceipts.filter(function (value, index, array) {
     //        return value.PurchaseBillId === parseInt(purchaseBillId);
-    //    });    
+    //    });
 
     //    return goodsReceipts;
     //} to be discard
-    
+
     function getPurchaseBillDetailsByPurchaseBillNo() {
 
         getSearchVendorListByPurchseBillNo(function (response) {
@@ -1058,7 +1082,7 @@ Sofarch.PurchaseBill = (function () {
     function unselectPurchaseBillListDetails() {
 
         var tableBody = DOM.purchaseBillList.tBodies[0];
-        
+
         var checkBoxes = tableBody.querySelectorAll('.label-checkbox');
 
         if (checkBoxes.length > 0) {
@@ -1112,9 +1136,9 @@ Sofarch.PurchaseBill = (function () {
                     if (data !== undefined) {
 
                         if (data.length > 0) {
-                            
+
                             PurchaseBills = data;
-    
+
                             bindPurchaseBills();
                         }
                     }
@@ -1148,6 +1172,7 @@ Sofarch.PurchaseBill = (function () {
                 data = data + "<td class='text-center'>" + PurchaseBills[r].PurchaseBillDate + "</td>";
                 data = data + "<td class='text-center'>" + PurchaseBills[r].TotalBillQty + "</td>";
                 data = data + "<td class='text-right'>" + PurchaseBills[r].TotalBillAmount + "</td>";
+                data = data + "<td class='text-center'>" + PurchaseBills[r].FinancialYear + "</td>";
 
             }
 
@@ -1178,6 +1203,7 @@ Sofarch.PurchaseBill = (function () {
                     var vendorId = 0;
                     var purchaseBillAmount = 0;
                     var remarks = null;
+                    var workingPeriodId = 0;
                     var srNo = parseInt(0);
 
                     PurchaseBills.length = 0;
@@ -1191,9 +1217,11 @@ Sofarch.PurchaseBill = (function () {
                     vendorId = parseInt(DOM.vendor.getAttribute('data-client-address-id'));
                     purchaseBillAmount = parseFloat(DOM.purchaseBillAmount.value);
                     remarks = DOM.remarks.value;
+                    workingPeriodId = parseInt(DOM.financialYear.options[DOM.financialYear.selectedIndex].value);
 
-                    if (isNaN(purchaseBillId)) { purchaseBillId = parseInt(0); }
-                    if (isNaN(vendorId)) { vendorId = parseInt(0); }
+        if (isNaN(purchaseBillId)) { purchaseBillId = 0; }
+                    if (isNaN(vendorId)) { vendorId = 0; }
+                    if (isNaN(workingPeriodId)) { workingPeriodId = 0;}
 
                     if (PurchaseBillItems.length === 0) {
                         swal("Error", "No Purchase Bill Items found or there might be some issue.", "error");
@@ -1208,6 +1236,8 @@ Sofarch.PurchaseBill = (function () {
                         PurchaseBillDate: purchaseBillDate,
                         VendorId: vendorId,
                         PurchaseBillAmount: purchaseBillAmount,
+                        Remarks: remarks,
+                        WorkingPeriodId: workingPeriodId,
                         PurchaseBillItems: PurchaseBillItems,
                         PurchaseBillChargesDetails: PurchaseBillCharges,
                         IsDeleted: false
@@ -1278,7 +1308,7 @@ Sofarch.PurchaseBill = (function () {
         var rowsCount = tableRows.length;
 
         var rowIndex = rowsCount;
-                
+
         if (rowsCount === 0) {
             tableBody.innerHTML = "";
         }
@@ -1307,7 +1337,7 @@ Sofarch.PurchaseBill = (function () {
 
             tr.setAttribute('data-purchase-bill-item-id', purchaseBillItems.PurchaseBillItemId);
             tr.setAttribute('data-drug-id', purchaseBillItems.DrugId);
-            
+
             data += "<td class='text-center'> <button type='button' id=RemoveItem_" + rowIndex + " class='btn btn-xs btn-danger btn-round'> <span class='fa fa-fw fa-remove'> </span> </button> </td >";
             data = data + "<td class='text-center'> " + purchaseBillItems.DrugCode + "</td>";
             data = data + "<td class='text-center'> " + purchaseBillItems.DrugName + "</td>";
@@ -1338,7 +1368,7 @@ Sofarch.PurchaseBill = (function () {
             addEventsToPurchaseBillItemDetailsTableInputs();
         }
     }
-       
+
     function addEventsToPurchaseBillItemDetailsTableInputs() {
 
         var tableBody = DOM.purchaseBillItemList.tBodies[0];
@@ -1475,7 +1505,7 @@ Sofarch.PurchaseBill = (function () {
                                 DOM.searchDrugName.focus();
                             }
                         };
-                    } 
+                    }
                 }
 
             }
@@ -1537,7 +1567,7 @@ Sofarch.PurchaseBill = (function () {
         var taxPercent = parseFloat(taxPercentInput[0].value);
         var taxAmount = 0;
         var itemTotal = 0;
-        
+
         if (isNaN(freeQty)) { freeQty= 0; }
         if (isNaN(purchaseRate)) { purchaseRate = 0; }
         if (isNaN(taxPercent)) { taxPercent = 0; }
@@ -1618,7 +1648,7 @@ Sofarch.PurchaseBill = (function () {
             DOM.searchDrugName.focus();
 
         }
-        
+
     }
 
     function validatePurchaseBillDetails() {
@@ -1628,6 +1658,11 @@ Sofarch.PurchaseBill = (function () {
         if (DOM.vendor.selectedIndex === 0) {
             DOM.vendor.focus();
             swal("Error!!!", "Please select the Vendor Name.", "error");
+            isValid = false;
+        }
+        else if (DOM.financialYear.selectedIndex === 0) {
+            DOM.financialYear.focus();
+            swal("Error!!!", "Please select the Financial Year.", "error");
             isValid = false;
         }
         else if (DOM.purchaseBillNo.value === "") {
@@ -1643,13 +1678,13 @@ Sofarch.PurchaseBill = (function () {
 
         return isValid;
     }
-    
+
     /* ---- public methods ---- */
     function init() {
         cacheDOM();
         applyPlugins();
         bindEvents();
-        loadData();        
+        loadData();
     }
 
     return {

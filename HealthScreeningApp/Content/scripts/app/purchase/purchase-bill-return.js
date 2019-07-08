@@ -404,9 +404,8 @@ Sofarch.PurchaseBillReturn = (function () {
         var options = "";
 
         options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='billno' selected='selected'> Purchase Bill No.</option>";
-        //options += "<option value='gstno'> GST No. </option>";
-        //options += "<option value='panno'> PAN No.</option>";
+        options += "<option value='PurchaseBillNo' selected='selected'> Purchase Bill No.</option>";
+        options += "<option value='PurchaseBillReturnNo'> PUrchase Bill Return No. </option>";
 
         DOM.searchOptions.innerHTML = options;
     }
@@ -452,7 +451,7 @@ Sofarch.PurchaseBillReturn = (function () {
 
         var postData = JSON.stringify(searchParmater);
 
-        shared.sendRequest(SERVICE_PATH + "SearchPurchaseBillReturn/", "POST", true, "JSON", postData, function (response) {
+        shared.sendRequest(SERVICE_PATH + "SearchPurchaseBillsReturnAll/", "POST", true, "JSON", postData, function (response) {
 
             if (response.status === 200) {
 

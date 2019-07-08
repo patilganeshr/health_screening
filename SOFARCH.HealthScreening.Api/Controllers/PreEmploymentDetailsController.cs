@@ -22,10 +22,10 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _preEmploymentDetails.GetPatientAndTestDetails(patientId);
         }
 
-        [Route("GetAllPreEmploymentDetails")]
-        public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails()
+        [Route("GetAllPreEmploymentDetails/{preEmploymentOrHealthCheckup}")]
+        public List<Entities.PreEmploymentDetails> GetAllPreEmploymentDetails(string preEmploymentOrHealthCheckup)
         {
-            return _preEmploymentDetails.GetAllPreEmploymentDetails();
+            return _preEmploymentDetails.GetAllPreEmploymentDetails(preEmploymentOrHealthCheckup);
         }
 
         [HttpPost]

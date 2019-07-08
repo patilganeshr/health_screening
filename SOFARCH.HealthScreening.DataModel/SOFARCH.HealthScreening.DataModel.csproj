@@ -67,6 +67,8 @@
     <Compile Include="DBConnect.cs" />
     <Compile Include="DBStoredProcedure.cs" />
     <Compile Include="Drug.cs" />
+    <Compile Include="XRayFilmUsed.cs" />
+    <Compile Include="XRayIssue.cs" />
     <Compile Include="DrugDispense.cs" />
     <Compile Include="DrugDispenseDrugUtilisation.cs" />
     <Compile Include="DrugFormulation.cs" />
@@ -83,6 +85,8 @@
     <Compile Include="MedicalTestParameters.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="ModeOfPayment.cs" />
+    <Compile Include="Pettycash.cs" />
+    <Compile Include="Precautions.cs" />
     <Compile Include="PreEmploymentDetails.cs" />
     <Compile Include="PreEmploymentTestDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

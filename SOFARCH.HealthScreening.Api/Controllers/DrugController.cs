@@ -17,16 +17,16 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             _drug = new Business.Drug();
         }
 
-        [Route("GetDrugIdAndDrugName")]
-        public List<Entities.Drug> GetDrugIdAndDrugName()
+        [Route("GetDrugIdAndDrugName/{drugOrXRay}")]
+        public List<Entities.Drug> GetDrugIdAndDrugName(string drugOrXRay)
         {
-            return _drug.GetDrugIdAndDrugName();
+            return _drug.GetDrugIdAndDrugName(drugOrXRay);
         }
 
-        [Route("GetDrugIdAndDrugNameByDrugName/{drugName}")]
-        public List<Entities.Drug> GetDrugIdAndDrugName(string drugName)
+        [Route("GetDrugIdAndDrugNameByDrugName/{drugOrXRay}/{drugName}")]
+        public List<Entities.Drug> GetDrugIdAndDrugNameByDrugName(string drugOrXRay, string drugName)
         {
-            return _drug.GetDrugIdAndDrugName(drugName);
+            return _drug.GetDrugIdAndDrugNameByDrugName(drugOrXRay, drugName);
         }
 
         [HttpGet]

@@ -146,7 +146,7 @@ Sofarch.PettyCash = (function () {
 
         shared.showLoader(DOM.loader);
 
-        //clear the modal control inputs        
+        //clear the modal control inputs
         shared.clearInputs(DOM.editMode);
 
         shared.disableControls(DOM.editMode, false);
@@ -252,7 +252,7 @@ Sofarch.PettyCash = (function () {
         var tableBody = table.tBodies[0];
 
         /* temp variable */
-    
+
         var Pettycaseid = parseInt(currentTableRow.getAttribute('data-PettycaseId-id'));
 
         if (isNaN(Pettycaseid)) { Pettycaseid = 0; }
@@ -373,7 +373,7 @@ Sofarch.PettyCash = (function () {
 
 
 
-      
+
         var postData = JSON.stringify(Pettycash);
 
         shared.sendRequest(SERVICE_PATH + "SavePettyCash", "POST", true, "JSON", postData, function (response) {

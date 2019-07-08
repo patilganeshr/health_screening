@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Pre Employment Details" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="PreEmploymentDetails.aspx.cs" Inherits="HealthScreeningApp.Transactions.PreEmploymentDetails" %>
+﻿<%@ Page Title="Health Checkup" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="HealthCheckup.aspx.cs" Inherits="HealthScreeningApp.Transactions.HealthCheckup" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -23,7 +23,7 @@
         <div class="container-fluid">
 
             <div class="page-header">
-                <h3>PreEmployment Details</h3>
+                <h3>Health Checkup</h3>
             </div>
 
             <div id="Loader" class="loader-container">
@@ -504,5 +504,5 @@
     </div>
 
     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
-    <script type="text/javascript" src="../content/scripts/app/Transactions/preemployment-details.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/Transactions/health-checkup.js"></script>
 </asp:Content>

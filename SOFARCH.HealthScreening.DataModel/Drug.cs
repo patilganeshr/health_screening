@@ -63,7 +63,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return drugId;
         }
 
@@ -93,11 +93,11 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw e;
             }
-            
+
             return isDeleted;
         }
 
-        public List<Entities.Drug> GetDrugIdAndDrugName()
+        public List<Entities.Drug> GetDrugIdAndDrugName(string drugOrXRay)
         {
             var drugs = new List<Entities.Drug>();
 
@@ -105,6 +105,8 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugIdAndDrugName))
                 {
+                    database.AddInParameter(dbCommand, "@drug_or_xray", DbType.String, drugOrXRay);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())
@@ -128,7 +130,7 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugs;
         }
 
-        public List<Entities.Drug> GetDrugIdAndDrugName(string drugName)
+        public List<Entities.Drug> GetDrugIdAndDrugNameByDrugName(string drugOrXRay, string drugName)
         {
             var drugs = new List<Entities.Drug>();
 
@@ -136,6 +138,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugIdAndDrugNameByDrugName))
                 {
+                    database.AddInParameter(dbCommand, "@drug_or_xray", DbType.String, drugOrXRay);
                     database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugName);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
@@ -203,7 +206,7 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 throw ex;
             }
-        
+
             return drugs;
         }
 
@@ -392,7 +395,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     try
                     {
                         var drugRouteLinkId = 0;
-                        
+
                         if (drug != null)
                         {
                             if (drug.DrugId == null || drug.DrugId == 0)
