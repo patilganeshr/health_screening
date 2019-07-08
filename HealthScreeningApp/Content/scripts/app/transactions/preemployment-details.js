@@ -33,6 +33,7 @@ Sofarch.PreEmployment = (function () {
         DOM.searchPatientList = document.getElementById('SearchPatientList');
         DOM.financialYear = document.getElementById('FinancialYear');
         DOM.consultDate = document.getElementById('ConsultDate');
+        DOM.preEmploymentCodeNo = document.getElementById('PreEmploymentCodeNo');
         DOM.age = document.getElementById('Age');
         DOM.gender = document.getElementById('Gender');
         DOM.maritalStatus = document.getElementById('MaritalStatus');
@@ -117,6 +118,7 @@ Sofarch.PreEmployment = (function () {
         DOM.editPreEmploymentDetails.addEventListener('click', editPreEmploymentDetails);
         DOM.savePreEmploymentDetails.addEventListener('click', savePreEmploymentDetails);
         DOM.deletePreEmploymentDetails.addEventListener('click', deletePreEmploymentDetails);
+        DOM.printPreEmploymentDetails.addEventListener('click', printPreEmploymentDetails);
         DOM.searchPreEmploymentDetails.addEventListener('click', searchPreEmploymentDetails);
         DOM.filterPreEmploymentDetails.addEventListener('click', filterPreEmploymentDetails);
 
@@ -491,6 +493,7 @@ Sofarch.PreEmployment = (function () {
         shared.clearTables(DOM.editMode);
 
         DOM.patientName.setAttribute('data-patient-id', 0);
+        DOM.preEmploymentCodeNo.setAttribute('data-pre-employment-id', 0);
 
         var currentDate = new Date();
 
@@ -708,6 +711,72 @@ Sofarch.PreEmployment = (function () {
         }
     }
 
+    function printPreEmploymentDetails() {
+
+        shared.showLoader(DOM.loader);
+
+        var selectedRows = getSelectedRows();
+
+        var preEmploymentId = 0;
+        var preEmploymentCodeNo = 0;
+
+        if (selectedRows.length) {
+
+            if (selectedRows.length > 1) {
+                swal({
+                    title: "Warning",
+                    text: "Please select only one record to View or Edit the Records.",
+                    type: "success"
+                }, function () {
+                    shared.hideLoader(DOM.loader);
+                });
+            }
+            else {
+
+                preEmploymentId = getPreEmploymentId(selectedRows);
+            }
+        }
+
+        var print = {};
+
+        preEmploymentId = parseInt(DOM.preEmploymentCodeNo.getAttribute('data-pre-employment-id'));
+        preEmploymentCodeNo = parseInt(DOM.preEmploymentCodeNo.value);
+
+        var folderName = 'PreEmploymentDetails';
+
+        print = {
+            PreEmploymentId: preEmploymentId,
+            PreEmploymentCodeNo: preEmploymentCodeNo
+        };
+
+        var postData = JSON.stringify(print);
+
+        shared.sendRequest(SERVICE_PATH + "PrintPreEmploymentReport", "POST", true, "JSON", postData, function (response) {
+
+            shared.showLoader(DOM.loader);
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        if (_response.length > 0) {
+
+                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/" + preEmploymentCodeNo + ".pdf", "_blank");
+
+                        }
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+    }
+
+
         function fillSearchOption() {
 
         var options = "";
@@ -869,9 +938,10 @@ Sofarch.PreEmployment = (function () {
 
             DOM.patientCode.value = preEmploymentDetails.PatientCode;
             DOM.patientName.setAttribute('data-patient-id', preEmploymentDetails.PatientId);
-            DOM.patientName.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
             DOM.patientName.value = preEmploymentDetails.PatientFullName;
             DOM.consultDate.value = preEmploymentDetails.ConsultDate;
+            DOM.preEmploymentCodeNo.value = preEmploymentDetails.PreEmploymentCodeNo;
+            DOM.preEmploymentCodeNo.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
             DOM.age.value = preEmploymentDetails.Age;
             DOM.gender.value = preEmploymentDetails.Gender;
             DOM.designation.value = preEmploymentDetails.Designation;

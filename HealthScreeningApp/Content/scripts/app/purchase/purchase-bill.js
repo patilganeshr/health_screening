@@ -815,6 +815,9 @@ Sofarch.PurchaseBill = (function () {
                 DOM.purchaseBillAmount.value = bills[0].PurchaseBillAmount;
                 DOM.totalItemAmount.value = bills[0].PurchaseBillAmount - bills[0].AdjustedAmount;
                 DOM.remarks.value = bills[0].Remarks;
+                shared.setSelectValue(DOM.financialYear, null, bills[0].WorkingPeriodId);
+                shared.setSelect2ControlsText(DOM.financialYear);
+
 
                 var billItems = bills[0].PurchaseBillItems.filter(function (value, index, array) {
                     return value.PurchaseBillId === purchaseBillId;

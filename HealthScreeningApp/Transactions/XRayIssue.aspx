@@ -256,7 +256,7 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
-                                            <label>Past Drug Dispense Date List</label>
+                                            <label>Past XRay Issue Date</label>
                                             <select id="PastXRayIssueDate" class="form-control"></select>
                                         </div>
                                     </div>

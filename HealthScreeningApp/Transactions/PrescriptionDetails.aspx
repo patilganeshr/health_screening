@@ -11,7 +11,7 @@
         <a href="#" id="ViewPrescription"><i class="fa fa-eye fa-fw"></i>View</a>
         <a href="#" id="EditPrescription"><i class="fa fa-edit fa-fw"></i>Edit</a>
         <a href="#" id="SavePrescription"><i class="fa fa-save fa-fw"></i>Save</a>
-        <a href="#" id="DeleteEPrescription"><i class="fa fa-remove fa-fw"></i>Delete</a>
+        <a href="#" id="DeletePrescription"><i class="fa fa-remove fa-fw"></i>Delete</a>
         <a href="#" id="PrintPrescription"><i class="fa fa-print fa-fw"></i>Print</a>
       <%--  <a href="#" id="FilterPrescription"><i class="fa fa-filter fa-fw"></i>Filter</a>
         <a href="#" id="ExportPrescription"><i class="fa fa-cog fa-fw"></i>Export</a>--%>
@@ -129,6 +129,7 @@
                                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                 <input type="text" id="PatientName" class="form-control" />
                                             </div>
+                                             <div id="SearchPatientList" class="autocompleteList"></div>
                                         </div>
 
                                        

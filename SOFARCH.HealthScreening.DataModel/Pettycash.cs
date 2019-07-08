@@ -236,9 +236,13 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 PettyCaseId = UpdatePettycash(Petty);
             }
-            else if (Petty.IsDeleted == true)
+            else if (Petty.DeletedBy  != null || Petty.DeletedBy > 0)
             {
                 var result = DeletePettyCash(Petty);
+                if (result == true)
+                {
+                    PettyCaseId = 1;
+                }
            }
 
             return PettyCaseId;

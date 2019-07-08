@@ -784,7 +784,7 @@ Sofarch.XRayIssue = (function () {
         var options = "";
 
         options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='FullName' selected='selected'> Patient Name</option>";
+        options += "<option value='PatientName' selected='selected'> Patient Name</option>";
         options += "<option value='EmployerName'> Company Name </option>";
         options += "<option value='PatientCode'> Patient Code</option>";
 

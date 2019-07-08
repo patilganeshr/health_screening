@@ -945,6 +945,8 @@
     <Content Include="Site.Master" />
     <Content Include="Site.Mobile.Master" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Reports\HealthCheckupReports.rpt" />
+    <Content Include="Reports\PreEmploymentDetails.rpt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -953,14 +955,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ApplicationFiles\Barcode\" />
-    <Folder Include="ApplicationFiles\JobWork\KaragirBills\1\18-19\" />
-    <Folder Include="ApplicationFiles\SalesReturn\Bills\1\CashSalesReturnBills\" />
-    <Folder Include="ApplicationFiles\SalesReturn\Bills\1\CreditSalesReturnBills\" />
-    <Folder Include="ApplicationFiles\SalesReturn\Bills\4\CashSalesReturnBills\" />
-    <Folder Include="ApplicationFiles\SalesReturn\Bills\4\CreditSalesReturnBills\" />
-    <Folder Include="ApplicationFiles\Sales\Bills\1\CashSalesBills\" />
-    <Folder Include="ApplicationFiles\Sales\Bills\1\CreditSalesBills\" />
+    <Folder Include="ApplicationFiles\" />
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>

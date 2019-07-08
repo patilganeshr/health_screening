@@ -209,6 +209,13 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Pre Employment Code No.</label>
+                                                        <input type="text" id="PreEmploymentCodeNo" class="form-control" disabled="disabled" placeholder="Auto Generated" />
+                                                    </div>
+                                                </div>
+
                                             </div>
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

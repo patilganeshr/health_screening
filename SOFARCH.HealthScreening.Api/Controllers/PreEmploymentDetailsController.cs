@@ -41,5 +41,13 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         {
             return _preEmploymentDetails.SavePreEmploymentDetails(preEmploymentDetails);
         }
+
+        [HttpPost]
+        [Route("PrintPreEmploymentReport")]
+        public string PrintPreEmploymentReport(Entities.PreEmploymentDetails preEmploymentDetails)
+        {
+            return _preEmploymentDetails.generateReport(preEmploymentDetails);
+        }
+
     }
 }

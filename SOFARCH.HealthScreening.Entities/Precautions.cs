@@ -15,6 +15,9 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string PatientName { get; set; }
 
+        public Int32? Patientid { get; set; }
+
+
         public Int32? Age{ get; set; }
 
         public string MedicinesPre { get; set; }

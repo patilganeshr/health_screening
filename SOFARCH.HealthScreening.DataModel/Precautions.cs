@@ -23,7 +23,7 @@ namespace SOFARCH.HealthScreening.DataModel
             database = DBConnect.getDBConnection();
         }
 
-        public List<Entities.Precautions > GetAll()
+        public List<Entities.Precautions> GetAll()
         {
             var Precas = new List<Entities.Precautions>();
 
@@ -37,11 +37,11 @@ namespace SOFARCH.HealthScreening.DataModel
                         {
                             var Preca = new Entities.Precautions
                             {
-                                PrecautionsId  = DRE.GetNullableInt32(reader, "prescription_id", 0),
+                                PrecautionsId = DRE.GetNullableInt32(reader, "Precautions_id", 0),
                                 DocName = DRE.GetNullableString(reader, "doctor_name", null),
                                 PatientName = DRE.GetNullableString(reader, "full_name", null),
-                                Age   = DRE.GetNullableInt32(reader, "age", 0),
-                                MedicinesPre  = DRE.GetNullableString(reader, "medicines_pre", null), 
+                                Age = DRE.GetNullableInt32(reader, "age", 0),
+                                MedicinesPre = DRE.GetNullableString(reader, "medicines_pre", null),
                                 guid = DRE.GetNullableGuid(reader, "row_guid", null),
                                 SrNo = DRE.GetNullableInt64(reader, "sr_no", null)
 
@@ -61,11 +61,11 @@ namespace SOFARCH.HealthScreening.DataModel
             return Precas;
         }
 
-       
 
 
 
-       private Int32 AddPrecautions(Entities.Precautions pre, DbTransaction dbTransaction)
+
+        private Int32 AddPrecautions(Entities.Precautions pre, DbTransaction dbTransaction)
         {
             var PrecautionsId = 0;
 
@@ -76,7 +76,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                     database.AddInParameter(dbCommand, "@doctor_name", DbType.String, pre.DocName);
                     database.AddInParameter(dbCommand, "@patient_name", DbType.String, pre.PatientName);
-                    database.AddInParameter(dbCommand, "@age", DbType.Int32,pre.Age);
+                    database.AddInParameter(dbCommand, "@age", DbType.Int32, pre.Age);
                     database.AddInParameter(dbCommand, "@medicines_pre", DbType.String, pre.MedicinesPre);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, pre.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, pre.CreatedByIP);
@@ -102,8 +102,77 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
 
+        private Int32 UpdatePrecautions(Entities.Precautions pre, DbTransaction dbTransaction)
+        {
+            var PrecautionsId = 0;
 
-       public Int32 SavePrecaution(Entities.Precautions  pre)
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.Updateprescription))
+                {
+
+                    database.AddInParameter(dbCommand, "@PrecautionsId", DbType.Int32, pre.PrecautionsId);
+                    database.AddInParameter(dbCommand, "@doctor_name", DbType.String, pre.DocName);
+                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, pre.PatientName);
+                    database.AddInParameter(dbCommand, "@age", DbType.Int32, pre.Age);
+                    database.AddInParameter(dbCommand, "@medicines_pre", DbType.String, pre.MedicinesPre);
+                    database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, pre.ModifiedBy);
+                    database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, pre.ModifiedByIP);
+                    
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    PrecautionsId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        PrecautionsId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return PrecautionsId;
+        }
+
+
+
+
+        public bool DeletePrecautions(Entities.Precautions Per)
+        {
+            bool isDeleted = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.Deleteprescription))
+                {
+                    database.AddInParameter(dbCommand, "@PrecautionsId", DbType.Int32, Per.PrecautionsId);
+                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, Per.DeletedBy);
+                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, Per.DeletedByIP);
+
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    var result = database.ExecuteNonQuery(dbCommand);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        isDeleted = Convert.ToBoolean(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return isDeleted;
+        }
+
+
+
+        public Int32 SavePrecaution(Entities.Precautions pre)
         {
             var preId = 0;
 
@@ -121,16 +190,23 @@ namespace SOFARCH.HealthScreening.DataModel
 
                         if (pre != null)
                         {
-                            
-                                preId  = AddPrecautions(pre, transaction);
-                           
-                            
+                            if (pre == null || pre.PrecautionsId == 0)
+                            {
+                                preId = AddPrecautions(pre, transaction);
                             }
-
-                           
-                            
-                    
-
+                            else if (pre.ModifiedBy != null || pre.ModifiedBy > 0)
+                            {
+                                preId = UpdatePrecautions(pre,transaction);
+                            }
+                            else if (pre.DeletedBy != null || pre.DeletedBy > 0)
+                            {
+                               var result = DeletePrecautions(pre);
+                                if (result==true)
+                                {
+                                    preId = 1;
+                                }
+                            }   
+                          }
                         if (preId > 0)
                         {
                             transaction.Commit();
