@@ -627,7 +627,6 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
-
         #region Pre Employment Test Details
 
         public static string InsertPreEmploymentTestDetails { get { return "pre_employment_test_details_insert_pre_employment_test_details"; } }
@@ -643,7 +642,6 @@ namespace SOFARCH.HealthScreening.DataModel
         public static string GetPreEmploymentTestDetailsByPreEmploymentId { get { return "pre_employment_test_details_get_test_details_by_pre_employment_id"; } }
 
         #endregion
-
 
         #region Drug Dispense
 
@@ -661,7 +659,6 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
-
         #region Drug Dispense Drug Utilisation
         public static string InsertDrugDispenseDrugUtilisation { get { return "drug_dispenses_drug_utilisation_insert_drug_utilisation"; } }
 
@@ -675,6 +672,34 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId { get { return "drug_dispenses_drug_utilisation_get_details_by_drug_dispense_id"; } }
 
+
+        #endregion
+
+        #region Drug Dispense Return
+
+        public static string InsertDrugDispenseReturn { get { return "drug_dispenses_return_insert_drug_dispense_return"; } }
+
+        public static string UpdateDrugDispenseReturn { get { return "drug_dispenses_return_insert_drug_dispense_return"; } }
+
+        public static string DeleteDrugDispenseReturn { get { return "drug_dispenses_return_insert_drug_dispense_return"; } }
+
+        public static string SearchDrugDispenseReturn { get { return "drug_dispenses_return_search_drug_dispenses_return"; } }
+
+        #endregion
+
+        #region Drug Dispense Drug Return
+
+        public static string InsertDrugDispenseDrugsReturn { get { return "drug_dispenses_drugs_return_insert_drug_return"; } }
+
+        public static string UpdateDrugDispenseDrugsReturn { get { return "drug_dispenses_drugs_return_update_drug_return"; } }
+
+        public static string DeleteDrugDispenseDrugsReturn { get { return "drug_dispenses_drugs_return_delete_drug_return"; } }
+
+        public static string DeleteDrugDispenseDrugReturnByDrugDispenseReturnId { get { return "drug_dispenses_drugs_return_delete_drug_return_by_drug_dispense_return_id"; } }
+
+        public static string GetDrugDispenseDetailsByPatientId { get { return "drug_dispenses_drugs_return_get_drug_dispense_details_by_patient_id"; } }
+
+        public static string GetDrugDispenseDrugReturnDetailsByDrugDispenseReturnId { get { return "drug_dispenses_drugs_return_get_return_details_by_drug_dispense_return_id"; } }
 
         #endregion
 

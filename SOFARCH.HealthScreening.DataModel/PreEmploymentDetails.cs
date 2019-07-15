@@ -166,7 +166,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             var preEmployment = new Entities.PreEmploymentDetails()
                             {
                                 PreEmploymentId = DRE.GetNullableInt32(reader, "pre_employment_id", 0),
-                                PreEmploymentCodeNo = DRE.GetNullableInt32(reader, "pre-employment_code_no", 0),
+                                PreEmploymentCodeNo = DRE.GetNullableInt32(reader, "pre_employment_code_no", 0),
                                 PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
                                 PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
                                 PatientFullName = DRE.GetNullableString(reader, "full_name", null),

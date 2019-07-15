@@ -175,20 +175,20 @@ Sofarch.Patient = (function () {
 
         };
 
-        DOM.firstName.onblur = function () {
+        //DOM.firstName.onblur = function () {
 
-            checkIsPatientNameExists();
-        };
+        //    checkIsPatientNameExists();
+        //};
 
-        DOM.middleName.onblur = function () {
+        //DOM.middleName.onblur = function () {
 
-            checkIsPatientNameExists();
-        };
+        //    checkIsPatientNameExists();
+        //};
 
-        DOM.lastName.onblur = function () {
+        //DOM.lastName.onblur = function () {
 
-            checkIsPatientNameExists();
-        };
+        //    checkIsPatientNameExists();
+        //};
 
     }
 
@@ -1230,11 +1230,7 @@ Sofarch.Patient = (function () {
 
         var isValid = true;
 
-        if (DOM.patientCode.value === "") {
-            isValid = false;
-            swal("Error!!!", "Please enter the Patient Code.", "error");
-        }
-        else if (DOM.title.selectedIndex === 0) {
+        if (DOM.title.selectedIndex === 0) {
             isValid = false;
             swal("Error!!!", "Please select the Title.", "error");
         }
@@ -1373,7 +1369,7 @@ Sofarch.Patient = (function () {
 
     function checkIsPatientNameExists() {
 
-        var companyId = parseInt(DOM.companyName.getAttribute('data-employer-id'));
+        var employerId = parseInt(DOM.companyName.getAttribute('data-employer-id'));
 
         var patientName = "";
         var firstName = undefined;
@@ -1398,11 +1394,11 @@ Sofarch.Patient = (function () {
 
         patientName = patientName.trim();
 
-        if (isNaN(companyId)) { companyId = 0; }
+        if (isNaN(employerId)) { employerId = 0; }
 
-        if (companyId === 0) { return; }
+        if (employerId === 0) { return; }
 
-        shared.sendRequest(SERVICE_PATH + "IsPatientNameExists/" + companyId + '/' + patientName, "GET", true, "JSON", null, function (response) {
+        shared.sendRequest(SERVICE_PATH + "IsPatientNameExists/" + employerId + '/' + patientName, "GET", true, "JSON", null, function (response) {
 
             if (response.status === 200) {
 
@@ -1439,7 +1435,7 @@ Sofarch.Patient = (function () {
             var mobileNo2 = null;
             var emailId = null;
             var panNo = null;
-            var companyId = 0;
+            var employerId = 0;
             var department = null;
             var designation = null;
 
@@ -1460,12 +1456,12 @@ Sofarch.Patient = (function () {
             mobileNo2 = DOM.mobileNo2.value;
             emailId = DOM.emailId.value;
             panNo = DOM.panNo.value;
-            companyId = DOM.companyName.getAttribute('data-employer-id');
+            employerId = DOM.companyName.getAttribute('data-employer-id');
             department = DOM.department.value;
             designation = DOM.designation.value;
 
             if (isNaN(patientId)) { patientId = 0; }
-            if (isNaN(companyId)) { companyId = 0; }
+            if (isNaN(employerId)) { employerId = 0; }
 
 
             var patient = {};
@@ -1492,7 +1488,7 @@ Sofarch.Patient = (function () {
                 Department: department,
                 Designation: designation,
                 Gender: gender,
-                CompanyId: companyId,
+                EmployerId: employerId,
                 PatientPersonalHistory: patientPersonalHistory,
                 PatientExerciseHistories: patientExerciseHistories
             };
