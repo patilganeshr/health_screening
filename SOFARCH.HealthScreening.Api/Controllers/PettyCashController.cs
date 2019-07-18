@@ -48,6 +48,12 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _Petty.GetAllAccountHeads() ;
         }
 
+        [HttpPost]
+        [Route("printPettyCashReport")]
+        public String PrintPreEmploymentReport(Entities.Pettycash Petty)
+        {
+            return _Petty.generateReport(Petty);
+        }
 
 
 

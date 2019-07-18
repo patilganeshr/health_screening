@@ -98,6 +98,9 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
     <Compile Include="Controllers\DrugController.cs" />
+    <Compile Include="Controllers\medicinesDispenseController.cs" />
+    <Compile Include="Controllers\StockMovementController.cs" />
+    <Compile Include="Controllers\StockReportController.cs" />
     <Compile Include="Controllers\XRayIssueController.cs" />
     <Compile Include="Controllers\DrugDispenseController.cs" />
     <Compile Include="Controllers\DrugFormulationController.cs" />

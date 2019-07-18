@@ -489,6 +489,8 @@
     <Content Include="Content\scripts\app\mis\item-rate-register.js" />
     <Content Include="Content\scripts\app\mis\job-work-items-balance-qty.js" />
     <Content Include="Content\scripts\app\mis\job-work-items-sent-to-karagir.js" />
+    <Content Include="Content\scripts\app\mis\medicinesDispenseReport.js" />
+    <Content Include="Content\scripts\app\mis\pettyCashReport.js" />
     <Content Include="Content\scripts\app\mis\purchase-bill-regiser.min - Copy %282%29.js" />
     <Content Include="Content\scripts\app\mis\purchase-bill-regiser.min - Copy.js" />
     <Content Include="Content\scripts\app\mis\purchase-bill-regiser.min.js" />
@@ -502,6 +504,8 @@
     <Content Include="Content\scripts\app\mis\stock-as-on-date.js" />
     <Content Include="Content\scripts\app\mis\stock-in-transit.js" />
     <Content Include="Content\scripts\app\mis\stock-report.js" />
+    <Content Include="Content\scripts\app\mis\StockMovementsReport.js" />
+    <Content Include="Content\scripts\app\mis\StockReport.js" />
     <Content Include="Content\scripts\app\pop-ups\city.js" />
     <Content Include="Content\scripts\app\pop-ups\local-client.js" />
     <Content Include="Content\scripts\app\purchase\goods-receipt.js" />
@@ -672,6 +676,10 @@
     <Content Include="Masters\Employee.aspx" />
     <Content Include="Masters\Employer.aspx" />
     <Content Include="Masters\GSTCategory.aspx" />
+    <Content Include="MIS\medicinesDispense.aspx" />
+    <Content Include="MIS\PettyCashReport.aspx" />
+    <Content Include="MIS\StockMovementReports.aspx" />
+    <Content Include="MIS\StockReport.aspx" />
     <Content Include="Transactions\XRayIssue.aspx" />
     <Content Include="Transactions\DrugDispense.aspx" />
     <Content Include="Transactions\PettyCash.aspx" />
@@ -807,6 +815,30 @@
     </Compile>
     <Compile Include="Masters\GSTCategory.aspx.designer.cs">
       <DependentUpon>GSTCategory.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\medicinesDispense.aspx.cs">
+      <DependentUpon>medicinesDispense.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\medicinesDispense.aspx.designer.cs">
+      <DependentUpon>medicinesDispense.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\PettyCashReport.aspx.cs">
+      <DependentUpon>PettyCashReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\PettyCashReport.aspx.designer.cs">
+      <DependentUpon>PettyCashReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\StockMovementReports.aspx.cs">
+      <DependentUpon>StockMovementReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\StockMovementReports.aspx.designer.cs">
+      <DependentUpon>StockMovementReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\StockReport.aspx.cs">
+      <DependentUpon>StockReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\StockReport.aspx.designer.cs">
+      <DependentUpon>StockReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
