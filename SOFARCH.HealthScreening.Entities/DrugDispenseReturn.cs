@@ -20,7 +20,19 @@ namespace SOFARCH.HealthScreening.Entities
 
         public List<Entities.DrugDispenseDrugReturn> DrugDispenseDrugReturns { get; set; }
 
+        public Int32? PatientCode { get; set; }
+
+        public Int32? EmployerCode { get; set; }
+
+        public string EmployerName { get; set; }
+
         public string PatientName { get; set; }
+
+        public string SearchDrugCode { get; set; }
+
+        public string SearchDrugName { get; set; }
+
+
 
     }
 }

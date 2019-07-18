@@ -85,6 +85,36 @@ namespace SOFARCH.HealthScreening.DataModel
 
             return IsDrugDispenseReturnDeleted;
         }
+        public bool DeleteDrugDispenseDrugReturnDetailsByDrugReturnId(Int32 drugDispenseReturnId, Int32 deletedBy, string deletedByIP, DbTransaction dbTransaction)
+        {
+            var isDeleted = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteDrugDispenseDrugUtilisationByDrugDispenseId))
+                {
+                    database.AddInParameter(dbCommand, "@drug_dispense_return_id", DbType.Int32, drugDispenseReturnId);
+                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, deletedBy);
+                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, deletedByIP);
+
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        isDeleted = Convert.ToBoolean(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return isDeleted;
+        }
+
 
         private Int32 UpdateDrugDispenseReturnDetails(Entities.DrugDispenseReturn drugDispenseReturn, DbTransaction dbTransaction)
         {
@@ -119,13 +149,6 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugDispenseReturnId;
         }
 
-        public Entities.DrugDispenseDrugReturn GetDrugDispenseDetailsByDrugId(Int32 drugId)
-        {
-            var drugDetails = new DrugDispenseDrugUtilisation();
-
-            return drugDetails.GetDrugDetailsByDrugId(drugId);
-        }
-
         public List<Entities.DrugDispenseReturn> SearchDrguDispenseReturn(Entities.DrugDispenseReturn drugDispenseReturn)
         {
             var drugDispenseReturns = new List<Entities.DrugDispenseReturn>();
@@ -135,31 +158,30 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
                 {
                     database.AddInParameter(dbCommand, "@patient_name", DbType.String, drugDispenseReturn.PatientName);
-                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, drugDispenseReturn.EmployerName);
-                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, drugDispenseReturn.PatientCode);
+                    database.AddInParameter(dbCommand, "@drug_code", DbType.String, drugDispenseReturn.SearchDrugCode);
+                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugDispenseReturn.SearchDrugName);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())
                         {
-                            var drugUtlisation = new DataModel.DrugDispenseDrugUtilisation();
+                            var drugReturn = new DataModel.DrugDispenseDrugReturn();
 
                             var drugDispenseDetails = new Entities.DrugDispenseReturn()
                             {
                                 DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", 0),
-                                DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
-                                DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
+                                DrugReturnNo = DRE.GetNullableInt32(reader, "drug_return_no", null),
+                                DrugReturnDate = DRE.GetNullableString(reader, "drug_return_date", null),
                                 PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
                                 PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
                                 PatientName = DRE.GetNullableString(reader, "full_name", null),
-                                EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
                                 EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
                                 EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                                 WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
-                                DrugDispenseDrugUtilisations = drugUtlisation.GetDrugUtilisationByDrugDispenseId(DRE.GetInt32(reader, "drug_dispense_id"))
+                                DrugDispenseDrugReturns = drugReturn.GetDrugReturnDetailsByDrugDispenseReturnId(DRE.GetInt32(reader, "drug_dispense_return_id"))
                             };
 
-                            drugDispenses.Add(drugDispenseDetails);
+                            drugDispenseReturns.Add(drugDispenseDetails);
                         }
                     }
                 }
@@ -169,14 +191,14 @@ namespace SOFARCH.HealthScreening.DataModel
                 throw e;
             }
 
-            return drugDispenses;
+            return drugDispenseReturns;
         }
 
-        public List<Entities.DrugDispenseDrugReturn> GetDrugUtilisationByPatientId(Int32 patientId)
+        public List<Entities.DrugDispenseDrugReturn> GetDrugDispenseDetailsByPatientId(Int32 patientId)
         {
             var drugDetails = new DrugDispenseDrugReturn();
 
-            return drugDetails.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+            return drugDetails.GetDrugDispenseDetailsByPatientId(patientId);
         }
 
         public List<Entities.DrugDispenseReturn> GetPastDrugReturnDatesByPatientId(Int32 patientId)
@@ -258,7 +280,7 @@ namespace SOFARCH.HealthScreening.DataModel
                                 {
                                     DrugDispenseDrugReturn drugReturnDB = new DrugDispenseDrugReturn();
 
-                                    var result = drugReturnDB.DeleteDrugDispenseDrugUtilisationDetailsByDrugDispenseId((int)drugDispenseReturn.DrugDispenseId, (int)drugDispenseReturn.DeletedBy, drugDispenseReturn.DeletedByIP, dbTransaction);
+                                    var result = drugReturnDB.DeleteDrugDispenseDrugReturnDetailsByDrugDispenseReturnId((int)drugDispenseReturn.DrugDispenseReturnId, (int)drugDispenseReturn.DeletedBy, drugDispenseReturn.DeletedByIP, dbTransaction);
 
                                     if (result)
                                     {
@@ -272,11 +294,11 @@ namespace SOFARCH.HealthScreening.DataModel
                                     {
                                         foreach (Entities.DrugDispenseDrugReturn drugReturn in drugDispenseReturn.DrugDispenseDrugReturns)
                                         {
-                                            DrugDispenseReturn drugReturnDB = new DrugDispenseDrugReturn();
+                                            DrugDispenseDrugReturn drugReturnDB = new DrugDispenseDrugReturn();
 
                                             drugReturn.DrugDispenseReturnId = drugDispenseReturnId;
 
-                                            drugDispenseDrugReturnId = drugReturnDB.SaveDrugDispenseDrugUtilisation(drugReturn, dbTransaction);
+                                            drugDispenseDrugReturnId = drugReturnDB.SaveDrugDispenseDrugReturn(drugReturn, dbTransaction);
 
                                             if (drugDispenseDrugReturnId < 0)
                                             {
