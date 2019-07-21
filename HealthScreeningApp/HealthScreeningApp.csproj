@@ -523,6 +523,7 @@
     <Content Include="Content\scripts\app\sales\sales-return.js" />
     <Content Include="Content\scripts\app\shared\default.js" />
     <Content Include="Content\scripts\app\shared\masking.js" />
+    <Content Include="Content\scripts\app\transactions\drug-dispense-return.js" />
     <Content Include="Content\scripts\app\transactions\xray-issue.js" />
     <Content Include="Content\scripts\app\transactions\drug-dispense.js" />
     <Content Include="Content\scripts\app\transactions\pettycash.js" />
@@ -680,6 +681,7 @@
     <Content Include="MIS\PettyCashReport.aspx" />
     <Content Include="MIS\StockMovementReports.aspx" />
     <Content Include="MIS\StockReport.aspx" />
+    <Content Include="Transactions\DrugDispenseReturn.aspx" />
     <Content Include="Transactions\XRayIssue.aspx" />
     <Content Include="Transactions\DrugDispense.aspx" />
     <Content Include="Transactions\PettyCash.aspx" />
@@ -855,6 +857,13 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\DrugDispenseReturn.aspx.cs">
+      <DependentUpon>DrugDispenseReturn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Transactions\DrugDispenseReturn.aspx.designer.cs">
+      <DependentUpon>DrugDispenseReturn.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Transactions\XRayIssue.aspx.cs">
       <DependentUpon>XRayIssue.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -979,6 +988,11 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Reports\HealthCheckupReports.rpt" />
     <Content Include="Reports\PreEmploymentDetails.rpt" />
+    <Content Include="Reports\medicinesDispenseReport.rpt" />
+    <Content Include="Reports\PettyCashReport.rpt" />
+    <Content Include="Reports\Precaution_Reports.rpt" />
+    <Content Include="Reports\StockDetailsReport.rpt" />
+    <Content Include="Reports\StockMovement.rpt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

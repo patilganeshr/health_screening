@@ -1,18 +1,18 @@
-﻿<%@ Page Title="Drug Dispense" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DrugDispense.aspx.cs" Inherits="HealthScreeningApp.Transactions.DrugDispense" %>
+﻿<%@ Page Title="Drug Dispense Return" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DrugDispenseReturn.aspx.cs" Inherits="HealthScreeningApp.Transactions.DrugDispenseReturn" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cpMaster" runat="server">
 
     <div class="action-toolbar">
 
-        <a href="#" id="AddNewDrugDispenseDetails"><i class="fa fa-plus fa-fw"></i>New</a>
-        <a href="#" id="ShowDrugDispenseList"><i class="fa fa-list fa-fw"></i>List</a>
-        <a href="#" id="ViewDrugDispenseDetails"><i class="fa fa-eye fa-fw"></i>View</a>
-        <a href="#" id="EditDrugDispenseDetails"><i class="fa fa-edit fa-fw"></i>Edit</a>
-        <a href="#" id="SaveDrugDispenseDetails"><i class="fa fa-save fa-fw"></i>Save</a>
-        <a href="#" id="DeleteDrugDispenseDetails"><i class="fa fa-remove fa-fw"></i>Delete</a>
-        <a href="#" id="PrintDrugDispenseList"><i class="fa fa-print fa-fw"></i>Print</a>
-        <a href="#" id="FilterDrugDispenseList"><i class="fa fa-filter fa-fw"></i>Filter</a>
+        <a href="#" id="AddNewDrugReturnDetails"><i class="fa fa-plus fa-fw"></i>New</a>
+        <a href="#" id="ShowDrugReturnList"><i class="fa fa-list fa-fw"></i>List</a>
+        <a href="#" id="ViewDrugReturnDetails"><i class="fa fa-eye fa-fw"></i>View</a>
+        <a href="#" id="EditDrugReturnDetails"><i class="fa fa-edit fa-fw"></i>Edit</a>
+        <a href="#" id="SaveDrugReturnDetails"><i class="fa fa-save fa-fw"></i>Save</a>
+        <a href="#" id="DeleteDrugReturnDetails"><i class="fa fa-remove fa-fw"></i>Delete</a>
+        <a href="#" id="PrintDrugReturnList"><i class="fa fa-print fa-fw"></i>Print</a>
+        <a href="#" id="FilterDrugReturnList"><i class="fa fa-filter fa-fw"></i>Filter</a>
 
 
     </div>
@@ -22,10 +22,10 @@
         <div class="container-fluid">
 
             <div class="page-header">
-                <h3>Drug Dispense</h3>
+                <h3>Drug Dispense Return</h3>
             </div>
 
-            <div id="Loader" class="loader-container">
+            <div id="Loader" class="loader-container" style="display: none;">
                 <!--There's the container that centers it-->
                 <div class="spinner-frame">
                     <!--The background-->
@@ -47,7 +47,7 @@
 
                         <!-- Filter Options -->
 
-                        <div class="panel panel-default hide" id="SearchDrugDispenseDetailsPanel">
+                        <div class="panel panel-default hide" id="SearchDrugReturnDetailsPanel">
 
                             <div class="panel-heading">
 
@@ -55,7 +55,7 @@
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                        <h4 class="panel-title panel-title-align-middle">Search Drug Dispense Details</h4>
+                                        <h4 class="panel-title panel-title-align-middle">Search Drug Return Details</h4>
 
                                     </div>
 
@@ -85,7 +85,7 @@
 
                                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <button type="button" id="SearchDrugDispenseDetails" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                                <button type="button" id="SearchDrugReturnDetails" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
                                             </div>
                                         </div>
 
@@ -110,11 +110,11 @@
                         <div class="panel panel-info">
 
                             <div class="panel-heading">
-                                <h4 class="panel-title">Drug Dispense Details </h4>
+                                <h4 class="panel-title">Drug Return Details </h4>
                             </div>
 
                             <div class="panel-body">
-                                <table id="DrugDispenseDetailsList" class="table table-condesed">
+                                <table id="DrugReturnDetailsList" class="table table-condesed">
                                     <thead>
                                         <tr>
                                             <th class="text-center">Action</th>
@@ -180,16 +180,16 @@
 
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
-                                            <label>Dispense No.</label>
-                                            <input type="text" id="DrugDispenseNo" class="form-control" disabled="disabled" placeholder="Auto Generated" />
+                                            <label>Return No.</label>
+                                            <input type="text" id="DrugReturnNo" class="form-control" disabled="disabled" placeholder="Auto Generated" />
                                         </div>
                                     </div>
 
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                                     <div class="form-group form-group-md">
-                                                        <label>Dispense Date</label>
-                                                        <div class="input-group date input-group-md" id="DrugDispenseDateDatePicker">
-                                                            <input type="text" id="DrugDispenseDate" class="form-control" />
+                                                        <label>Return Date</label>
+                                                        <div class="input-group date input-group-md" id="DrugReturnDateDatePicker">
+                                                            <input type="text" id="DrugReturnDate" class="form-control" />
                                                             <span class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </span>
@@ -222,10 +222,18 @@
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
-                                            <label>Past Drug Dispense Date List</label>
-                                            <select id="PastDrugDispenseDate" class="form-control"></select>
+                                            <label>Drugs List</label>
+                                            <select id="DrugsName" class="form-control"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                        <div class="form-group form-group-md">
+                                            <label>Past Drug Return Date List</label>
+                                            <select id="PastDrugReturnDate" class="form-control"></select>
                                         </div>
                                     </div>
                                 </div>
@@ -248,7 +256,7 @@
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="table-responsive">
-                                        <table id="DrugUtilisationList" class="table table-condensed">
+                                        <table id="DrugReturnList" class="table table-condensed">
                                             <thead>
                                                 <tr>
                                                     <th class="text-center">Action</th>
@@ -284,6 +292,6 @@
     </div>
 
     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
-    <script type="text/javascript" src="../content/scripts/app/Transactions/drug-dispense.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/Transactions/drug-dispense-return.js"></script>
 
 </asp:Content>

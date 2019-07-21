@@ -22,7 +22,7 @@ namespace SOFARCH.HealthScreening.DataModel
             database = DBConnect.getDBConnection();
         }
 
-                private Int32 AddDrugDispenseReturnDetails(Entities.DrugDispenseReturn drugDispenseReturn, DbTransaction dbTransaction)
+        private Int32 AddDrugDispenseReturnDetails(Entities.DrugDispenseReturn drugDispenseReturn, DbTransaction dbTransaction)
         {
             var drugDispenseReturnId = 0;
 
@@ -192,6 +192,20 @@ namespace SOFARCH.HealthScreening.DataModel
             }
 
             return drugDispenseReturns;
+        }
+
+        public List<Entities.DrugDispenseDrugReturn> GetDrugDetailsByPatientId(Int32 patientId)
+        {
+            var drugDetails = new DrugDispenseDrugReturn();
+
+            return drugDetails.GetDrugDetailsByPatientId(patientId);
+        }
+
+        public List<Entities.DrugDispenseDrugReturn> GetDrugDispenseDetailsByPatientIdAndDrugId(Int32 patientId, Int32 drugId)
+        {
+            var drugDetails = new DrugDispenseDrugReturn();
+
+            return drugDetails.GetDrugDispenseDetailsByPatientIdAndDrugId(patientId, drugId);
         }
 
         public List<Entities.DrugDispenseDrugReturn> GetDrugDispenseDetailsByPatientId(Int32 patientId)

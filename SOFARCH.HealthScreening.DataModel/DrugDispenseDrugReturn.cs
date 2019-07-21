@@ -151,6 +151,40 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugDispenseDrugReturnId;
         }
 
+        public List<Entities.DrugDispenseDrugReturn> GetDrugDetailsByPatientId(Int32 patientId)
+        {
+            var drugs = new List<Entities.DrugDispenseDrugReturn>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugDetailsByPatientId))
+                {
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, patientId);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var drug = new Entities.DrugDispenseDrugReturn()
+                            {
+                                DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null)
+                            };
+
+                            drugs.Add(drug);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugs;
+        }
+
         public Entities.DrugDispenseDrugReturn GetDrugDetailsByDrugId(Int32 drugId)
         {
             var drugDetails = new Entities.DrugDispenseDrugReturn();
@@ -189,6 +223,52 @@ namespace SOFARCH.HealthScreening.DataModel
             }
 
             return drugDetails;
+        }
+
+        public List<Entities.DrugDispenseDrugReturn> GetDrugDispenseDetailsByPatientIdAndDrugId(Int32 patientId, Int32 drugId)
+        {
+            var drugDispenses = new List<Entities.DrugDispenseDrugReturn>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugDispenseDetailsByPatientIdAndDrugId))
+                {
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, patientId);
+                    database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugId);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var drugReturn = new Entities.DrugDispenseDrugReturn()
+                            {
+                                DrugDispenseDrugReturnId = DRE.GetNullableInt32(reader, "drug_dispense_drug_return_id", null),
+                                DrugDispenseReturnId = DRE.GetNullableInt32(reader, "drug_dispense_return_id", null),
+                                DrugUtilisationId = DRE.GetNullableInt32(reader, "drug_utilisation_id", null),
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
+                                DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
+                                DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
+                                DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
+                                DispenseQty = DRE.GetNullableDecimal(reader, "dispense_qty", null),
+                                ReturnQty = DRE.GetNullableDecimal(reader, "return_qty", null),
+                                BalanceQty = DRE.GetNullableDecimal(reader, "balance_qty", null),
+                                Rate = DRE.GetNullableDecimal(reader, "purchase_rate", null),
+                                Amount = DRE.GetNullableDecimal(reader, "amount", null)
+                            };
+
+                            drugDispenses.Add(drugReturn);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDispenses;
         }
 
         public List<Entities.DrugDispenseDrugReturn> GetDrugDispenseDetailsByPatientId(Int32 patientId)
