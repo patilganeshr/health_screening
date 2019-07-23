@@ -12,15 +12,15 @@ namespace SOFARCH.HealthScreening.Api.Controllers
 
 
         private readonly Business.Pettycash _Petty;
-       
-        
+
+
         public PettyCashController()
         {
             _Petty = new Business.Pettycash();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="employer"></param>
         /// <returns></returns>
@@ -30,9 +30,9 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         {
             return _Petty.SavePettycash(Petty);
         }
-        
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
         [Route("GetAllPettyCash")]
@@ -48,12 +48,12 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _Petty.GetAllAccountHeads() ;
         }
 
-        [HttpPost]
-        [Route("printPettyCashReport")]
-        public String PrintPreEmploymentReport(Entities.Pettycash Petty)
-        {
-            return _Petty.generateReport(Petty);
-        }
+        //[HttpPost]
+        //[Route("printPettyCashReport")]
+        //public String PrintPreEmploymentReport(Entities.Pettycash Petty)
+        //{
+        //    return _Petty.generateReport(Petty);
+        //}
 
 
 

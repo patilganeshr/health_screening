@@ -9,21 +9,21 @@ namespace SOFARCH.HealthScreening.Api.Controllers
 {
     public class medicinesDispenseController : ApiController
     {
-        private readonly Business.medicinesDispense _Med;
+        //private readonly Business.medicinesDispense _Med;
 
 
         public medicinesDispenseController()
         {
-            _Med = new Business.medicinesDispense();
+          //  _Med = new Business.medicinesDispense();
         }
 
 
 
-        [HttpPost]
-        [Route("medicinesDispenseReport")]
-        public String medicinesDispenseReport(Entities.medicinesDispense med)
-        {
-            return _Med.generateReport(med);
-        }  
+        //[HttpPost]
+        //[Route("medicinesDispenseReport")]
+        //public String medicinesDispenseReport(Entities.medicinesDispense med)
+        //{
+        //    return _Med.generateReport(med);
+        //}
     }
 }

@@ -10,22 +10,22 @@ namespace SOFARCH.HealthScreening.Api.Controllers
     public class StockReportController : ApiController
     {
 
-         private readonly Business.StockReport _Stock;
+         //private readonly Business.StockReport _Stock;
 
 
          public StockReportController()
         {
-            _Stock = new Business.StockReport();
+           // _Stock = new Business.StockReport();
         }
 
 
 
-        [HttpPost]
-        [Route("StockReportPrint")]
-        public String PrintStockReport(Entities.StockReport stock)
-        {
-            return _Stock.generateReport(stock);
-        }
+        //[HttpPost]
+        //[Route("StockReportPrint")]
+        //public String PrintStockReport(Entities.StockReport stock)
+        //{
+        //    return _Stock.generateReport(stock);
+        //}
 
     }
 }
