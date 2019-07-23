@@ -657,6 +657,10 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string GetPastDrugDispenseDatesByPatientId { get { return "drug_dispenses_get_past_drug_dispense_dates_by_patient_id"; } }
 
+        public static string GetDrugDetailsByPatientId { get { return "drug_dispenses_drugs_return_get_drug_details_by_patient_id"; } }
+
+        public static string GetDrugDispenseDetailsByPatientIdAndDrugId { get { return "drug_dispenses_drugs_return_get_drug_dispense_details_by_patient_id_and_drug_id"; } }
+
         #endregion
 
         #region Drug Dispense Drug Utilisation
