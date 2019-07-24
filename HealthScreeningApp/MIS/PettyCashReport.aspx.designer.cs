@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HealthScreeningApp.Report
+namespace HealthScreeningApp.MIS
 {
 
 

@@ -50,9 +50,9 @@ namespace SOFARCH.HealthScreening.Api.Controllers
 
         [HttpPost]
         [Route("printPettyCashReport")]
-        public String PrintPreEmploymentReport(Entities.Pettycash Petty)
+        public String printPettyCashReport(Entities.Pettycash Petty)
         {
-            return _Petty.generateReport(Petty);
+            return _Petty.generateReportsss(Petty);
         }
 
 

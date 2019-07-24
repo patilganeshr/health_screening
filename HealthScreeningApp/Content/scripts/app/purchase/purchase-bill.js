@@ -359,7 +359,7 @@ Sofarch.PurchaseBill = (function () {
             ElementToBeAppend: DOM.searchDrugList,
             DataAttributes: dataAttributes,
             PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetDrugIdAndDrugNameByDrugName/" + DOM.searchDrugName.value,
+            URL: SERVICE_PATH + "GetDrugIdAndDrugNameByDrugName/D/" + DOM.searchDrugName.value,
             DisplayName: "DrugName"
         };
 

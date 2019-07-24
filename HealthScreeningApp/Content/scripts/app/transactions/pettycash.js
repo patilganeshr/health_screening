@@ -29,6 +29,8 @@ Sofarch.PettyCash = (function () {
         DOM.Amount = document.getElementById('Amount');
 
 
+    
+
 
         DOM.addNewpettycash = document.getElementById('AddNewpettycash');
         DOM.showpettycashList = document.getElementById('ShowpettycashList');
@@ -40,6 +42,7 @@ Sofarch.PettyCash = (function () {
         DOM.filterpettycash = document.getElementById('Filterpettycash');
         DOM.exportpettycashList = document.getElementById('ExportpettycashList');
         DOM.$PettyCashDateDatePicker = $('#pettycashDateDatePicker');
+      
 
     }
 
@@ -52,6 +55,8 @@ Sofarch.PettyCash = (function () {
             format: 'DD/MMM/YYYY',
             defaultDate: moment(currentDate).format("DD/MMM/YYYY")
         });
+
+      
 
     }
 
@@ -86,11 +91,12 @@ Sofarch.PettyCash = (function () {
         DOM.editpettycash.addEventListener('click', editPettycash);
         DOM.savepettycash.addEventListener('click', savePettyCash);
         DOM.deletepettycash.addEventListener('click', deletePettyCash);
+     
     }
 
     function loadData() {
 
-
+        getAccountHead();
 
     }
 

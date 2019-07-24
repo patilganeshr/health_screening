@@ -744,11 +744,15 @@ namespace SOFARCH.HealthScreening.DataModel
         #region Prescriptions
         public static string Insertprescription { get { return "insert_Precautions"; } }
 
+        public static string InsertprescriptionDrug { get { return "prescription_details_insert"; } }
+
         public static string Updateprescription { get { return "Precautions_update_Precautions"; } }
 
         public static string Deleteprescription { get { return "Precautions_delete_Precautions"; } }
 
         public static string GetListOfAll { get { return "Precautions_get_list"; } }
+
+        public static string GetListOfAllDetails { get { return "prescription_details_get_list"; } }
 
         #endregion
 

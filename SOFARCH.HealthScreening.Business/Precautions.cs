@@ -31,9 +31,20 @@ namespace SOFARCH.HealthScreening.Business
             return _Pre.SavePrecaution(pre);
         }
 
+        public Int32 SavePrecautionDrug(Entities.Precautions pre)
+        {
+            return _Pre.SavePrecautionDrug(pre);
+        }
+
+
         public List<Entities.Precautions> GetAll()
         {
             return _Pre.GetAll();
+        }
+
+        public List<Entities.Precautions> GetAllPreDetails(Int32 PrecautionsId)
+        {
+            return _Pre.GetAllPreDetail(PrecautionsId);
         }
 
 
@@ -49,15 +60,14 @@ namespace SOFARCH.HealthScreening.Business
 
             parameters.Add(pre.PrecautionsId);
 
-           
-            reportName = "Reports2.rpt";
+            reportName = "Precaution_Reports.rpt";
 
             var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
-            reportEntity.DirectoryPath = serverPath + "ApplicationFiles/Sales/" + Convert.ToString(pre.PrecautionsId) + "/";
+            reportEntity.DirectoryPath = serverPath + "ApplicationFiles/PatientNo/";
 
             reportEntity.ReportPath = serverPath + "Reports/" + reportName;
             reportEntity.Parameters = parameters;
-            reportEntity.FileStoragePath = reportEntity.DirectoryPath + "BillNo_" + Convert.ToString(pre.PrecautionsId) + ".pdf";
+            reportEntity.FileStoragePath = reportEntity.DirectoryPath + "PatientNo_" + Convert.ToString(pre.PrecautionsId) + ".pdf";
 
             return report.GenerateReport(reportEntity, CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
         }

@@ -71,8 +71,15 @@
 
                                         <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <label>Search Options</label>
+                                                <label>Filter Options</label>
                                                 <select id="SearchOptions" class="form-control"></select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="display:none;">
+                                            <div class="form-group form-group-md">
+                                                <label>Operator</label>
+                                                <select id="SearchOperator" class="form-control"></select>
                                             </div>
                                         </div>
 
@@ -80,6 +87,13 @@
                                             <div class="form-group form-group-md">
                                                 <label>Search Value</label>
                                                 <input type="text" id="SearchValue" class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="display:none;">
+                                            <div class="form-group form-group-md">
+                                                <label>Search Condition</label>
+                                                <select id="SearchCondition" class="form-control"></select>
                                             </div>
                                         </div>
 
@@ -121,9 +135,9 @@
                                             <th class="text-center">Company Name</th>
                                             <th class="text-center">Emp Code</th>
                                             <th class="text-center">Patient Name</th>
-                                            <th class="text-center">Gender</th>
-                                            <th class="text-center">Contact No.</th>
-                                            <th class="text-center">Email Id</th>
+                                            <th class="text-center">Drug Return No.</th>
+                                            <th class="text-center">Return Date</th>
+                                            <th class="text-center">Year</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -204,7 +218,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <div class="form-group form-group-md">
                                             <label>Employee Name</label>
                                             <input type="text" id="PatientName" class="form-control" />
@@ -250,7 +264,7 @@
                                     </div>
 
                                     <div class="pull-right">
-                                        <h3 class="text-deep-orange-A200">Total Amount Rs. <span id="TotalBillAmount"></span>80.90</h3>
+                                        <h3 class="text-deep-orange-A200" style="display:none;">Total Amount Rs. <span id="TotalBillAmount"></span>80.90</h3>
                                     </div>
                                 </div>
 
@@ -263,6 +277,7 @@
                                                     <th class="text-center">Drug Code</th>
                                                     <th class="text-center">Drug Name</th>
                                                     <th class="text-center">Dispense Qty</th>
+                                                    <th class="text-center">Return Qty</th>
                                                     <th class="text-center">Balance Qty</th>
                                                     <th class="text-center">Rate</th>
                                                     <th class="text-center">Amount</th>

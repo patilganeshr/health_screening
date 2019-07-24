@@ -11,10 +11,13 @@ namespace SOFARCH.HealthScreening.Api.Controllers
     public class PrescriptionController : ApiController
     {
         private readonly Business.Precautions  _pre;
+        private readonly Business.Patient  _patient;
+
 
         public PrescriptionController()
         {
             _pre = new Business.Precautions();
+            _patient = new Business.Patient();
         }
 
        
@@ -25,11 +28,25 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         }
 
 
+        [Route("GetAllPreDetails/{PrecautionsId}")]
+        public List<Entities.Precautions> GetAllPreDetails(Int32 PrecautionsId)
+        {
+            return _pre.GetAllPreDetails(PrecautionsId);
+        }
+
+
         [HttpPost]
         [Route("SavePrescription")]
         public Int32 SavePrescription(Entities.Precautions pre)
         {
             return _pre.SavePrecaution(pre);
+        }
+
+        [HttpPost]
+        [Route("SavePrescriptionDrug")]
+        public Int32 SavePrescriptionDrug(Entities.Precautions pre)
+        {
+            return _pre.SavePrecautionDrug(pre);
         }
 
 
@@ -39,5 +56,8 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         {
             return _pre.generateReport(pre);
         }
+
+
+
     }
 }

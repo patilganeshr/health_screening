@@ -155,7 +155,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispenseReturn))
                 {
                     database.AddInParameter(dbCommand, "@patient_name", DbType.String, drugDispenseReturn.PatientName);
                     database.AddInParameter(dbCommand, "@drug_code", DbType.String, drugDispenseReturn.SearchDrugCode);
@@ -169,6 +169,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
                             var drugDispenseDetails = new Entities.DrugDispenseReturn()
                             {
+                                DrugDispenseReturnId = DRE.GetNullableInt32(reader, "drug_dispense_return_id", null),
                                 DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", 0),
                                 DrugReturnNo = DRE.GetNullableInt32(reader, "drug_return_no", null),
                                 DrugReturnDate = DRE.GetNullableString(reader, "drug_return_date", null),
@@ -178,6 +179,7 @@ namespace SOFARCH.HealthScreening.DataModel
                                 EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
                                 EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                                 WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                                FinancialYear = DRE.GetNullableString(reader, "financial_year", null),
                                 DrugDispenseDrugReturns = drugReturn.GetDrugReturnDetailsByDrugDispenseReturnId(DRE.GetInt32(reader, "drug_dispense_return_id"))
                             };
 

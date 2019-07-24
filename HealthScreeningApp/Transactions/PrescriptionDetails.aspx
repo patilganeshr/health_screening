@@ -13,9 +13,8 @@
         <a href="#" id="SavePrescription"><i class="fa fa-save fa-fw"></i>Save</a>
         <a href="#" id="DeletePrescription"><i class="fa fa-remove fa-fw"></i>Delete</a>
         <a href="#" id="PrintPrescription"><i class="fa fa-print fa-fw"></i>Print</a>
-      <%--  <a href="#" id="FilterPrescription"><i class="fa fa-filter fa-fw"></i>Filter</a>
+        <%--  <a href="#" id="FilterPrescription"><i class="fa fa-filter fa-fw"></i>Filter</a>
         <a href="#" id="ExportPrescription"><i class="fa fa-cog fa-fw"></i>Export</a>--%>
-
     </div>
 
     <div class="st-content">
@@ -40,8 +39,8 @@
             <!-- .loader-container -->
 
 
-            
-          
+
+
             <div id="ViewMode">
 
                 <div class="row">
@@ -66,7 +65,7 @@
                                                 <th>Doctor_name</th>
                                                 <th>Patient Name</th>
                                                 <th>Age</th>
-                                                <th>Medicines</th>
+                                                <th>Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -124,15 +123,16 @@
                                             </div>
                                         </div>
 
-                                         <div class="form-group form-group-sm">
+                                        <div class="form-group form-group-sm">
                                             <label class="col-sm-2">Patient Name.</label>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                 <input type="text" id="PatientName" class="form-control" />
+
+                                                <div id="SearchPatientList" class="autocompleteList"></div>
                                             </div>
-                                             <div id="SearchPatientList" class="autocompleteList"></div>
                                         </div>
 
-                                       
+
 
                                         <div class="form-group form-group-sm">
                                             <label class="col-sm-2">Age.</label>
@@ -141,25 +141,53 @@
                                             </div>
                                         </div>
 
-                                        <div class="form-group form-group-sm">
+                                       <%-- <div class="form-group form-group-sm">
                                             <label class="col-sm-2">Medicines Prescribed</label>
                                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                                 <textarea class="form-control" id="MedicinesPre" rows="4"></textarea>
                                             </div>
+                                        </div>--%>
+
+
+                                        <div class="form-group form-group-sm">
+                                            <label class="col-sm-2">Drug Name Or Drug Code.</label>
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <input type="text" id="SearchDrugName" class="form-control" />
+
+                                                <div id="SearchDrugList" class="autocompleteList"></div>
+                                            </div>
                                         </div>
 
-                                       
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="table-responsive">
+                                                <table id="DrugUtilisationList" class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">Action</th>
+                                                            <th class="text-center">Drug Code</th>
+                                                            <th class="text-center">Drug Name</th>
+                                                            <th class="text-center">Dispense Qty</th>
+                                                            <th class="text-center">Dosage</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                    <tfoot></tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+
 
                                     </div>
 
                                 </div>
 
                             </div>
+                        </div>
+
                     </div>
 
                 </div>
-
-            </div>
 
             </div>
             <!-- Edit Mode -->
@@ -167,7 +195,7 @@
         </div>
 
     </div>
-     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
     <script type="text/javascript" src="../content/scripts/app/transactions/prescription.js"></script>
 
 
