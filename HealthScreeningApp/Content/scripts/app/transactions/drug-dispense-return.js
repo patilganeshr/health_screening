@@ -446,14 +446,14 @@ Sofarch.DrugDispenseReturn = (function () {
 
         if (patientId > 0) {
 
-            shared.fillDropdownWithCallback(SERVICE_PATH + 'GetDrugDetailsByPatientId/' + patientId, DOM.drug, "DrugName", "DrugId", "Choose Drug", function (response) {
+            shared.fillDropdownWithCallback(SERVICE_PATH + 'GetDrugDetailsByPatientId/' + patientId, DOM.drugsName, "DrugName", "DrugId", "Choose Drug", function (response) {
 
                 if (response.status === 200) {
 
                     if (response.responseText !== undefined) {
 
-                        shared.setSelectOptionByIndex(DOM.drug, parseInt(0));
-                        shared.setSelect2ControlsText(DOM.drug);
+                        shared.setSelectOptionByIndex(DOM.drugsName, parseInt(0));
+                        shared.setSelect2ControlsText(DOM.drugsName);
 
                         //DOM.searchByFinancialYear.innerHTML = DOM.searchByFinancialYear.innerHTML + DOM.financialYear.innerHTML;
                     }
@@ -838,21 +838,21 @@ Sofarch.DrugDispenseReturn = (function () {
         DOM.searchOptions.innerHTML = options;
     }
 
-    function filterDrugDispenseDetails() {
+    function filterDrugReturnDetails() {
 
-        shared.showPanel(DOM.searchDrugDispenseDetailsPanel);
+        shared.showPanel(DOM.SearchDrugReturnDetailsPanel);
 
-        shared.clearInputs(DOM.searchDrugDispenseDetailsPanel);
+        shared.clearInputs(DOM.SearchDrugReturnDetailsPanel);
 
         fillSearchOption();
 
-        if (DOM.searchDrugDispenseDetailsPanel.classList.contains("hide")) {
-            DOM.searchDrugDispenseDetailsPanel.classList.remove('hide');
-            DOM.searchDrugDispenseDetailsPanel.classList.add('show');
+        if (DOM.SearchDrugReturnDetailsPanel.classList.contains("hide")) {
+            DOM.SearchDrugReturnDetailsPanel.classList.remove('hide');
+            DOM.SearchDrugReturnDetailsPanel.classList.add('show');
         }
         else {
-            DOM.searchDrugDispenseDetailsPanel.classList.remove('show');
-            DOM.searchDrugDispenseDetailsPanel.classList.add('hide');
+            DOM.SearchDrugReturnDetailsPanel.classList.remove('show');
+            DOM.SearchDrugReturnDetailsPanel.classList.add('hide');
         }
 
         DOM.searchValue.focus();
@@ -1383,4 +1383,4 @@ Sofarch.DrugDispenseReturn = (function () {
 }());
 
 
-Sofarch.DrugDispense.init();
+Sofarch.DrugDispenseReturn.init();
