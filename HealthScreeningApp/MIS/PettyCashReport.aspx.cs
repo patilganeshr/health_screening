@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace HealthScreeningApp.Report
+namespace HealthScreeningApp.MIS
 {
     public partial class PettyCashReport : System.Web.UI.Page
     {

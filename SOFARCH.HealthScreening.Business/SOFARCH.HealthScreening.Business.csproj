@@ -117,6 +117,8 @@
     <Compile Include="Country.cs" />
     <Compile Include="Drug.cs" />
     <Compile Include="DrugDispenseReturn.cs" />
+    <Compile Include="medicinesDispense.cs" />
+    <Compile Include="StockReport.cs" />
     <Compile Include="XRayIssue.cs" />
     <Compile Include="DrugDispense.cs" />
     <Compile Include="DrugFormulation.cs" />

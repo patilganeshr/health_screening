@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StockMovementReports.aspx.cs" Inherits="HealthScreeningApp.Report.StockMovementReports" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StockMovementReports.aspx.cs" Inherits="HealthScreeningApp.MIS.StockMovementReports" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -78,8 +78,11 @@
             </div>
 
         </div>
+
+    </div>
+
     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
-    <script type="text/javascript" src="../content/scripts/app/transactions/StockMovementsReport.js"></script>
-    <script type="text/javascript" src="../content/scripts/app/Transactions/drug-dispense.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/mis/StockMovementsReport.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/mis/drug-dispense.js"></script>
 
 </asp:Content>

@@ -51,6 +51,8 @@
     <Compile Include="City.cs" />
     <Compile Include="DrugDispenseDrugReturn.cs" />
     <Compile Include="DrugDispenseReturn.cs" />
+    <Compile Include="medicinesDispense.cs" />
+    <Compile Include="StockReport.cs" />
     <Compile Include="XRayFilmUsed.cs" />
     <Compile Include="Pettycash.cs" />
     <Compile Include="Precautions.cs" />

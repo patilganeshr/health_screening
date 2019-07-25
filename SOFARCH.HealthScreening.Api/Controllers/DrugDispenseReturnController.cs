@@ -17,7 +17,7 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         }
 
         [HttpPost]
-        [Route("SearchDrguDispenseReturn")]
+        [Route("SearchDrugDispenseReturn")]
         public List<Entities.DrugDispenseReturn> SearchDrguDispenseReturn(Entities.DrugDispenseReturn drugDispenseReturn)
         {
             return _drugDispenseReturn.SearchDrguDispenseReturn(drugDispenseReturn);

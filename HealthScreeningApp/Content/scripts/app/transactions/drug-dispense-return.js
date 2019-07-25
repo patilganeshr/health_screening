@@ -24,7 +24,7 @@ Sofarch.DrugDispenseReturn = (function () {
         DOM.searchValue = document.getElementById('SearchValue');
         DOM.searchDrugReturnDetails = document.getElementById('SearchDrugReturnDetails');
 
-        DOM.DrugReturnDetailsList = document.getElementById('DrugReturnDetailsList');
+        DOM.drugReturnDetailsList = document.getElementById('DrugReturnDetailsList');
 
         DOM.editMode = document.getElementById('EditMode');
         DOM.drugReturnDetailsPanel = document.getElementById('DrugReturnDetailsPanel');
@@ -97,7 +97,7 @@ Sofarch.DrugDispenseReturn = (function () {
         DOM.showDrugReturnList.addEventListener('click', showDrugReturnList);
         DOM.viewDrugReturnDetails.addEventListener('click', viewDrugReturnDetails);
         DOM.editDrugReturnDetails.addEventListener('click', editDrugReturnDetails);
-        DOM.saveDrugReturnDetails.addEventListener('click', saveDrugReturnDetails);
+        DOM.saveDrugReturnDetails.addEventListener('click', saveDrugDispenseReturnDetails);
         DOM.deleteDrugReturnDetails.addEventListener('click', deleteDrugReturnDetails);
         DOM.searchDrugReturnDetails.addEventListener('click', searchDrugReturnDetails);
         DOM.filterDrugReturnDetails.addEventListener('click', filterDrugReturnDetails);
@@ -110,13 +110,13 @@ Sofarch.DrugDispenseReturn = (function () {
 
         };
 
-        //DOM.searchDrugName.onkeyup = function (e) {
+        DOM.searchDrugName.onkeyup = function (e) {
 
-        //    if (CurrentFocus === undefined) { CurrentFocus = -1; }
+            if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
-        //    showSearchDrugList(e);
+            showSearchDrugList(e);
 
-        //};
+        };
 
         DOM.drugsName.onchange = function (e) {
 
@@ -309,138 +309,140 @@ Sofarch.DrugDispenseReturn = (function () {
         getDrugsNameByPatientId();
     }
 
-    //function showSearchDrugList(e) {
+    function showSearchDrugList(e) {
 
-    //    if (e.keyCode === 13) {
-    //        CurrentFocus = -1;
-    //        showDrugNameOnEnterKey(e);
-    //        return;
-    //    }
-    //    else if (e.keyCode === 9) {
-    //        CurrentFocus = -1;
-    //        shared.closeAutoCompleteList(DOM.searchDrugList);
-    //        return;
-    //    }
+        if (e.keyCode === 13) {
+            CurrentFocus = -1;
+            showDrugNameOnEnterKey(e);
+            return;
+        }
+        else if (e.keyCode === 9) {
+            CurrentFocus = -1;
+            shared.closeAutoCompleteList(DOM.searchDrugList);
+            return;
+        }
 
-    //    var dataAttributes = ['Drug-Id', 'Drug-Code'];
+        var dataAttributes = ['Drug-Id', 'Drug-Code'];
 
-    //    var parameters = {};
+        var parameters = {};
 
-    //    parameters = {
+        parameters = {
 
-    //        Event: e,
-    //        CurrentFocus: CurrentFocus,
-    //        PostDataKeyValue: postMessage,
-    //        ElementToBeAppend: DOM.searchDrugList,
-    //        DataAttributes: dataAttributes,
-    //        PostParamObject: undefined,
-    //        URL: SERVICE_PATH + "GetDrugIdAndDrugNameByDrugName/D/" + DOM.searchDrugName.value + "/",
-    //        DisplayName: "DrugName"
-    //    };
+            Event: e,
+            CurrentFocus: CurrentFocus,
+            PostDataKeyValue: postMessage,
+            ElementToBeAppend: DOM.searchDrugList,
+            DataAttributes: dataAttributes,
+            PostParamObject: undefined,
+            URL: SERVICE_PATH + "GetDrugIdAndDrugNameByDrugName/D/" + DOM.searchDrugName.value + "/",
+            DisplayName: "DrugName"
+        };
 
-    //    shared.showAutoCompleteItemsList(parameters, function (response) {
+        shared.showAutoCompleteItemsList(parameters, function (response) {
 
-    //        if (response !== undefined) {
+            if (response !== undefined) {
 
-    //            if (response >= 0) {
+                if (response >= 0) {
 
-    //                CurrentFocus = response;
-    //            }
-    //            else {
+                    CurrentFocus = response;
+                }
+                else {
 
-    //                CurrentFocus = -1;
+                    CurrentFocus = -1;
 
-    //                var autoCompleteList = response;
+                    var autoCompleteList = response;
 
-    //                var listCount = autoCompleteList.length;
+                    var listCount = autoCompleteList.length;
 
-    //                if (listCount) {
+                    if (listCount) {
 
-    //                    var data = "";
+                        var data = "";
 
-    //                    var fragment = document.createDocumentFragment();
+                        var fragment = document.createDocumentFragment();
 
-    //                    var ul = document.createElement('ul');
+                        var ul = document.createElement('ul');
 
-    //                    ul.classList.add('list-group');
+                        ul.classList.add('list-group');
 
-    //                    for (var s = 0; s < listCount; s++) {
+                        for (var s = 0; s < listCount; s++) {
 
-    //                        var li = document.createElement('li');
-    //                        var span = document.createElement('span');
-    //                        var p = document.createElement('p');
+                            var li = document.createElement('li');
+                            var span = document.createElement('span');
+                            var p = document.createElement('p');
 
-    //                        li.classList.add('list-group-item');
-    //                        li.classList.add('clearfix');
+                            li.classList.add('list-group-item');
+                            li.classList.add('clearfix');
 
-    //                        li.setAttribute('id', autoCompleteList[s].DrugId);
-    //                        li.setAttribute('data-drug-code', autoCompleteList[s].DrugCode);
+                            li.setAttribute('id', autoCompleteList[s].DrugId);
+                            li.setAttribute('data-drug-code', autoCompleteList[s].DrugCode);
 
-    //                        li.style.cursor = "pointer";
-    //                        li.onclick = showDrugNameOnSelection;
-    //                        li.textContent = autoCompleteList[s].DrugName;
+                            li.style.cursor = "pointer";
+                            li.onclick = showDrugNameOnSelection;
+                            li.textContent = autoCompleteList[s].DrugName;
 
-    //                        fragment.appendChild(li);
-    //                    }
+                            fragment.appendChild(li);
+                        }
 
-    //                    ul.appendChild(fragment);
+                        ul.appendChild(fragment);
 
-    //                    DOM.searchDrugList.appendChild(ul);
+                        DOM.searchDrugList.appendChild(ul);
 
-    //                    DOM.searchDrugList.style.width = e.target.offsetWidth + 'px';
-    //                    DOM.searchDrugList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
+                        DOM.searchDrugList.style.width = e.target.offsetWidth + 'px';
+                        DOM.searchDrugList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
 
-    //                    DOM.searchDrugList.classList.add('autocompleteList-active');
-    //                    //DOM.itemsList.innerHTML = data;
+                        DOM.searchDrugList.classList.add('autocompleteList-active');
+                        //DOM.itemsList.innerHTML = data;
 
-    //                }
-    //            }
-    //        }
+                    }
+                }
+            }
 
-    //    });
-    //}
+        });
+    }
 
-    //function showDrugNameOnSelection(e) {
+    function showDrugNameOnSelection(e) {
 
-    //    FLAG = "NEW ITEM";
+        FLAG = "NEW ITEM";
 
-    //    setDrugName(e.target.textContent, parseInt(e.target.id));
+        setDrugName(e.target.textContent, parseInt(e.target.id));
 
-    //}
+    }
 
-    //function showDrugNameOnEnterKey() {
+    function showDrugNameOnEnterKey() {
 
-    //    FLAG = "NEW ITEM";
+        FLAG = "NEW ITEM";
 
-    //    var li = DOM.searchDrugList.querySelectorAll('.autocompleteListItem-active');
+        var li = DOM.searchDrugList.querySelectorAll('.autocompleteListItem-active');
 
-    //    var count = li.length;
+        var count = li.length;
 
-    //    if (count) {
+        if (count) {
 
-    //        setDrugName(li[0].textContent, parseInt(li[0].id));
-    //    }
+            setDrugName(li[0].textContent, parseInt(li[0].id));
+        }
 
-    //}
+    }
 
-    //function setDrugName(name, id) {
+    function setDrugName(name, id) {
 
-    //    //DOM.searchDrugName.value = name;
+        //DOM.searchDrugName.value = name;
 
-    //    DOM.searchDrugName.value = "";
+        DOM.searchDrugName.value = "";
 
-    //    shared.closeAutoCompleteList(DOM.searchDrugList);
+        shared.closeAutoCompleteList(DOM.searchDrugList);
 
-    //    DOM.searchDrugName.focus();
+        DOM.searchDrugName.focus();
 
-    //    getDrugDetailsByDrugId(parseInt(id));
-    //}
+        getDrugDispenseDetailsByPatientIdAndDrugId(parseInt(id));
+    }
 
     function getDrugsNameByPatientId() {
 
+        DOM.drugsName.options.length = 0;
+
         shared.showLoader(DOM.loader);
 
-        var patientId = DOM.patientName.getAttribute('data-patient-id');
+        var patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
 
         if (isNaN(patientId)) { patientId = 0; }
 
@@ -448,7 +450,9 @@ Sofarch.DrugDispenseReturn = (function () {
 
             shared.fillDropdownWithCallback(SERVICE_PATH + 'GetDrugDetailsByPatientId/' + patientId, DOM.drugsName, "DrugName", "DrugId", "Choose Drug", function (response) {
 
-                if (response.status === 200) {
+                shared.showLoader(DOM.loader);
+
+;                if (response.status === 200) {
 
                     if (response.responseText !== undefined) {
 
@@ -458,25 +462,34 @@ Sofarch.DrugDispenseReturn = (function () {
                         //DOM.searchByFinancialYear.innerHTML = DOM.searchByFinancialYear.innerHTML + DOM.financialYear.innerHTML;
                     }
                 }
+
+                shared.hideLoader(DOM.loader);
+
             });
 
         }
         else {
             swal("Error", "Patient Id Not Found and so unable to fetch the Drug Details.", "error");
         }
+
+        shared.hideLoader(DOM.loader);
     }
 
-    function getDrugDispenseDetailsByPatientIdAndDrugId(e) {
+    function getDrugDispenseDetailsByPatientIdAndDrugId(drugId) {
 
-        var drugId = 0;
+        var patientId = 0;
 
-        drugId = parseInt(e.target.value);
+        patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
+
+        if (isNaN(patientId)) { patientId = 0; }
 
         if (isNaN(drugId)) { drugId = 0; }
 
-        if (drugId > 0) {
+        if (patientId > 0 && drugId > 0) {
 
             shared.sendRequest(SERVICE_PATH + "GetDrugDispenseDetailsByPatientIdAndDrugId/" + patientId + '/' + drugId, "GET", true, "JSON", null, function (response) {
+
+                shared.showLoader(DOM.loader);
 
                 if (response.status === 200) {
 
@@ -488,7 +501,7 @@ Sofarch.DrugDispenseReturn = (function () {
 
                             for (var d = 0; d < DrugsReturn.length; d++) {
 
-                                bindDrugDetails(drugReturn[d]);
+                                bindDrugDetails(DrugsReturn[d]);
 
                             }
 
@@ -497,10 +510,11 @@ Sofarch.DrugDispenseReturn = (function () {
                     }
                 }
 
+                shared.hideLoader(DOM.loader);
+
             });
 
         }
-
     }
 
     var getSelectedRows = function (listObject) {
@@ -551,7 +565,7 @@ Sofarch.DrugDispenseReturn = (function () {
 
                 if (isNaN(drugDispenseReturnId)) { drugDispenseReturnId = 0; }
 
-                showDrugDispenseReturnDetailsById(drugDispenseReturnId);
+                showDrugReturnDetailsById(drugDispenseReturnId);
             }
         }
         else {
@@ -832,27 +846,27 @@ Sofarch.DrugDispenseReturn = (function () {
 
         options += "<option value='-1'> Choose Search Option </option>";
         options += "<option value='PatientName' selected='selected'> Patient Name</option>";
-        options += "<option value='EmployerName'> Company Name </option>";
-        options += "<option value='PatientCode'> Patient Code</option>";
+        options += "<option value='DrugName'> Drug Name </option>";
+        options += "<option value='DrugCode'> Drug Code</option>";
 
         DOM.searchOptions.innerHTML = options;
     }
 
     function filterDrugReturnDetails() {
 
-        shared.showPanel(DOM.SearchDrugReturnDetailsPanel);
+        shared.showPanel(DOM.searchDrugReturnDetailsPanel);
 
-        shared.clearInputs(DOM.SearchDrugReturnDetailsPanel);
+        shared.clearInputs(DOM.searchDrugReturnDetailsPanel);
 
         fillSearchOption();
 
-        if (DOM.SearchDrugReturnDetailsPanel.classList.contains("hide")) {
-            DOM.SearchDrugReturnDetailsPanel.classList.remove('hide');
-            DOM.SearchDrugReturnDetailsPanel.classList.add('show');
+        if (DOM.searchDrugReturnDetailsPanel.classList.contains("hide")) {
+            DOM.searchDrugReturnDetailsPanel.classList.remove('hide');
+            DOM.searchDrugReturnDetailsPanel.classList.add('show');
         }
         else {
-            DOM.SearchDrugReturnDetailsPanel.classList.remove('show');
-            DOM.SearchDrugReturnDetailsPanel.classList.add('hide');
+            DOM.searchDrugReturnDetailsPanel.classList.remove('show');
+            DOM.searchDrugReturnDetailsPanel.classList.add('hide');
         }
 
         DOM.searchValue.focus();
@@ -862,7 +876,11 @@ Sofarch.DrugDispenseReturn = (function () {
 
         shared.showLoader(DOM.loader);
 
-        DOM.drugReturnDetailsList.tBodies[0].innerHTML = "";
+        var table = DOM.drugReturnDetailsList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
 
         DrugReturnDetails.length = 0;
 
@@ -950,7 +968,9 @@ Sofarch.DrugDispenseReturn = (function () {
                 data = data + "<td>" + DrugReturnDetails[r].EmployerName + "</td>";
                 data = data + "<td>" + DrugReturnDetails[r].PatientCode + "</td>";
                 data = data + "<td>" + DrugReturnDetails[r].PatientName + "</td>";
-                data = data + "<td>" + DrugReturnDetails[r].Gender + "</td>";
+                data = data + "<td>" + DrugReturnDetails[r].DrugReturnNo + "</td>";
+                data = data + "<td>" + DrugReturnDetails[r].DrugReturnDate + "</td>";
+                data = data + "<td>" + DrugReturnDetails[r].FinancialYear + "</td>";
                 data = data + "</tr>";
 
             }
@@ -970,7 +990,11 @@ Sofarch.DrugDispenseReturn = (function () {
 
         filterDrugReturnDetails();
 
-        DOM.drugReturnDetailsList.tBodies[0].innerHTML = "";
+        var table = DOM.drugReturnDetailsList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
 
     }
 
@@ -1043,9 +1067,9 @@ Sofarch.DrugDispenseReturn = (function () {
 
                 shared.setSelectValue(DOM.financialYear, null, drugReturnDetails[0].WorkingPeriodId);
                 shared.setSelect2ControlsText(DOM.financialYear);
-                DOM.drugReturnNo.value = drugReturnDetails[0].DrugDispenseNo;
+                DOM.drugReturnNo.value = drugReturnDetails[0].DrugReturnNo;
                 DOM.drugReturnNo.setAttribute('data-drug-dispense-return-id', drugReturnDetails[0].DrugDispenseReturnId);
-                DOM.drugReturnDate.value = drugReturnDetails[0].DrguReturnDate;
+                DOM.drugReturnDate.value = drugReturnDetails[0].DrugReturnDate;
                 DOM.patientCode.value = drugReturnDetails[0].PatientCode;
                 DOM.patientName.setAttribute('data-patient-id', drugReturnDetails[0].PatientId);
                 DOM.patientName.value = drugReturnDetails[0].PatientName;
@@ -1078,27 +1102,31 @@ Sofarch.DrugDispenseReturn = (function () {
         shared.hidePanel(DOM.viewMode);
     }
 
-    function bindDrugDetails(drugReturn) {
+    function bindDrugDetails(drugReturnDetails) {
 
-        var table = DOM.drugUtilisationList;
+        var table = DOM.drugReturnList;
 
         var tableBody = table.tBodies[0];
 
         var data = "";
 
-        if (drugReturn !== undefined) {
+        shared.showLoader(DOM.loader);
+
+        if (drugReturnDetails !== undefined) {
 
             var tableRow = document.createElement('tr');
 
             tableRow.setAttribute('data-drug-dispense-drug-return-id', drugReturnDetails.DrugDispenseDrugReturnId);
             tableRow.setAttribute('data-drug-id', drugReturnDetails.DrugId);
+            tableRow.setAttribute('data-drug-utilisation-id', drugReturnDetails.DrugUtilisationId);
 
             data += "<td class='text-center'> <button type='button' class='btn btn-sm btn-danger' id='" + drugReturnDetails.DrugId + "'><i class='fa fa-fw fa-remove'></i></button></td>";
             data += "<td class='text-center'>" + drugReturnDetails.DrugCode + "</td>";
             data += "<td class='text-center'>" + drugReturnDetails.DrugName + "</td>";
-            data += "<td class='text-center'> <input type='text' id='" + drugReturnDetails.DrugId + "' class='form-control' value='" + drugUtilisation.DispenseQty + "'/> </td>";
+            data += "<td class='text-center'>" + drugReturnDetails.DispenseQty + "</td>";
+            data += "<td class='text-center'> <input type='text' id='" + drugReturnDetails.DrugId + "' class='form-control' value='" + drugReturnDetails.ReturnQty + "'/> </td>";
             data += "<td class='text-center'>" + drugReturnDetails.BalanceQty + "</td>";
-            data += "<td class='text-right'>" + drugReturnDetails.PurchaseRate + "</td>";
+            data += "<td class='text-right'>" + drugReturnDetails.Rate + "</td>";
             data += "<td class='text-right'>" + drugReturnDetails.Amount + "</td>";
 
             tableRow.innerHTML = data;
@@ -1108,11 +1136,13 @@ Sofarch.DrugDispenseReturn = (function () {
             addEventsToTableElements();
         }
 
+        shared.hideLoader(DOM.loader);
+
     }
 
     function addEventsToTableElements() {
 
-        var table = DOM.drugUtilisationList;
+        var table = DOM.drugReturnList;
 
         var tableBody = table.tBodies[0];
 
@@ -1184,10 +1214,10 @@ Sofarch.DrugDispenseReturn = (function () {
         var tableRows = tableBody.children;
 
         var dispenseQty = parseFloat(e.target.value);
-        var purchaseRate = parseFloat(tableRow.children[5].textContent);
+        var purchaseRate = parseFloat(tableRow.children[6].textContent);
         var amount = 0;
 
-        tableRow.children[6].textContent = dispenseQty * purchaseRate;
+        tableRow.children[7].textContent = parseFloat(parseFloat(dispenseQty * purchaseRate).toFixed(2));
 
         if (tableRow.rowIndex === tableRows.length) {
 
@@ -1261,12 +1291,12 @@ Sofarch.DrugDispenseReturn = (function () {
 
             for (var tr = 0; tr < tableRows.length; tr++) {
 
-                var returnQtyInput = tableRows[tr].children[3].children[0];
+                var returnQtyInput = tableRows[tr].children[4].children[0];
                 drugDispenseDrugReturnId = parseInt(tableRows[tr].getAttribute('data-drug-dispense-drug-return-id'));
-                drugDispenseReturnId = parseInt(DOM.drugDispenseNo.getAttribute('data-drug-dispense-return-id'));
+                drugDispenseReturnId = parseInt(DOM.drugReturnNo.getAttribute('data-drug-dispense-return-id'));
                 drugId = parseInt(tableRows[tr].getAttribute('data-drug-id'));
                 returnQty = parseFloat(returnQtyInput.value);
-                rate = parseFloat(tableRows[tr].children[4].textContent);
+                rate = parseFloat(tableRows[tr].children[6].textContent);
 
                 if (isNaN(drugDispenseDrugReturnId)) { drugDispenseDrugReturnId = 0; }
                 if (isNaN(drugDispenseReturnId)) { drugDispenseReturnId = 0; }
@@ -1278,6 +1308,7 @@ Sofarch.DrugDispenseReturn = (function () {
                     DrugUtilisationId: drugUtilisationId,
                     DrugId: drugId,
                     ReturnQty: returnQty,
+                    Rate: rate,
                     IsDeleted: false
                 };
 
@@ -1299,7 +1330,7 @@ Sofarch.DrugDispenseReturn = (function () {
         return DrugsReturn;
     };
 
-    function saveDrugReturnDetails() {
+    function saveDrugDispenseReturnDetails() {
 
         if (validateData()) {
 
@@ -1330,7 +1361,7 @@ Sofarch.DrugDispenseReturn = (function () {
                 DrugDispenseDrugReturns: DrugsReturn
             };
 
-            if (parseInt(drugDispenseId) === parseInt(0)) {
+            if (parseInt(drugDispenseReturnId) === parseInt(0)) {
 
                 drugDispenseReturn.CreatedBy = parseInt(LOGGED_USER);
                 drugDispenseReturn.CreatedByIP = IP_ADDRESS;

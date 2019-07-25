@@ -86,7 +86,7 @@ Sofarch.StockReport = (function () {
         var date = DOM.date.value;
        
 
-        var folderName = 'StockDetails';
+        var folderName = 'StockReport';
 
         print = {
             Date: date
@@ -108,7 +108,7 @@ Sofarch.StockReport = (function () {
 
                         if (_response.length > 0) {
 
-                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/StockReports.pdf", "_blank");
+                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/StockDetailsReport.pdf", "_blank");
 
                         }
                     }

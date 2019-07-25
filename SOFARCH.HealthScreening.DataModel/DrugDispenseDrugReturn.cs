@@ -33,7 +33,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@drug_dispense_return_id", DbType.Int32, drugDispenseDrugReturn.DrugDispenseReturnId);
                     database.AddInParameter(dbCommand, "@drug_utilisation_id", DbType.Int32, drugDispenseDrugReturn.DrugUtilisationId);
                     database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugDispenseDrugReturn.DrugId);
-                    database.AddInParameter(dbCommand, "@return_qty", DbType.Decimal, drugDispenseDrugReturn.DispenseQty);
+                    database.AddInParameter(dbCommand, "@return_qty", DbType.Decimal, drugDispenseDrugReturn.ReturnQty);
                     database.AddInParameter(dbCommand, "@rate", DbType.Decimal, drugDispenseDrugReturn.Rate);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, drugDispenseDrugReturn.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, drugDispenseDrugReturn.CreatedByIP);
@@ -128,7 +128,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@drug_dispense_return_id", DbType.Int32, drugDispenseDrugReturn.DrugDispenseReturnId);
                     database.AddInParameter(dbCommand, "@drug_utilisation_id", DbType.Int32, drugDispenseDrugReturn.DrugUtilisationId);
                     database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugDispenseDrugReturn.DrugId);
-                    database.AddInParameter(dbCommand, "@return_qty", DbType.Decimal, drugDispenseDrugReturn.DispenseQty);
+                    database.AddInParameter(dbCommand, "@return_qty", DbType.Decimal, drugDispenseDrugReturn.ReturnQty);
                     database.AddInParameter(dbCommand, "@rate", DbType.Decimal, drugDispenseDrugReturn.Rate);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, drugDispenseDrugReturn.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, drugDispenseDrugReturn.ModifiedByIP);
@@ -245,9 +245,6 @@ namespace SOFARCH.HealthScreening.DataModel
                                 DrugDispenseDrugReturnId = DRE.GetNullableInt32(reader, "drug_dispense_drug_return_id", null),
                                 DrugDispenseReturnId = DRE.GetNullableInt32(reader, "drug_dispense_return_id", null),
                                 DrugUtilisationId = DRE.GetNullableInt32(reader, "drug_utilisation_id", null),
-                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
-                                DrugDispenseNo = DRE.GetNullableInt32(reader, "drug_dispense_no", null),
-                                DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null),
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
                                 DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
                                 DrugName = DRE.GetNullableString(reader, "drug_name", null),
@@ -335,7 +332,6 @@ namespace SOFARCH.HealthScreening.DataModel
                                 DrugDispenseDrugReturnId = DRE.GetNullableInt32(reader, "drug_dispense_drug_return_id", null),
                                 DrugDispenseReturnId = DRE.GetNullableInt32(reader, "drug_dispense_return_id", null),
                                 DrugUtilisationId = DRE.GetNullableInt32(reader, "drug_utilisation_id", null),
-                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
                                 DrugId  = DRE.GetNullableInt32(reader, "drug_id", null),
                                 DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
                                 DrugName = DRE.GetNullableString(reader, "drug_name", null),

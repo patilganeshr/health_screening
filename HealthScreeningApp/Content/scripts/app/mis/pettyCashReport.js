@@ -2,7 +2,7 @@
 
 var Sofarch = {};
 
-Sofarch.PettyCash = (function () {
+Sofarch.PettyCash= (function () {
 
     //placeholder for cached DOM elements
     var DOM = {};
@@ -90,7 +90,7 @@ Sofarch.PettyCash = (function () {
          var fromdate = DOM.fromdate.value;
          var todate = DOM.todate.value;
        
-        var folderName = 'PreEmploymentDetails';
+         var folderName = 'PettyCashReport';
 
         print = {
             FromDate: fromdate,
@@ -114,7 +114,7 @@ Sofarch.PettyCash = (function () {
 
                         if (_response.length > 0) {
 
-                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/" + preEmploymentCodeNo + ".pdf", "_blank");
+                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/" + "PettyCashReport.pdf", "_blank");
 
                         }
                     }

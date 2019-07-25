@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StockReport.aspx.cs" Inherits="HealthScreeningApp.Report.StockReport" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="StockReport.aspx.cs" Inherits="HealthScreeningApp.MIS.StockReport" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -8,7 +8,7 @@
     <div class="action-toolbar">
 
         <a href="#" id="StockReportPrintList"><i class="fa fa-print fa-fw"></i>Print</a>
-        
+
     </div>
 
     <div class="st-content">
@@ -30,7 +30,7 @@
                 </div>
 
             </div>
-          
+
 
 
             <div id="EditMode">
@@ -51,7 +51,7 @@
 
                                     <div class="form-horizontal">
 
-                                       
+
 
                                         <div class="form-group form-group-sm">
                                             <label class="col-sm-2">Date</label>
@@ -64,9 +64,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                       
 
-                                       
+
+
                                     </div>
 
                                 </div>
@@ -85,5 +85,5 @@
 
     </div>
     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
-    <script type="text/javascript" src="../content/scripts/app/transactions/StockReport.js"></script>
+    <script type="text/javascript" src="../content/scripts/app/mis/StockReport.js"></script>
     </asp:Content>

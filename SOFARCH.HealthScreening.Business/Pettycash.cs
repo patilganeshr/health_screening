@@ -4,6 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System;
+using System.Collections;
+using System.Web;
+
 
 
 
@@ -44,6 +47,38 @@ namespace SOFARCH.HealthScreening.Business
         {
             return _Petty.GetAllAccountHeads();
         }
+
+        public string generateReportsss(Entities.Pettycash Petty)
+        {
+           
+
+                var report = new BuidReport();
+                var reportEntity = new Entities.Report();
+                var reportName = string.Empty;
+                var folderName = string.Empty;
+                //var serverPath = HttpContext.Current.Server.MapPath("../POS/");
+
+                var parameters = new ArrayList();
+
+                parameters.Add(Petty.FromDate);
+                parameters.Add(Petty.ToDate);
+
+                folderName = "PettyCashReport";
+                reportName = "PettyCashReport.rpt";
+
+
+                var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
+                reportEntity.DirectoryPath = serverPath + "ApplicationFiles/" + folderName + "/";
+
+                reportEntity.ReportPath = serverPath + "Reports/" + reportName;
+                reportEntity.Parameters = parameters;
+                reportEntity.FileStoragePath = reportEntity.DirectoryPath + Convert.ToString("PettyCashReport") + ".pdf";
+
+                return report.GenerateReport(reportEntity, CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
+            
+           
+        }
+
 
     }
 }

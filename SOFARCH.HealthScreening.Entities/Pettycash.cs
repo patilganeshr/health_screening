@@ -16,6 +16,10 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string DateRange { get; set; }
 
+        public string FromDate { get; set; }
+
+        public string ToDate { get; set; }
+
         public Int32? AccountHeadId { get; set; }
 
         public string AccountHead { get; set; }
