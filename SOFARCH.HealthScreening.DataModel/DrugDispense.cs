@@ -132,8 +132,8 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
                 {
                     database.AddInParameter(dbCommand, "@patient_name", DbType.String, drugDispense.PatientName);
-                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, drugDispense.EmployerName);
-                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, drugDispense.PatientCode);
+                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugDispense.EmployerName);
+                    database.AddInParameter(dbCommand, "@drug_code", DbType.Int32, drugDispense.PatientCode);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
