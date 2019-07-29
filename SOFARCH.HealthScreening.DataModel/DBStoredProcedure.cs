@@ -98,7 +98,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string UpdatePatientPersonalHistory { get { return "patients_personal_history_update_patient_personal_history"; } }
 
-        public static string DeletePatientPersonalHistory { get { return "patients_personal_history_insert_patient_personal_history"; } }
+        public static string DeletePatientPersonalHistory { get { return "patients_personal_history_delete_patient_personal_history"; } }
 
         public static string GetPatientPersonalHistoryDetailsByPatientId { get { return "patients_personal_history_get_patient_history_details_by_patient_id"; } }
 

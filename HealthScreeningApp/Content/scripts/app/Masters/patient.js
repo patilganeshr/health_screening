@@ -167,7 +167,7 @@ Sofarch.Patient = (function () {
             setActiveTabAndFocus(e);
         };
 
-        DOM.companyName.onkeyup = function (e) {
+        DOM.companyName.onkeydown = function (e) {
 
             if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
@@ -341,6 +341,11 @@ Sofarch.Patient = (function () {
         if (e.keyCode === 13) {
             CurrentFocus = -1;
             showCompanyNameOnEnterKey(e);
+            return;
+        }
+        else if (e.keyCode === 9) {
+            CurrentFocus = -1;
+            shared.closeAutoCompleteList(DOM.searchPatientList);
             return;
         }
 
@@ -821,7 +826,7 @@ Sofarch.Patient = (function () {
         shared.hidePanel(DOM.viewMode);
 
         // Set focus
-        DOM.firstName.focus();
+        DOM.companyName.focus();
 
         shared.hideLoader(DOM.loader);
     }
@@ -959,13 +964,13 @@ Sofarch.Patient = (function () {
 
         try {
 
-            var tableBody = DOM.employeesList.tBodies[0];
+            var tableBody = DOM.patientsList.tBodies[0];
 
-            var selectedRows = getSelectedRows();
+            var selectedRows = getSelectedRows(DOM.patientsList);
 
             var patientId = getPatientId(selectedRows);
 
-            if (employeeId > 0) {
+            if (patientId > 0) {
 
                 swal({
                     title: "Are you sure",
@@ -997,6 +1002,7 @@ Sofarch.Patient = (function () {
                                     if (selectedPatient[0].PatientPersonalHistory.PatientPersonalHistoryId > 0) {
 
                                         patientPersonalHistory = {
+                                            PatientPersonalHistoryId: parseInt(selectedPatient[0].PatientPersonalHistory.PatientPersonalHistoryId),
                                             IsDeleted: true,
                                             DeletedBy: parseInt(LOGGED_USER),
                                             DeletedByIP: IP_ADDRESS
@@ -1013,7 +1019,6 @@ Sofarch.Patient = (function () {
                                     if (patientExerciseHistories.length) {
 
                                         for (var e = 0; e < patientExerciseHistories.length; e++) {
-
                                             patientExerciseHistories[e].IsDeleted = true;
                                             patientExerciseHistories[e].DeletedBy = parseInt(LOGGED_USER);
                                             patientExerciseHistories[e].DeletedByIP = IP_ADDRESS;
