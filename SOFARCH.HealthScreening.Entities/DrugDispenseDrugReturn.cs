@@ -35,5 +35,6 @@ namespace SOFARCH.HealthScreening.Entities
         public decimal? BalanceQty { get; set; }
 
         public decimal? Amount { get; set; }
+
     }
 }

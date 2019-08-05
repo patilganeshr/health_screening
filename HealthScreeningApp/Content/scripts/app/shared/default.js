@@ -2,7 +2,7 @@
 var SharpiTech = SharpiTech || {};
 
 Shared = function() {
-        
+
 };
 
 Shared.prototype = function () {
@@ -58,7 +58,7 @@ Shared.prototype = function () {
         }
 
         if (method === "POST") {
-            //req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');            
+            //req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         }
 
         req.onreadystatechange = function () {
@@ -165,7 +165,7 @@ Shared.prototype = function () {
     }
 
     function fillDropdownWithSingleValue(control, textField, valueField, defaultOption) {
-        
+
         var fragment = document.createDocumentFragment();
 
         defaultOption = defaultOption || "Choose";
@@ -180,7 +180,7 @@ Shared.prototype = function () {
         _option.innerHTML = textField;
         _option.value = valueField;
         fragment.appendChild(_option);
-        
+
         control.appendChild(fragment);
 
         setSelectOptionByIndex(control, 1);
@@ -659,7 +659,7 @@ Shared.prototype = function () {
     var disableSpecificControls = function (listOfControls, isDisabled) {
 
         var controls = listOfControls;
-        
+
         if (controls.length > 0) {
 
             for (i = 0; i < controls.length; i++) {
@@ -1231,6 +1231,21 @@ Shared.prototype = function () {
     //    }
     //};
 
+    var acceptAlphaNumeric = function (keyCode) {
+
+        //keyCode === 8 || keyCode === 9 || keyCode === 13 || keyCode === 19 ||
+        if (
+            keyCode >= 48 && keyCode <= 57 || keyCode >= 65 && keyCode <= 90 ||
+            keyCode >= 97 && keyCode <= 105 || checkOtherKeyCodes(keyCode) === true) {
+
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    };
+
     var checkOtherKeyCodes = function (keyCode) {
 
         /* Checking keypress as Delete, Tab, Enter */
@@ -1291,7 +1306,7 @@ Shared.prototype = function () {
         }
     };
 
-    var createHTMLTag = function (tagName, id = undefined, name = undefined, cssClass = undefined, textNode = undefined) { 
+    var createHTMLTag = function (tagName, id = undefined, name = undefined, cssClass = undefined, textNode = undefined) {
 
         var _htmlTag = document.createElement(tagName);
 
@@ -1458,7 +1473,7 @@ Shared.prototype = function () {
 
                     tableHeaderRow.appendChild(tableHeaderCaption);
                 }
-                //}         
+                //}
                 //}
             }
         }
@@ -1689,7 +1704,7 @@ Shared.prototype = function () {
 
         callback(currentFocus);
 
-    } 
+    }
 
     function addActive(element, currentFocus) {
 
@@ -1730,8 +1745,8 @@ Shared.prototype = function () {
 
     }
 
-     
-    // Will Implement later 
+
+    // Will Implement later
 
     //function setItem(e, targetElement, elementToBeAppend, dataAttributes, isTargetElementShouldBeBlank, isCallBack, callback) {
 
@@ -1819,6 +1834,7 @@ Shared.prototype = function () {
         setCheckboxValue: setCheckboxValue,
         highlightSelectedRow: highlightSelectedRow,
         removeHighlightEffect: removeHighlightEffect,
+        acceptAlphaNumeric: acceptAlphaNumeric,
         acceptOnlyNumbers: acceptOnlyNumbers,
         acceptDecimalNos: acceptDecimalNos,
         checkDecimalNos: checkDecimalNos,
@@ -1834,7 +1850,7 @@ Shared.prototype = function () {
         createTableHeader: createTableHeader,
         createTableBody: createTableBody,
         showAutoCompleteItemsList: showAutoCompleteItemsList,
-        closeAutoCompleteList: closeAutoCompleteList        
+        closeAutoCompleteList: closeAutoCompleteList
     };
 
 }();

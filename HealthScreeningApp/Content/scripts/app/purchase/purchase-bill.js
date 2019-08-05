@@ -44,9 +44,9 @@ Sofarch.PurchaseBill = (function () {
         DOM.adjustedAmount = document.getElementById('AdjustedAmount');
 
         DOM.searchPurchaseBill = document.getElementById('SearchPurchaseBill');
-        DOM.searchOptions = document.getElementById('SearchOptions');
-        DOM.searchValue = document.getElementById('SearchValue');
-        DOM.search = document.getElementById('Search');
+        DOM.searchCriteriaList = document.getElementById('SearchCriteriaList');
+        DOM.searchFieldsList = document.getElementById('SearchFieldsList');
+        DOM.searchPurchaseBillDetails = document.getElementById('SearchPurchaseBillDetails');
 
         DOM.viewMode = document.getElementById('ViewMode');
         DOM.purchaseBillList = document.getElementById('PurchaseBillList');
@@ -57,6 +57,7 @@ Sofarch.PurchaseBill = (function () {
         DOM.editPurchaseBill = document.getElementById('EditPurchaseBill');
         DOM.savePurchaseBill = document.getElementById('SavePurchaseBill');
         DOM.deletePurchaseBill = document.getElementById('DeletePurchaseBill');
+        DOM.filterPurchaseBill = document.getElementById('FilterPurchaseBill');
 
         /*cache the jquery element */
         DOM.$purchaseBillDateDatePicker = $('#PurchaseBillDateDatePicker');
@@ -86,6 +87,12 @@ Sofarch.PurchaseBill = (function () {
         }, 200);
     }
 
+    function setFocusOnElement(element) {
+        setTimeout(function () {
+            element.focus();
+        }, 200);
+    }
+
     /* ---- handle errors ---- */
     function handleError(err) {
         console.log('Application Error: ' + err);
@@ -105,8 +112,10 @@ Sofarch.PurchaseBill = (function () {
         DOM.editPurchaseBill.addEventListener('click', editPurchaseBill);
         DOM.savePurchaseBill.addEventListener('click', savePurchaseBill);
         DOM.deletePurchaseBill.addEventListener('click', deletePurchaseBill);
+        DOM.filterPurchaseBill.addEventListener('click', filterPurchaseBill);
+
         //DOM.printPurchasesBill.addEventListener('click', printPurchasesBill);
-        DOM.search.addEventListener('click', searchPurchaseBill);
+        DOM.searchPurchaseBillDetails.addEventListener('click', searchPurchaseBill);
 
         DOM.vendor.onkeyup = function (e) {
 
@@ -499,16 +508,138 @@ Sofarch.PurchaseBill = (function () {
 
     }
 
-    function fillSearchOption() {
+    function getSearchFields() {
 
-        var options = "";
+        shared.showLoader(DOM.loader);
 
-        options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='billno' selected='selected'> Purchase Bill No.</option>";
-        //options += "<option value='gstno'> GST No. </option>";
-        //options += "<option value='panno'> PAN No.</option>";
+        shared.sendRequest(SERVICE_PATH + "GetSearchFields/10", "GET", true, "JSON", null, function (response) {
 
-        DOM.searchOptions.innerHTML = options;
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        bindSearchFields(_response);
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function bindSearchFields(searchFields) {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        if (searchFields.length) {
+
+            for (var s = 0; s < searchFields.length; s++) {
+
+                var data = "";
+
+                var tableRow = shared.createElement('TR');
+
+                data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12' data-table-field-name='" + searchFields[s].FieldValue + "'>" + searchFields[s].FieldName + "</td>";
+
+                if (searchFields[s].ControlName.toLowerCase() === "select") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <select id='" + searchFields[s].FieldValue + "' class='form-control input-md'></select> </td>";
+                }
+                else if (searchFields[s].ControlName.toLowerCase() === "date") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <div class='input-group date input-group-md' id='" + searchFields[s].FieldValue + "DatePicker'><input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> <span class='input-group-addon'><i class='fa fa-calendar'></i></span></div></td>";
+                }
+                else
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> </td>";
+
+                tableRow.innerHTML = data;
+
+                tableBody.appendChild(tableRow);
+            }
+
+        }
+
+        applyPluginsToSearchFields(tableBody);
+
+        setFocusToFirstElement(tableBody);
+
+    }
+
+    function applyPluginsToSearchFields(tableBody) {
+
+        var selects = tableBody.querySelectorAll('select');
+
+        var divs = tableBody.querySelectorAll('.date');
+
+        if (selects.length) {
+
+            for (var s = 0; s < selects.length; s++) {
+
+                selects[s].innerHTML = selects[s].innerHTML + DOM.financialYear.innerHTML;
+
+                $($(selects[s])[0]).select2();
+
+                shared.setSelectOptionByIndex(selects[s], parseInt(1));
+                shared.setSelect2ControlsText(selects[s]);
+
+            }
+        }
+
+        if (divs.length) {
+
+            for (var d = 0; d < divs.length; d++) {
+
+                if (divs[d].classList.contains('date')) {
+
+                    $($(divs[d])[0]).datetimepicker({
+                        format: 'DD/MMM/YYYY'
+                    });
+                }
+            }
+        }
+
+    }
+
+    function setFocusToFirstElement(tableBody) {
+
+        var input = tableBody.querySelectorAll('input[type="text"]')[0];
+
+        setFocusOnElement(input);
+
+    }
+
+    var checkSearchFieldsTableHasRows = function () {
+
+        var tableBody = DOM.searchFieldsList.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        return tableRows;
+    };
+
+    function clearSearchFieldsListControls(tableRows) {
+
+        if (tableRows.length) {
+
+            var tableBody = DOM.searchFieldsList.tBodies[0];
+
+            var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+            if (inputs.length) {
+
+                for (var i = 0; i < inputs.length; i++) {
+
+                    inputs[i].value = "";
+                }
+            }
+        }
     }
 
     function filterPurchaseBill() {
@@ -517,7 +648,14 @@ Sofarch.PurchaseBill = (function () {
 
         shared.clearInputs(DOM.searchPurchaseBill);
 
-        fillSearchOption();
+        var tableRows = checkSearchFieldsTableHasRows();
+
+        if (tableRows.length) {
+            clearSearchFieldsListControls(tableRows);
+        }
+        else {
+            getSearchFields();
+        }
 
         if (DOM.searchPurchaseBill.classList.contains("hide")) {
             DOM.searchPurchaseBill.classList.remove('hide');
@@ -528,8 +666,71 @@ Sofarch.PurchaseBill = (function () {
             DOM.searchPurchaseBill.classList.add('hide');
         }
 
-        DOM.searchValue.focus();
+        DOM.searchFieldsList.tBodies[0].innerHTML = "";
+
     }
+
+    var getSearchCriteria = function () {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        var searchCriteria = "";
+
+        var searchParameter = {};
+
+        if (tableRows.length) {
+
+
+            for (var tr = 0; tr < tableRows.length; tr++) {
+
+                if (tableRows[tr].children[1].children[0].value !== "") {
+
+                    if (tableRows[tr].children[1].children[0].nodeName.toLowerCase() === "select") {
+
+                        var selectedIndex = tableRows[tr].children[1].children[0].selectedIndex;
+
+                        searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].options[selectedIndex].text;
+                    }
+                    else {
+
+                        searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].value;
+                    }
+                }
+
+                //var searchFieldName = "";
+                //var operator = "";
+                //var searchFieldValue = "";
+
+                //var condition = "and ";
+
+                //searchFieldName = tableRows[tr].children[0].getAttribute('data-table-field-name');
+
+                //searchFieldValue = tableRows[tr].children[2].textContent;
+
+                //if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('contains') !== -1) {
+                //    operator = "like";
+                //}
+                //else if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('equals') !== -1) {
+                //    operator = "=";
+                //}
+                //else {
+                //    operator = tableRows[tr].children[1].textContent;
+                //}
+
+                //searchCriteria += "" + searchFieldName + " " + operator + " ''%" + searchFieldValue + "%'' " + condition + " ";
+
+            }
+
+            //searchCriteria = "" +  searchCriteria.substring(0, searchCriteria.lastIndexOf("'")) + "'";
+            //searchCriteria.substring(0, searchCriteria.length - (searchCriteria.lastIndexOf("'") + condition.length));
+        }
+
+        return searchParameter;
+    };
 
     function searchPurchaseBill() {
 
@@ -539,18 +740,22 @@ Sofarch.PurchaseBill = (function () {
 
         PurchaseBills.length = 0;
 
-        var searchOption = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].text;
-        var searchValue = DOM.searchValue.value;
-        var url = null;
+        //var searchOption = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].text;
+        //var searchValue = DOM.searchValue.value;
+        //var url = null;
 
-        if (searchOption.toLowerCase() === "purchase bill no.") {
-            url = "SearchPurchaseBillsByPurchaseBillNo/" + searchValue;
-        }
-        else {
-            url = "SearchPurchaseBillsAll";
-        }
+        //if (searchOption.toLowerCase() === "purchase bill no.") {
+        //    url = "SearchPurchaseBillsByPurchaseBillNo/" + searchValue;
+        //}
+        //else {
+        //    url = "SearchPurchaseBillsAll";
+        //}
 
-        shared.sendRequest(SERVICE_PATH + url, "GET", true, "JSON", null, function (response) {
+        var searchParameter = getSearchCriteria();
+
+        var postData = JSON.stringify(searchParameter);
+
+        shared.sendRequest(SERVICE_PATH + "SearchPurchaseBillsAll/", "POST", true, "JSON", postData, function (response) {
 
             if (response.status === 200) {
 
@@ -563,6 +768,8 @@ Sofarch.PurchaseBill = (function () {
                         PurchaseBills = _response;
 
                         bindPurchaseBills();
+
+                        filterPurchaseBill();
                     }
                 }
             }
@@ -1614,9 +1821,9 @@ Sofarch.PurchaseBill = (function () {
 
         DOM.totalBillAmount.textContent = "";
 
-        DOM.totalBillAmount.textContent = totalItemAmount;
+        DOM.totalBillAmount.textContent = parseFloat(parseFloat(totalItemAmount).toFixed(2));
 
-        DOM.totalItemAmount.value = totalItemAmount;
+        DOM.totalItemAmount.value = parseFloat(parseFloat(totalItemAmount).toFixed(2));
 
         calculateAdjustedAmount();
     }

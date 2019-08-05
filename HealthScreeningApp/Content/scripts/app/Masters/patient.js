@@ -35,8 +35,12 @@ Sofarch.Patient = (function () {
 
         DOM.viewMode = document.getElementById('ViewMode');
         DOM.searchPatientPanel = document.getElementById('SearchPatientPanel');
-        DOM.searchOptions = document.getElementById('SearchOptions');
-        DOM.searchValue = document.getElementById('SearchValue');
+        DOM.searchFieldName = document.getElementById('SearchFieldName');
+        DOM.searchFieldValue = document.getElementById('SearchFieldValue');
+        DOM.searchOperator = document.getElementById('SearchOperator');
+        DOM.addSearchCriteria = document.getElementById('AddSearchCriteria');
+        DOM.searchCriteriaList = document.getElementById('SearchCriteriaList');
+        DOM.searchFieldsList = document.getElementById('SearchFieldsList');
         DOM.searchPatient = document.getElementById('SearchPatient');
 
         DOM.patientsList = document.getElementById('PatientsList');
@@ -122,6 +126,12 @@ Sofarch.Patient = (function () {
         }, 200);
     }
 
+    function setFocusOnElement(element) {
+        setTimeout(function () {
+            element.focus();
+        }, 200);
+    }
+
     $("select").on("change", function (event) {
 
         setFocusOnSelect(event);
@@ -148,6 +158,7 @@ Sofarch.Patient = (function () {
         DOM.savePatient.addEventListener('click', savePatient);
         DOM.deletePatient.addEventListener('click', deletePatient);
         DOM.searchPatient.addEventListener('click', searchPatient);
+        DOM.filterPatient.addEventListener('click', filterPatient);
 
         DOM.addExerciseDetails.addEventListener('click', addExerciseDetails);
 
@@ -198,11 +209,104 @@ Sofarch.Patient = (function () {
 
         addNewPatient();
 
-        //getBranches();
+    }
 
-        //getDepartments();
+    function getSearchFields() {
 
-        //getEmployees();
+        shared.showLoader(DOM.loader);
+
+        shared.sendRequest(SERVICE_PATH + "GetSearchFields/4", "GET", true, "JSON", null, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        bindSearchFields(_response);
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function bindSearchFields(searchFields) {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        if (searchFields.length) {
+
+            for (var s = 0; s < searchFields.length; s++) {
+
+                var data = "";
+
+                var tableRow = shared.createElement('TR');
+
+                data += "<td data-table-field-name='" + searchFields[s].FieldValue + "'>" + searchFields[s].FieldName + "</td>";
+                data += "<td> <input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> </td>";
+
+                tableRow.innerHTML = data;
+
+                tableBody.appendChild(tableRow);
+            }
+
+            setFocusToFirstElement(tableBody);
+
+        }
+
+    }
+
+    function setFocusToFirstElement(tableBody) {
+
+        var input = tableBody.querySelectorAll('input[type="text"]')[0];
+
+        setFocusOnElement(input);
+
+    }
+
+    function addEventsToTableElements() {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        if (tableRows.length) {
+
+            var tableRow = tableRows[tableRows.length - 1];
+
+            var buttons = tableRow.querySelectorAll('button');
+
+            if (buttons.length) {
+
+                for (var b = 0; b < buttons.length; b++) {
+
+                    buttons[b].onclick = function (e) {
+                        removeItem(e);
+                    };
+                }
+            }
+        }
+    }
+
+    function removeItem(e) {
+
+        // Remove the item from the Table only if the purchase bill item id is 0
+        var tableBody = DOM.searchFieldsList.tBodies[0];
+
+        var tableRow = e.currentTarget.parentElement.parentElement;
+
+        tableBody.removeChild(tableRow);
     }
 
     function getBloodGroups() {
@@ -734,14 +838,43 @@ Sofarch.Patient = (function () {
 
     function fillSearchOption() {
 
-        var options = "";
+    //    var options = "";
 
-        options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='FullName' selected='selected'> Patient Name</option>";
-        options += "<option value='EmployerName'> Company Name </option>";
-        options += "<option value='PatientCode'> Patient Code</option>";
+    //    options += "<option value='-1'> Choose Search Option </option>";
+    //    options += "<option value='first_name'> First Name </option>";
+    //    options += "<option value='last_name'> Last Name </option>";
+    //    options += "<option value='employer_name'> Company Name </option>";
+    //    options += "<option value='financial_year'> Financial Year </option>";
+    //    options += "<option value='consult_date'> Consult Date </option>";
 
-        DOM.searchOptions.innerHTML = options;
+    //    DOM.searchFieldName.innerHTML = options;
+    }
+
+    var checkSearchFieldsTableHasRows = function () {
+
+        var tableBody = DOM.searchFieldsList.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        return tableRows;
+    };
+
+    function clearSearchFieldsListControls(tableRows) {
+
+        if (tableRows.length) {
+
+            var tableBody = DOM.searchFieldsList.tBodies[0];
+
+            var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+            if (inputs.length) {
+
+                for (var i = 0; i < inputs.length; i++) {
+
+                    inputs[i].value = "";
+                }
+            }
+        }
     }
 
     function filterPatient() {
@@ -750,7 +883,14 @@ Sofarch.Patient = (function () {
 
         shared.clearInputs(DOM.searchPatientPanel);
 
-        fillSearchOption();
+        var tableRows = checkSearchFieldsTableHasRows();
+
+        if (tableRows.length) {
+            clearSearchFieldsListControls(tableRows);
+        }
+        else {
+            getSearchFields();
+        }
 
         if (DOM.searchPatientPanel.classList.contains("hide")) {
             DOM.searchPatientPanel.classList.remove('hide');
@@ -761,8 +901,60 @@ Sofarch.Patient = (function () {
             DOM.searchPatientPanel.classList.add('hide');
         }
 
-        DOM.searchValue.focus();
+        DOM.searchFieldsList.tBodies[0].innerHTML = "";
+
     }
+
+    var getSearchCriteria = function () {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        var searchCriteria = "";
+
+        var searchParameter = {};
+
+        if (tableRows.length) {
+
+
+            for (var tr = 0; tr < tableRows.length; tr++) {
+
+
+                searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].value;
+
+                //var searchFieldName = "";
+                //var operator = "";
+                //var searchFieldValue = "";
+
+                //var condition = "and ";
+
+                //searchFieldName = tableRows[tr].children[0].getAttribute('data-table-field-name');
+
+                //searchFieldValue = tableRows[tr].children[2].textContent;
+
+                //if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('contains') !== -1) {
+                //    operator = "like";
+                //}
+                //else if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('equals') !== -1) {
+                //    operator = "=";
+                //}
+                //else {
+                //    operator = tableRows[tr].children[1].textContent;
+                //}
+
+                //searchCriteria += "" + searchFieldName + " " + operator + " ''%" + searchFieldValue + "%'' " + condition + " ";
+
+            }
+
+            //searchCriteria = "" +  searchCriteria.substring(0, searchCriteria.lastIndexOf("'")) + "'";
+            //searchCriteria.substring(0, searchCriteria.length - (searchCriteria.lastIndexOf("'") + condition.length));
+        }
+
+        return searchParameter;
+    };
 
     function searchPatient() {
 
@@ -772,18 +964,23 @@ Sofarch.Patient = (function () {
 
         Patients.length = 0;
 
-        var searchParmater = {
-            FullName: null,
-            EmployerName: null,
-            PatientCode: null
-        };
+        //var searchParmater = {
+        //    FirstName: null,
+        //    LastName: null,
+        //    EmployerName: null,
+        //    PatientCode: null
+        //};
 
-        var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
-        var searchValue = DOM.searchValue.value;
+        //var searchParameterName = DOM.searchFieldName.options[DOM.searchFieldName.selectedIndex].value;
+        //var searchValue = DOM.searchFieldValue.value;
 
-        searchParmater[searchParameterName] = searchValue;
+        //searchParmater[searchParameterName] = searchValue;
 
-        var postData = JSON.stringify(searchParmater);
+        var searchParameter = getSearchCriteria();
+
+        //var searchCriteria = getSearchCriteria();
+
+        var postData = JSON.stringify(searchParameter);
 
         shared.sendRequest(SERVICE_PATH + "SearchPatients/", "POST", true, "JSON", postData, function (response) {
 
@@ -850,12 +1047,12 @@ Sofarch.Patient = (function () {
 
         shared.showLoader(DOM.loader);
 
-        showPaitentList();
+        showPatientList();
 
         shared.hideLoader(DOM.loader);
     }
 
-    function showPaitentList() {
+    function showPatientList() {
 
         shared.showPanel(DOM.viewMode);
         shared.hidePanel(DOM.editMode);
@@ -1136,6 +1333,8 @@ Sofarch.Patient = (function () {
             // Show panels
             shared.showPanel(DOM.viewMode);
             shared.hidePanel(DOM.editMode);
+
+            filterPatient();
         }
     }
 

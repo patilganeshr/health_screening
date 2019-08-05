@@ -20,8 +20,8 @@ Sofarch.DrugDispenseReturn = (function () {
 
         DOM.viewMode = document.getElementById('ViewMode');
         DOM.searchDrugReturnDetailsPanel = document.getElementById('SearchDrugReturnDetailsPanel');
-        DOM.searchOptions = document.getElementById('SearchOptions');
-        DOM.searchValue = document.getElementById('SearchValue');
+        DOM.searchCriteriaList = document.getElementById('SearchCriteriaList');
+        DOM.searchFieldsList = document.getElementById('SearchFieldsList');
         DOM.searchDrugReturnDetails = document.getElementById('SearchDrugReturnDetails');
 
         DOM.drugReturnDetailsList = document.getElementById('DrugReturnDetailsList');
@@ -50,8 +50,19 @@ Sofarch.DrugDispenseReturn = (function () {
         DOM.printDrugReturnDetails = document.getElementById('PrintDrugReturnList');
         DOM.filterDrugReturnDetails = document.getElementById('FilterDrugReturnList');
 
+        DOM.searchPatientName = document.getElementById('SearchPatientName');
+        DOM.searchPatientModal = document.getElementById('SearchPatientModal');
+        DOM.firstName = document.getElementById('FirstName');
+        DOM.lastName = document.getElementById('LastName');
+        DOM.searchPatient = document.getElementById('SearchPatient');
+        DOM.patientSearchList = document.getElementById('PatientSearchList');
+        DOM.selectPatient = document.getElementById('SelectPatient');
+        DOM.closeSearchPatientModal = document.getElementById('CloseSearchPatientModal');
+
         /*cache the jquery element */
         DOM.$drugReturnDateDatePicker = $('#DrugReturnDateDatePicker');
+        DOM.$searchPatientModal = $('#SearchPatientModal');
+        DOM.$closeSearchPatientModal = $('#CloseSearchPatientModal');
 
     }
 
@@ -71,6 +82,12 @@ Sofarch.DrugDispenseReturn = (function () {
     function setFocusOnSelect(e) {
         setTimeout(function () {
             e.currentTarget.focus();
+        }, 200);
+    }
+
+    function setFocusOnElement(element) {
+        setTimeout(function () {
+            element.focus();
         }, 200);
     }
 
@@ -102,11 +119,24 @@ Sofarch.DrugDispenseReturn = (function () {
         DOM.searchDrugReturnDetails.addEventListener('click', searchDrugReturnDetails);
         DOM.filterDrugReturnDetails.addEventListener('click', filterDrugReturnDetails);
 
+        DOM.searchPatientName.addEventListener('click', showSearchPatientModal);
+        DOM.searchPatient.addEventListener('click', getPatientList);
+        DOM.selectPatient.addEventListener('click', selectPatient);
+        DOM.closeSearchPatientModal.addEventListener('click', closeSearchPatientModal);
+
         DOM.patientName.onkeydown = function (e) {
 
             if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
-            showSearchPatientList(e);
+              if (e.target.value.length > 5) {
+                showSearchPatientList(e);
+            }
+            else if (e.target.value === "") {
+                DOM.patientName.setAttribute('data-patient-id', 0);
+                DOM.patientCode.value = "";
+                DOM.employerName.value = "";
+            }
+
 
         };
 
@@ -161,6 +191,123 @@ Sofarch.DrugDispenseReturn = (function () {
         //shared.hideLoader(DOM.loader);
     }
 
+    function getPatientList() {
+
+        shared.showLoader(DOM.loader);
+
+        shared.sendRequest(SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.firstName.value + " " + DOM.lastName.value, "GET", true, "JSON", null, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var searchPatientList = JSON.parse(response.responseText);
+
+                    bindSearchPatientList(searchPatientList);
+                }
+            }
+        });
+
+        shared.hideLoader(DOM.loader);
+    }
+
+    function showSearchPatientModal() {
+
+        DOM.firstName.value = "";
+
+        DOM.lastName.value = "";
+
+        var table = DOM.patientSearchList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
+
+        DOM.$searchPatientModal.modal('show');
+    }
+
+    $('#SearchPatientModal').on('shown.bs.modal', function () {
+
+        DOM.firstName.focus();
+
+    });
+
+    $('#CloseSearchPatientModal').on('click', function () {
+
+        DOM.$searchPatientModal.modal('hide');
+
+    });
+
+    function bindSearchPatientList(searchPatientList) {
+
+        shared.showLoader(DOM.loader);
+
+        var table = DOM.patientSearchList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
+
+        if (searchPatientList.length) {
+
+            var data = "";
+
+            for (var s = 0; s < searchPatientList.length; s++) {
+
+                data = data + "<tr data-patient-id=" + searchPatientList[s].PatientId + ">";
+                data = data + "<td> <label class='label-tick'> <input type='checkbox' id='" + searchPatientList[s].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
+                data = data + "<td>" + searchPatientList[s].PatientCode + "</td>";
+                data = data + "<td>" + searchPatientList[s].FullName + "</td>";
+                data = data + "<td>" + searchPatientList[s].EmployerName + "</td>";
+                data = data + "</tr>";
+            }
+
+            tableBody.innerHTML = data;
+
+        }
+
+        shared.hideLoader(DOM.loader);
+    }
+
+    function selectPatient() {
+
+        var selectedRows = getSelectedRows(DOM.patientSearchList);
+
+        if (selectedRows.length > 1) {
+
+            DOM.$searchPatientModal.modal('show');
+
+            swal('Warning', "Please select only one record to select the Records.", "warning");
+
+            return false;
+        }
+        else {
+
+            var patientId = 0;
+            var patientCode = null;
+            var patientName = null;
+            var employerName = null;
+
+            patientId = parseInt(selectedRows[0].getAttribute('data-patient-id'));
+            patientCode = selectedRows[0].children[1].textContent;
+            patientName = selectedRows[0].children[2].textContent;
+            employerName = selectedRows[0].children[3].textContent;
+
+            DOM.patientCode.value = patientCode;
+            DOM.patientName.value = patientName;
+            DOM.patientName.setAttribute('data-patient-id', patientId);
+            DOM.employerName.value = employerName;
+
+            DOM.searchDrugName.focus();
+
+            DOM.$searchPatientModal.modal('hide');
+        }
+    }
+
+    function closeSearchPatientModal() {
+
+        DOM.$searchPatientModal.modal('hide');
+    }
 
     function showSearchPatientList(e) {
 
@@ -174,89 +321,95 @@ Sofarch.DrugDispenseReturn = (function () {
             shared.closeAutoCompleteList(DOM.searchPatientList);
             return;
         }
+        else if (e.keyCode === 32 || e.keyCode >= 37 && e.keyCode <= 40 || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 65 && e.keyCode <= 90 ||
+            e.keyCode >= 97 && e.keyCode <= 105) {
 
-        var dataAttributes = ['Patient-Id', 'Patient-Code'];
 
-        var parameters = {};
+            var dataAttributes = ['Patient-Id', 'Patient-Code'];
 
-        parameters = {
+            var parameters = {};
 
-            Event: e,
-            CurrentFocus: CurrentFocus,
-            PostDataKeyValue: postMessage,
-            ElementToBeAppend: DOM.searchPatientList,
-            DataAttributes: dataAttributes,
-            PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value,
-            DisplayName: "FullName"
-        };
+            var searchKey = e.target.value + e.key;
 
-        shared.showAutoCompleteItemsList(parameters, function (response) {
+            parameters = {
 
-            if (response !== undefined) {
+                Event: e,
+                CurrentFocus: CurrentFocus,
+                PostDataKeyValue: postMessage,
+                ElementToBeAppend: DOM.searchPatientList,
+                DataAttributes: dataAttributes,
+                PostParamObject: undefined,
+                URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + searchKey,
+                DisplayName: "FullName"
+            };
 
-                if (response >= 0) {
+            shared.showAutoCompleteItemsList(parameters, function (response) {
 
-                    CurrentFocus = response;
-                }
-                else {
+                if (response !== undefined) {
 
-                    CurrentFocus = -1;
+                    if (response >= 0) {
 
-                    var autoCompleteList = response;
+                        CurrentFocus = response;
+                    }
+                    else {
 
-                    var listCount = autoCompleteList.length;
+                        CurrentFocus = -1;
 
-                    if (listCount) {
+                        var autoCompleteList = response;
 
-                        var data = "";
+                        var listCount = autoCompleteList.length;
 
-                        var fragment = document.createDocumentFragment();
+                        if (listCount) {
 
-                        var ul = document.createElement('ul');
+                            var data = "";
 
-                        ul.classList.add('list-group');
+                            var fragment = document.createDocumentFragment();
 
-                        for (var s = 0; s < listCount; s++) {
+                            var ul = document.createElement('ul');
 
-                            var li = document.createElement('li');
-                            var span = document.createElement('span');
-                            var p = document.createElement('p');
+                            ul.classList.add('list-group');
 
-                            li.classList.add('list-group-item');
-                            li.classList.add('clearfix');
+                            for (var s = 0; s < listCount; s++) {
 
-                            li.setAttribute('id', autoCompleteList[s].PatientId);
-                            li.setAttribute('data-patient-code', autoCompleteList[s].PatientCode);
+                                var li = document.createElement('li');
+                                var span = document.createElement('span');
+                                var p = document.createElement('p');
 
-                            li.style.cursor = "pointer";
-                            li.onclick = showPatientNameOnSelection;
-                            span.textContent = autoCompleteList[s].FullName;
+                                li.classList.add('list-group-item');
+                                li.classList.add('clearfix');
 
-                            p.classList.add('list-group-item-text');
-                            p.textContent = autoCompleteList[s].EmployerName;
+                                li.setAttribute('id', autoCompleteList[s].PatientId);
+                                li.setAttribute('data-patient-code', autoCompleteList[s].PatientCode);
 
-                            li.appendChild(span);
-                            li.appendChild(p);
+                                li.style.cursor = "pointer";
+                                li.onclick = showPatientNameOnSelection;
+                                span.textContent = autoCompleteList[s].FullName;
 
-                            fragment.appendChild(li);
+                                p.classList.add('list-group-item-text');
+                                p.textContent = autoCompleteList[s].EmployerName;
+
+                                li.appendChild(span);
+                                li.appendChild(p);
+
+                                fragment.appendChild(li);
+                            }
+
+                            ul.appendChild(fragment);
+
+                            DOM.searchPatientList.appendChild(ul);
+
+                            DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
+                            DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
+
+                            DOM.searchPatientList.classList.add('autocompleteList-active');
+                            //DOM.itemsList.innerHTML = data;
+
                         }
-
-                        ul.appendChild(fragment);
-
-                        DOM.searchPatientList.appendChild(ul);
-
-                        DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
-                        DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
-
-                        DOM.searchPatientList.classList.add('autocompleteList-active');
-                        //DOM.itemsList.innerHTML = data;
-
                     }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     function showPatientNameOnSelection(e) {
@@ -840,16 +993,138 @@ Sofarch.DrugDispenseReturn = (function () {
         }
     }
 
-    function fillSearchOption() {
+    function getSearchFields() {
 
-        var options = "";
+        shared.showLoader(DOM.loader);
 
-        options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='PatientName' selected='selected'> Patient Name</option>";
-        options += "<option value='DrugName'> Drug Name </option>";
-        options += "<option value='DrugCode'> Drug Code</option>";
+        shared.sendRequest(SERVICE_PATH + "GetSearchFields/18", "GET", true, "JSON", null, function (response) {
 
-        DOM.searchOptions.innerHTML = options;
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        bindSearchFields(_response);
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function bindSearchFields(searchFields) {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        if (searchFields.length) {
+
+            for (var s = 0; s < searchFields.length; s++) {
+
+                var data = "";
+
+                var tableRow = shared.createElement('TR');
+
+                data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12' data-table-field-name='" + searchFields[s].FieldValue + "'>" + searchFields[s].FieldName + "</td>";
+
+                if (searchFields[s].ControlName.toLowerCase() === "select") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <select id='" + searchFields[s].FieldValue + "' class='form-control input-md'></select> </td>";
+                }
+                else if (searchFields[s].ControlName.toLowerCase() === "date") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <div class='input-group date input-group-md' id='" + searchFields[s].FieldValue + "DatePicker'><input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> <span class='input-group-addon'><i class='fa fa-calendar'></i></span></div></td>";
+                }
+                else
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> </td>";
+
+                tableRow.innerHTML = data;
+
+                tableBody.appendChild(tableRow);
+            }
+
+        }
+
+        applyPluginsToSearchFields(tableBody);
+
+        setFocusToFirstElement(tableBody);
+
+    }
+
+    function applyPluginsToSearchFields(tableBody) {
+
+        var selects = tableBody.querySelectorAll('select');
+
+        var divs = tableBody.querySelectorAll('.date');
+
+        if (selects.length) {
+
+            for (var s = 0; s < selects.length; s++) {
+
+                selects[s].innerHTML = selects[s].innerHTML + DOM.financialYear.innerHTML;
+
+                $($(selects[s])[0]).select2();
+
+                shared.setSelectOptionByIndex(selects[s], parseInt(1));
+                shared.setSelect2ControlsText(selects[s]);
+
+            }
+        }
+
+        if (divs.length) {
+
+            for (var d = 0; d < divs.length; d++) {
+
+                if (divs[d].classList.contains('date')) {
+
+                    $($(divs[d])[0]).datetimepicker({
+                        format: 'DD/MMM/YYYY'
+                    });
+                }
+            }
+        }
+
+    }
+
+    function setFocusToFirstElement(tableBody) {
+
+        var input = tableBody.querySelectorAll('input[type="text"]')[0];
+
+        setFocusOnElement(input);
+
+    }
+
+    var checkSearchFieldsTableHasRows = function () {
+
+        var tableBody = DOM.searchFieldsList.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        return tableRows;
+    };
+
+    function clearSearchFieldsListControls(tableRows) {
+
+        if (tableRows.length) {
+
+            var tableBody = DOM.searchFieldsList.tBodies[0];
+
+            var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+            if (inputs.length) {
+
+                for (var i = 0; i < inputs.length; i++) {
+
+                    inputs[i].value = "";
+                }
+            }
+        }
     }
 
     function filterDrugReturnDetails() {
@@ -858,7 +1133,14 @@ Sofarch.DrugDispenseReturn = (function () {
 
         shared.clearInputs(DOM.searchDrugReturnDetailsPanel);
 
-        fillSearchOption();
+        var tableRows = checkSearchFieldsTableHasRows();
+
+        if (tableRows.length) {
+            clearSearchFieldsListControls(tableRows);
+        }
+        else {
+            getSearchFields();
+        }
 
         if (DOM.searchDrugReturnDetailsPanel.classList.contains("hide")) {
             DOM.searchDrugReturnDetailsPanel.classList.remove('hide');
@@ -869,8 +1151,10 @@ Sofarch.DrugDispenseReturn = (function () {
             DOM.searchDrugReturnDetailsPanel.classList.add('hide');
         }
 
-        DOM.searchValue.focus();
+        DOM.searchFieldsList.tBodies[0].innerHTML = "";
+
     }
+
 
     function searchDrugReturnDetails() {
 
@@ -884,22 +1168,26 @@ Sofarch.DrugDispenseReturn = (function () {
 
         DrugReturnDetails.length = 0;
 
-        var searchParmater = {
-            PatientName: null,
-            EmployerName: null,
-            PatientCode: null
-        };
+        //var searchParmater = {
+        //    PatientName: null,
+        //    EmployerName: null,
+        //    PatientCode: null
+        //};
 
-        var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
-        var searchValue = DOM.searchValue.value;
+        //var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
+        //var searchValue = DOM.searchValue.value;
 
-        searchParmater[searchParameterName] = searchValue;
+        //searchParmater[searchParameterName] = searchValue;
 
-        var postData = JSON.stringify(searchParmater);
+        var searchParameter = getSearchCriteria();
+
+        var postData = JSON.stringify(searchParameter);
 
         shared.sendRequest(SERVICE_PATH + "SearchDrugDispenseReturn/", "POST", true, "JSON", postData, function (response) {
 
             if (response.status === 200) {
+
+                shared.showLoader(DOM.loader);
 
                 if (response.responseText !== undefined) {
 
@@ -910,6 +1198,8 @@ Sofarch.DrugDispenseReturn = (function () {
                         DrugReturnDetails = _response;
 
                         bindDrugReturnDetails();
+
+                        filterDrugReturnDetails();
                     }
                 }
             }
@@ -952,6 +1242,8 @@ Sofarch.DrugDispenseReturn = (function () {
 
     function bindDrugReturnDetails() {
 
+        shared.showLoader(DOM.loader);
+
         var tableBody = DOM.drugReturnDetailsList.tBodies[0];
 
         tableBody.innerHTML = "";
@@ -981,6 +1273,9 @@ Sofarch.DrugDispenseReturn = (function () {
             shared.showPanel(DOM.viewMode);
             shared.hidePanel(DOM.editMode);
         }
+
+        shared.hideLoader(DOM.loader);
+
     }
 
     function showDrugReturnList() {
@@ -1134,6 +1429,8 @@ Sofarch.DrugDispenseReturn = (function () {
             tableBody.appendChild(tableRow);
 
             addEventsToTableElements();
+
+            setFocusOnNewRowInput(tableBody);
         }
 
         shared.hideLoader(DOM.loader);
@@ -1205,6 +1502,18 @@ Sofarch.DrugDispenseReturn = (function () {
         }
     }
 
+    function setFocusOnNewRowInput(tableBody) {
+
+        var tableRows = tableBody.children;
+
+        var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+        if (inputs.length) {
+            inputs[tableRows.length - 1].focus();
+        }
+
+    }
+
     function calculateItemAmount(e) {
 
         var tableRow = e.target.parentElement.parentElement;
@@ -1223,7 +1532,7 @@ Sofarch.DrugDispenseReturn = (function () {
 
             setTimeout(function () {
                 DOM.searchDrugName.focus();
-            }, 200);
+            }, 2000);
 
         }
 

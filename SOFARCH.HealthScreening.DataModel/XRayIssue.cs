@@ -140,9 +140,11 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchXRayIssue))
                 {
-                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, xrayIssue.PatientName);
-                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, xrayIssue.EmployerName);
-                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, xrayIssue.PatientCode);
+                    database.AddInParameter(dbCommand, "@financial_year", DbType.String, xrayIssue.FinancialYear);
+                    database.AddInParameter(dbCommand, "@first_name", DbType.String, xrayIssue.FirstName);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.String, xrayIssue.LastName);
+                    database.AddInParameter(dbCommand, "@xray_issue_from_date", DbType.String, xrayIssue.XRayIssueFromDate);
+                    database.AddInParameter(dbCommand, "@xray_issue_to_date", DbType.String, xrayIssue.XRayIssueToDate);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -166,6 +168,7 @@ namespace SOFARCH.HealthScreening.DataModel
                                 EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
                                 EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                                 WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                                FinancialYear = DRE.GetNullableString(reader, "financial_year", null),
                                 XRayFilmsUsed = xrayFilmUsed.GetFilmUsedDetailsByXRayIssueId(DRE.GetInt32(reader, "xray_issue_id"))
                             };
 

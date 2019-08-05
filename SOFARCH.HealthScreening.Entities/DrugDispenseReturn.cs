@@ -32,6 +32,13 @@ namespace SOFARCH.HealthScreening.Entities
 
         public string SearchDrugName { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string DrugReturnFromDate { get; set; }
+
+        public string DrugReturnToDate { get; set; }
 
 
     }

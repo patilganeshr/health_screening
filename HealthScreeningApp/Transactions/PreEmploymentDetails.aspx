@@ -68,24 +68,24 @@
                                 <div class="row">
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <label>Search Options</label>
-                                                <select id="SearchOptions" class="form-control"></select>
-                                            </div>
+                                        <div id="SearchCriteriaList" class="table-responsive" style="max-height: 300px;">
+                                            <table id="SearchFieldsList" class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Name</th>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <label>Search Value</label>
-                                                <input type="text" id="SearchValue" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <button type="button" id="SearchPreEmploymentDetails" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                                <button type="button" id="SearchPreEmploymentDetails" class="btn btn-info btn-md">Search</button>
                                             </div>
                                         </div>
 
@@ -159,6 +159,85 @@
 
             <div id="EditMode">
 
+                <!-- MODAL OPEN -->
+
+                <div id="SearchPatientModal" class="modal fade">
+
+                        <div class="modal-dialog modal-medium">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Search Patient</h4>
+                                </div>
+
+                                <div class="modal-body modal-body-scroll">
+
+                                    <div class="row">
+
+                                        <div class="panel-body">
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group form-group-md">
+                                                        <label>First Name</label>
+                                                        <input type="text" id="FirstName" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                    <div class="form-group form-group-md">
+                                                        <label>Last Name</label>
+                                                        <input type="text" id="LastName" class="form-control" />
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group form-group-md">
+                                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                        <button type="button" id="SearchPatient" class="btn btn-md btn-success" style="margin-top: 26px;">Search</button>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="table-responsive" style="max-height: 300px;">
+                                                    <table id="PatientSearchList" class="table table-condensed">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Action</th>
+                                                                <th>Patient Code</th>
+                                                                <th>Patient Name</th>
+                                                                <th>Company Name</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" id="SelectPatient" class="btn btn-info btn-sm btn-rounded">Choose Select</button>
+                                    <button type="button" id="CloseSearchPatientModal" class="btn btn-default btn-sm btn-rounded" data-dismiss="modal">Close</button>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                <!-- MODAL CLOSE -->
+
                 <div class="row">
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -230,9 +309,16 @@
                                                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Patient Name</label>
-                                                        <input type="text" id="PatientName" class="form-control" />
+                                                        <div class="input-group">
+                                                            <input type="text" id="PatientName" class="form-control" />
+                                                            <div id="SearchPatientList" class="autocompleteList"></div>
+                                                            <span class="input-group-btn">
+                                                                <button type="button" id="SearchPatientName" class="btn btn-danger btn-md">
+                                                                    <i class="fa fa-search"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div id="SearchPatientList" class="autocompleteList"></div>
                                                 </div>
 
                                                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">

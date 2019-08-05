@@ -64,6 +64,7 @@
     <Compile Include="ClientType.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="DataSearchField.cs" />
     <Compile Include="DBConnect.cs" />
     <Compile Include="DBStoredProcedure.cs" />
     <Compile Include="Drug.cs" />

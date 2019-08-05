@@ -20,8 +20,8 @@ Sofarch.XRayIssue = (function () {
 
         DOM.viewMode = document.getElementById('ViewMode');
         DOM.searchXRayIssueDetailsPanel = document.getElementById('SearchXRayIssueDetailsPanel');
-        DOM.searchOptions = document.getElementById('SearchOptions');
-        DOM.searchValue = document.getElementById('SearchValue');
+        DOM.searchCriteriaList = document.getElementById('SearchCriteriaList');
+        DOM.searchFieldsList = document.getElementById('SearchFieldsList');
         DOM.searchXRayIssueDetails = document.getElementById('SearchXRayIssueDetails');
 
         DOM.xrayIssueDetailsList = document.getElementById('XRayIssueDetailsList');
@@ -44,6 +44,15 @@ Sofarch.XRayIssue = (function () {
         DOM.searchDrugList = document.getElementById('SearchDrugList');
         DOM.xrayFilmUsedList = document.getElementById('XRayFilmUsedList');
 
+        DOM.searchPatientName = document.getElementById('SearchPatientName');
+        DOM.searchPatientModal = document.getElementById('SearchPatientModal');
+        DOM.firstName = document.getElementById('FirstName');
+        DOM.lastName = document.getElementById('LastName');
+        DOM.searchPatient = document.getElementById('SearchPatient');
+        DOM.patientSearchList = document.getElementById('PatientSearchList');
+        DOM.selectPatient = document.getElementById('SelectPatient');
+        DOM.closeSearchPatientModal = document.getElementById('CloseSearchPatientModal');
+
         DOM.addNewXRayIssueDetails = document.getElementById('AddNewXRayIssueDetails');
         DOM.showXRayIssueList = document.getElementById('ShowXRayIssueList');
         DOM.viewXRayIssueDetails = document.getElementById('ViewXRayIssueDetails');
@@ -55,7 +64,8 @@ Sofarch.XRayIssue = (function () {
 
         /*cache the jquery element */
         DOM.$drugDispenseDateDatePicker = $('#XRayIssueDateDatePicker');
-
+        DOM.$searchPatientModal = $('#SearchPatientModal');
+        DOM.$closeSearchPatientModal = $('#CloseSearchPatientModal');
     }
 
     function applyPlugins() {
@@ -74,6 +84,12 @@ Sofarch.XRayIssue = (function () {
     function setFocusOnSelect(e) {
         setTimeout(function () {
             e.currentTarget.focus();
+        }, 200);
+    }
+
+    function setFocusOnElement(element) {
+        setTimeout(function () {
+            element.focus();
         }, 200);
     }
 
@@ -105,11 +121,23 @@ Sofarch.XRayIssue = (function () {
         DOM.searchXRayIssueDetails.addEventListener('click', searchXRayIssueDetails);
         DOM.filterXRayIssueDetails.addEventListener('click', filterXRayIssueDetails);
 
+        DOM.searchPatientName.addEventListener('click', showSearchPatientModal);
+        DOM.searchPatient.addEventListener('click', getPatientList);
+        DOM.selectPatient.addEventListener('click', selectPatient);
+        DOM.closeSearchPatientModal.addEventListener('click', closeSearchPatientModal);
+
         DOM.patientName.onkeydown = function (e) {
 
             if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
-            showSearchPatientList(e);
+            if (e.target.value.length > 5) {
+                showSearchPatientList(e);
+            }
+            else if (e.target.value === "") {
+                DOM.patientName.setAttribute('data-patient-id', 0);
+                DOM.patientCode.value = "";
+                DOM.employerName.value = "";
+            }
 
         };
 
@@ -158,6 +186,124 @@ Sofarch.XRayIssue = (function () {
         //shared.hideLoader(DOM.loader);
     }
 
+    function getPatientList() {
+
+        shared.showLoader(DOM.loader);
+
+        shared.sendRequest(SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.firstName.value + " " + DOM.lastName.value, "GET", true, "JSON", null, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var searchPatientList = JSON.parse(response.responseText);
+
+                    bindSearchPatientList(searchPatientList);
+                }
+            }
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function showSearchPatientModal() {
+
+        DOM.firstName.value = "";
+
+        DOM.lastName.value = "";
+
+        var table = DOM.patientSearchList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
+
+        DOM.$searchPatientModal.modal('show');
+    }
+
+    $('#SearchPatientModal').on('shown.bs.modal', function () {
+
+        DOM.firstName.focus();
+
+    });
+
+    $('#CloseSearchPatientModal').on('click', function () {
+
+        DOM.$searchPatientModal.modal('hide');
+
+    });
+
+    function bindSearchPatientList(searchPatientList) {
+
+        shared.showLoader(DOM.loader);
+
+        var table = DOM.patientSearchList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
+
+        if (searchPatientList.length) {
+
+            var data = "";
+
+            for (var s = 0; s < searchPatientList.length; s++) {
+
+                data = data + "<tr data-patient-id=" + searchPatientList[s].PatientId + ">";
+                data = data + "<td> <label class='label-tick'> <input type='checkbox' id='" + searchPatientList[s].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
+                data = data + "<td>" + searchPatientList[s].PatientCode + "</td>";
+                data = data + "<td>" + searchPatientList[s].FullName + "</td>";
+                data = data + "<td>" + searchPatientList[s].EmployerName + "</td>";
+                data = data + "</tr>";
+            }
+
+            tableBody.innerHTML = data;
+
+        }
+
+        shared.hideLoader(DOM.loader);
+    }
+
+    function selectPatient() {
+
+        var selectedRows = getSelectedRows(DOM.patientSearchList);
+
+        if (selectedRows.length > 1) {
+
+            DOM.$searchPatientModal.modal('show');
+
+            swal('Warning', "Please select only one record to select the Records.", "warning");
+
+            return false;
+        }
+        else {
+
+            var patientId = 0;
+            var patientCode = null;
+            var patientName = null;
+            var employerName = null;
+
+            patientId = parseInt(selectedRows[0].getAttribute('data-patient-id'));
+            patientCode = selectedRows[0].children[1].textContent;
+            patientName = selectedRows[0].children[2].textContent;
+            employerName = selectedRows[0].children[3].textContent;
+
+            DOM.patientCode.value = patientCode;
+            DOM.patientName.value = patientName;
+            DOM.patientName.setAttribute('data-patient-id', patientId);
+            DOM.employerName.value = employerName;
+
+            DOM.searchDrugName.focus();
+
+            DOM.$searchPatientModal.modal('hide');
+        }
+    }
+
+    function closeSearchPatientModal() {
+
+        DOM.$searchPatientModal.modal('hide');
+    }
 
     function showSearchPatientList(e) {
 
@@ -171,89 +317,95 @@ Sofarch.XRayIssue = (function () {
             shared.closeAutoCompleteList(DOM.searchPatientList);
             return;
         }
+        else if (e.keyCode === 32 || e.keyCode >= 37 && e.keyCode <= 40 || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 65 && e.keyCode <= 90 ||
+            e.keyCode >= 97 && e.keyCode <= 105) {
 
-        var dataAttributes = ['Patient-Id', 'Patient-Code'];
 
-        var parameters = {};
+            var dataAttributes = ['Patient-Id', 'Patient-Code'];
 
-        parameters = {
+            var parameters = {};
 
-            Event: e,
-            CurrentFocus: CurrentFocus,
-            PostDataKeyValue: postMessage,
-            ElementToBeAppend: DOM.searchPatientList,
-            DataAttributes: dataAttributes,
-            PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value,
-            DisplayName: "FullName"
-        };
+            var searchKey = e.target.value + e.key;
 
-        shared.showAutoCompleteItemsList(parameters, function (response) {
+            parameters = {
 
-            if (response !== undefined) {
+                Event: e,
+                CurrentFocus: CurrentFocus,
+                PostDataKeyValue: postMessage,
+                ElementToBeAppend: DOM.searchPatientList,
+                DataAttributes: dataAttributes,
+                PostParamObject: undefined,
+                URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + searchKey,
+                DisplayName: "FullName"
+            };
 
-                if (response >= 0) {
+            shared.showAutoCompleteItemsList(parameters, function (response) {
 
-                    CurrentFocus = response;
-                }
-                else {
+                if (response !== undefined) {
 
-                    CurrentFocus = -1;
+                    if (response >= 0) {
 
-                    var autoCompleteList = response;
+                        CurrentFocus = response;
+                    }
+                    else {
 
-                    var listCount = autoCompleteList.length;
+                        CurrentFocus = -1;
 
-                    if (listCount) {
+                        var autoCompleteList = response;
 
-                        var data = "";
+                        var listCount = autoCompleteList.length;
 
-                        var fragment = document.createDocumentFragment();
+                        if (listCount) {
 
-                        var ul = document.createElement('ul');
+                            var data = "";
 
-                        ul.classList.add('list-group');
+                            var fragment = document.createDocumentFragment();
 
-                        for (var s = 0; s < listCount; s++) {
+                            var ul = document.createElement('ul');
 
-                            var li = document.createElement('li');
-                            var span = document.createElement('span');
-                            var p = document.createElement('p');
+                            ul.classList.add('list-group');
 
-                            li.classList.add('list-group-item');
-                            li.classList.add('clearfix');
+                            for (var s = 0; s < listCount; s++) {
 
-                            li.setAttribute('id', autoCompleteList[s].PatientId);
-                            li.setAttribute('data-patient-code', autoCompleteList[s].PatientCode);
+                                var li = document.createElement('li');
+                                var span = document.createElement('span');
+                                var p = document.createElement('p');
 
-                            li.style.cursor = "pointer";
-                            li.onclick = showPatientNameOnSelection;
-                            span.textContent = autoCompleteList[s].FullName;
+                                li.classList.add('list-group-item');
+                                li.classList.add('clearfix');
 
-                            p.classList.add('list-group-item-text');
-                            p.textContent = autoCompleteList[s].EmployerName;
+                                li.setAttribute('id', autoCompleteList[s].PatientId);
+                                li.setAttribute('data-patient-code', autoCompleteList[s].PatientCode);
 
-                            li.appendChild(span);
-                            li.appendChild(p);
+                                li.style.cursor = "pointer";
+                                li.onclick = showPatientNameOnSelection;
+                                span.textContent = autoCompleteList[s].FullName;
 
-                            fragment.appendChild(li);
+                                p.classList.add('list-group-item-text');
+                                p.textContent = autoCompleteList[s].EmployerName;
+
+                                li.appendChild(span);
+                                li.appendChild(p);
+
+                                fragment.appendChild(li);
+                            }
+
+                            ul.appendChild(fragment);
+
+                            DOM.searchPatientList.appendChild(ul);
+
+                            DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
+                            DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
+
+                            DOM.searchPatientList.classList.add('autocompleteList-active');
+                            //DOM.itemsList.innerHTML = data;
+
                         }
-
-                        ul.appendChild(fragment);
-
-                        DOM.searchPatientList.appendChild(ul);
-
-                        DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
-                        DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
-
-                        DOM.searchPatientList.classList.add('autocompleteList-active');
-                        //DOM.itemsList.innerHTML = data;
-
                     }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     function showPatientNameOnSelection(e) {
@@ -301,7 +453,6 @@ Sofarch.XRayIssue = (function () {
 
         DOM.patientName.focus();
 
-        fillPastXRayIssueDate(id);
     }
 
     function showSearchDrugList(e) {
@@ -626,6 +777,10 @@ Sofarch.XRayIssue = (function () {
 
         DOM.xrayIssueDate.value = moment(currentDate).format("DD/MMM/YYYY");
 
+        var listOfControls = [DOM.xrayIssueNo, DOM.xrayIssueDate, DOM.patientCode, DOM.employerName];
+
+        shared.disableSpecificControls(listOfControls, true);
+
         // Show panel;
         shared.showPanel(DOM.editMode);
         shared.hidePanel(DOM.viewMode);
@@ -673,6 +828,10 @@ Sofarch.XRayIssue = (function () {
         shared.clearTables(DOM.editMode);
 
         shared.disableControls(DOM.editMode, false);
+
+        var listOfControls = [DOM.xrayIssueNo, DOM.xrayIssueDate, DOM.patientCode, DOM.patientName, DOM.employerName];
+
+        shared.disableSpecificControls(listOfControls, true);
 
         getSelectedXRayIssueDetails();
 
@@ -779,16 +938,139 @@ Sofarch.XRayIssue = (function () {
         }
     }
 
-    function fillSearchOption() {
+    function getSearchFields() {
 
-        var options = "";
+        shared.showLoader(DOM.loader);
 
-        options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='PatientName' selected='selected'> Patient Name</option>";
-        options += "<option value='EmployerName'> Company Name </option>";
-        options += "<option value='PatientCode'> Patient Code</option>";
+        shared.sendRequest(SERVICE_PATH + "GetSearchFields/6", "GET", true, "JSON", null, function (response) {
 
-        DOM.searchOptions.innerHTML = options;
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        bindSearchFields(_response);
+
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function bindSearchFields(searchFields) {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        if (searchFields.length) {
+
+            for (var s = 0; s < searchFields.length; s++) {
+
+                var data = "";
+
+                var tableRow = shared.createElement('TR');
+
+                data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12' data-table-field-name='" + searchFields[s].FieldValue + "'>" + searchFields[s].FieldName + "</td>";
+
+                if (searchFields[s].ControlName.toLowerCase() === "select") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <select id='" + searchFields[s].FieldValue + "' class='form-control input-md'></select> </td>";
+                }
+                else if (searchFields[s].ControlName.toLowerCase() === "date") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <div class='input-group date input-group-md' id='" + searchFields[s].FieldValue + "DatePicker'><input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> <span class='input-group-addon'><i class='fa fa-calendar'></i></span></div></td>";
+                }
+                else
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> </td>";
+
+                tableRow.innerHTML = data;
+
+                tableBody.appendChild(tableRow);
+            }
+
+        }
+
+        applyPluginsToSearchFields(tableBody);
+
+        setFocusToFirstElement(tableBody);
+
+    }
+
+    function applyPluginsToSearchFields(tableBody) {
+
+        var selects = tableBody.querySelectorAll('select');
+
+        var divs = tableBody.querySelectorAll('.date');
+
+        if (selects.length) {
+
+            for (var s = 0; s < selects.length; s++) {
+
+                selects[s].innerHTML = selects[s].innerHTML + DOM.financialYear.innerHTML;
+
+                $($(selects[s])[0]).select2();
+
+                shared.setSelectOptionByIndex(selects[s], parseInt(1));
+                shared.setSelect2ControlsText(selects[s]);
+
+            }
+        }
+
+        if (divs.length) {
+
+            for (var d = 0; d < divs.length; d++) {
+
+                if (divs[d].classList.contains('date')) {
+
+                    $($(divs[d])[0]).datetimepicker({
+                        format: 'DD/MMM/YYYY'
+                    });
+                }
+            }
+        }
+
+    }
+
+    function setFocusToFirstElement(tableBody) {
+
+        var input = tableBody.querySelectorAll('input[type="text"]')[0];
+
+        setFocusOnElement(input);
+
+    }
+
+    var checkSearchFieldsTableHasRows = function () {
+
+        var tableBody = DOM.searchFieldsList.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        return tableRows;
+    };
+
+    function clearSearchFieldsListControls(tableRows) {
+
+        if (tableRows.length) {
+
+            var tableBody = DOM.searchFieldsList.tBodies[0];
+
+            var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+            if (inputs.length) {
+
+                for (var i = 0; i < inputs.length; i++) {
+
+                    inputs[i].value = "";
+                }
+            }
+        }
     }
 
     function filterXRayIssueDetails() {
@@ -797,7 +1079,14 @@ Sofarch.XRayIssue = (function () {
 
         shared.clearInputs(DOM.searchXRayIssueDetailsPanel);
 
-        fillSearchOption();
+        var tableRows = checkSearchFieldsTableHasRows();
+
+        if (tableRows.length) {
+            clearSearchFieldsListControls(tableRows);
+        }
+        else {
+            getSearchFields();
+        }
 
         if (DOM.searchXRayIssueDetailsPanel.classList.contains("hide")) {
             DOM.searchXRayIssueDetailsPanel.classList.remove('hide');
@@ -808,8 +1097,70 @@ Sofarch.XRayIssue = (function () {
             DOM.searchXRayIssueDetailsPanel.classList.add('hide');
         }
 
-        DOM.searchValue.focus();
+        DOM.searchFieldsList.tBodies[0].innerHTML = "";
     }
+
+    var getSearchCriteria = function () {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        var searchCriteria = "";
+
+        var searchParameter = {};
+
+        if (tableRows.length) {
+
+
+            for (var tr = 0; tr < tableRows.length; tr++) {
+
+                if (tableRows[tr].children[1].children[0].value !== "") {
+
+                    if (tableRows[tr].children[1].children[0].nodeName.toLowerCase() === "select") {
+
+                        var selectedIndex = tableRows[tr].children[1].children[0].selectedIndex;
+
+                        searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].options[selectedIndex].text;
+                    }
+                    else {
+
+                        searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].value;
+                    }
+                }
+
+                //var searchFieldName = "";
+                //var operator = "";
+                //var searchFieldValue = "";
+
+                //var condition = "and ";
+
+                //searchFieldName = tableRows[tr].children[0].getAttribute('data-table-field-name');
+
+                //searchFieldValue = tableRows[tr].children[2].textContent;
+
+                //if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('contains') !== -1) {
+                //    operator = "like";
+                //}
+                //else if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('equals') !== -1) {
+                //    operator = "=";
+                //}
+                //else {
+                //    operator = tableRows[tr].children[1].textContent;
+                //}
+
+                //searchCriteria += "" + searchFieldName + " " + operator + " ''%" + searchFieldValue + "%'' " + condition + " ";
+
+            }
+
+            //searchCriteria = "" +  searchCriteria.substring(0, searchCriteria.lastIndexOf("'")) + "'";
+            //searchCriteria.substring(0, searchCriteria.length - (searchCriteria.lastIndexOf("'") + condition.length));
+        }
+
+        return searchParameter;
+    };
 
     function searchXRayIssueDetails() {
 
@@ -819,18 +1170,20 @@ Sofarch.XRayIssue = (function () {
 
         XRayIssueDetails.length = 0;
 
-        var searchParmater = {
-            FullName: null,
-            EmployerName: null,
-            PatientCode: null
-        };
+        //var searchParmater = {
+        //    FullName: null,
+        //    EmployerName: null,
+        //    PatientCode: null
+        //};
 
-        var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
-        var searchValue = DOM.searchValue.value;
+        //var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
+        //var searchValue = DOM.searchValue.value;
 
-        searchParmater[searchParameterName] = searchValue;
+        //searchParmater[searchParameterName] = searchValue;
 
-        var postData = JSON.stringify(searchParmater);
+        var searchParameter = getSearchCriteria();
+
+        var postData = JSON.stringify(searchParameter);
 
         shared.sendRequest(SERVICE_PATH + "SearchXRayIssue/", "POST", true, "JSON", postData, function (response) {
 
@@ -845,6 +1198,8 @@ Sofarch.XRayIssue = (function () {
                         XRayIssueDetails = _response;
 
                         bindXRayIssueDetails();
+
+                        filterXRayIssueDetails();
                     }
                 }
             }
@@ -900,10 +1255,13 @@ Sofarch.XRayIssue = (function () {
 
                 data = data + "<tr data-xray-issue-id=" + XRayIssueDetails[r].XRayIssueId + " data-patient-id=" + XRayIssueDetails[r].PatientId + " >";
                 data = data + "<td> <label class='label-tick'> <input type='checkbox' id='" + XRayIssueDetails[r].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
-                data = data + "<td>" + XRayIssueDetails[r].EmployerName + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].XRayIssueNo + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].XRayIssueDate + "</td>";
                 data = data + "<td>" + XRayIssueDetails[r].PatientCode + "</td>";
                 data = data + "<td>" + XRayIssueDetails[r].PatientName + "</td>";
-                data = data + "<td>" + XRayIssueDetails[r].Gender + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].EmployerName + "</td>";
+                data = data + "<td>" + XRayIssueDetails[r].FinancialYear + "</td>";
+
                 data = data + "</tr>";
 
             }
@@ -1065,6 +1423,8 @@ Sofarch.XRayIssue = (function () {
             tableBody.appendChild(tableRow);
 
             addEventsToTableElements();
+
+            setFocusOnNewRowInput(tableBody);
         }
 
     }
@@ -1132,6 +1492,18 @@ Sofarch.XRayIssue = (function () {
 
             tableRow.style.display = "none";
         }
+    }
+
+    function setFocusOnNewRowInput(tableBody) {
+
+        var tableRows = tableBody.children;
+
+        var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+        if (inputs.length) {
+            inputs[tableRows.length - 1].focus();
+        }
+
     }
 
     function calculateItemAmount(e) {
@@ -1223,7 +1595,7 @@ Sofarch.XRayIssue = (function () {
                 xrayIssueId = parseInt(DOM.xrayIssueNo.getAttribute('data-xray-issue-id'));
                 drugId = parseInt(tableRows[tr].getAttribute('data-drug-id'));
                 dispenseQty = parseFloat(dispenseQtyInput.value);
-                rate = parseFloat(tableRows[tr].children[4].textContent);
+                rate = parseFloat(tableRows[tr].children[5].textContent);
 
                 if (isNaN(xrayFilmUsedId)) { xrayFilmUsedId = 0; }
                 if (isNaN(xrayIssueId)) { xrayIssueId = 0; }

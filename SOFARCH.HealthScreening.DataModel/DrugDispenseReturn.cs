@@ -126,6 +126,7 @@ namespace SOFARCH.HealthScreening.DataModel
                 {
                     database.AddInParameter(dbCommand, "@drug_dispense_return_id", DbType.Int32, drugDispenseReturn.DrugDispenseReturnId);
                     database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, drugDispenseReturn.DrugDispenseId);
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, drugDispenseReturn.PatientId);
                     database.AddInParameter(dbCommand, "@drug_return_date", DbType.String, drugDispenseReturn.DrugReturnDate);
                     database.AddInParameter(dbCommand, "@working_period_id", DbType.Int32, drugDispenseReturn.WorkingPeriodId);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, drugDispenseReturn.ModifiedBy);
@@ -157,9 +158,11 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispenseReturn))
                 {
-                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, drugDispenseReturn.PatientName);
-                    database.AddInParameter(dbCommand, "@drug_code", DbType.String, drugDispenseReturn.SearchDrugCode);
-                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugDispenseReturn.SearchDrugName);
+                    database.AddInParameter(dbCommand, "@financial_year", DbType.String, drugDispenseReturn.FinancialYear);
+                    database.AddInParameter(dbCommand, "@first_name", DbType.String, drugDispenseReturn.FirstName);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.String, drugDispenseReturn.LastName);
+                    database.AddInParameter(dbCommand, "@drug_return_from_date", DbType.String, drugDispenseReturn.DrugReturnFromDate);
+                    database.AddInParameter(dbCommand, "@drug_return_to_date", DbType.String, drugDispenseReturn.DrugReturnToDate);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {

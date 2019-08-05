@@ -29,6 +29,10 @@ namespace SOFARCH.HealthScreening.Entities
 
         public decimal? TotalBillAmount { get; set; }
 
+        public string PurchaseBillFromDate { get; set; }
+
+        public string PurchaseBillToDate { get; set; }
+
     }
 }
 

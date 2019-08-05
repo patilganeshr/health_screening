@@ -55,7 +55,7 @@
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                        <h4 class="panel-title panel-title-align-middle">Search Case Paper Details</h4>
+                                        <h4 class="panel-title panel-title-align-middle">Search Patient Details</h4>
 
                                     </div>
 
@@ -68,24 +68,24 @@
                                 <div class="row">
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <label>Search Options</label>
-                                                <select id="SearchOptions" class="form-control"></select>
-                                            </div>
+                                        <div id="SearchCriteriaList" class="table-responsive" style="max-height:300px;">
+                                            <table id="SearchFieldsList" class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Field Name</th>
+                                                        <th>Field Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <label>Search Value</label>
-                                                <input type="text" id="SearchValue" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <button type="button" id="SearchPatient" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                                <button type="button" id="SearchPatient" class="btn btn-info btn-md">Search</button>
                                             </div>
                                         </div>
 

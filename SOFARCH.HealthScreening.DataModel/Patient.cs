@@ -186,7 +186,9 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchPatients))
                 {
-                    database.AddInParameter(dbCommand, "@full_name", DbType.String, patient.FullName);
+                    //database.AddInParameter(dbCommand, "@where_clause", DbType.String, searchCriteria);
+                    database.AddInParameter(dbCommand, "@first_name", DbType.String, patient.FirstName);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.String, patient.LastName);
                     database.AddInParameter(dbCommand, "@employer_name", DbType.String, patient.EmployerName);
                     database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, patient.PatientCode);
 
@@ -204,7 +206,7 @@ namespace SOFARCH.HealthScreening.DataModel
             return patients;
         }
 
-        public List<Entities.Patient> GetPatientIdAndNameByPatientName(string patientName)
+        public List<Entities.Patient> GetPatientIdAndNameByPatientName(string firstName, string lastName)
         {
             List<Entities.Patient> patients = new List<Entities.Patient>();
 
@@ -212,7 +214,9 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetPatientIdAndNameByPatientName))
                 {
-                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, patientName);
+                    //database.AddInParameter(dbCommand, "@patient_name", DbType.String, patientName);
+                    database.AddInParameter(dbCommand, "@first_name", DbType.String, firstName);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.String, lastName);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {

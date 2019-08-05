@@ -63,5 +63,13 @@ namespace SOFARCH.HealthScreening.Entities
 
         public List<Entities.PreEmploymentTestDetails> PreEmploymentTestDetails { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public string ConsultFromDate { get; set; }
+
+        public string ConsultToDate { get; set; }
+
     }
 }

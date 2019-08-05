@@ -97,6 +97,7 @@
     <Compile Include="Controllers\ClientTypeController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\DataSearchFieldController.cs" />
     <Compile Include="Controllers\DrugController.cs" />
     <Compile Include="Controllers\DrugDispenseReturnController.cs" />
     <Compile Include="Controllers\medicinesDispenseController.cs" />

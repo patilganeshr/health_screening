@@ -30,11 +30,11 @@ namespace SOFARCH.HealthScreening.Api.Controllers
             return _purchaseBill.GetPurchaseBillIdAndPurcharseBillNo();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("SearchPurchaseBillsAll")]
-        public List<Entities.PurchaseBill> SearchPurchaseBillsAll()
+        public List<Entities.PurchaseBill> SearchPurchaseBillsAll(Entities.PurchaseBill purchaseBill)
         {
-            return _purchaseBill.SearchPurchaseBillsAll();
+            return _purchaseBill.SearchPurchaseBillsAll(purchaseBill);
         }
 
         [HttpGet]

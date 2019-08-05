@@ -68,24 +68,24 @@
                                 <div class="row">
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <label>Search Options</label>
-                                                <select id="SearchOptions" class="form-control"></select>
-                                            </div>
+                                        <div id="SearchCriteriaList" class="table-responsive" style="max-height: 300px;">
+                                            <table id="SearchFieldsList" class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Name</th>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <label>Search Value</label>
-                                                <input type="text" id="SearchValue" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <button type="button" id="Search" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                                <button type="button" id="SearchPurchaseBillDetails" class="btn btn-info btn-md">Search</button>
                                             </div>
                                         </div>
 
@@ -239,7 +239,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="pull-right">
+                                    <div class="pull-right" style="display:none;">
                                         <h3 class="text-deep-orange-A200">Total Amount Rs. <span id="TotalBillAmount">0.00</span></h3>
                                     </div>
 

@@ -131,9 +131,11 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchDrugDispense))
                 {
-                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, drugDispense.PatientName);
-                    database.AddInParameter(dbCommand, "@drug_name", DbType.String, drugDispense.EmployerName);
-                    database.AddInParameter(dbCommand, "@drug_code", DbType.Int32, drugDispense.PatientCode);
+                    database.AddInParameter(dbCommand, "@financial_year", DbType.String, drugDispense.FinancialYear);
+                    database.AddInParameter(dbCommand, "@first_name", DbType.String, drugDispense.FirstName);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.String, drugDispense.LastName);
+                    database.AddInParameter(dbCommand, "@dispense_from_date", DbType.String, drugDispense.DrugDispenseFromDate);
+                    database.AddInParameter(dbCommand, "@dispense_to_date", DbType.String, drugDispense.DrugDispenseToDate);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -153,6 +155,7 @@ namespace SOFARCH.HealthScreening.DataModel
                                 EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
                                 EmployerName = DRE.GetNullableString(reader, "employer_name", null),
                                 WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                                FinancialYear = DRE.GetNullableString(reader, "financial_year", null),
                                 DrugDispenseDrugUtilisations = drugUtlisation.GetDrugUtilisationByDrugDispenseId(DRE.GetInt32(reader, "drug_dispense_id"))
                             };
 

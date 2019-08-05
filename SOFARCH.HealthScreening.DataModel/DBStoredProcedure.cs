@@ -683,9 +683,9 @@ namespace SOFARCH.HealthScreening.DataModel
 
         public static string InsertDrugDispenseReturn { get { return "drug_dispenses_return_insert_drug_dispense_return"; } }
 
-        public static string UpdateDrugDispenseReturn { get { return "drug_dispenses_return_insert_drug_dispense_return"; } }
+        public static string UpdateDrugDispenseReturn { get { return "drug_dispenses_return_update_drug_dispense_return"; } }
 
-        public static string DeleteDrugDispenseReturn { get { return "drug_dispenses_return_insert_drug_dispense_return"; } }
+        public static string DeleteDrugDispenseReturn { get { return "drug_dispenses_return_delete_drug_dispense_return"; } }
 
         public static string SearchDrugDispenseReturn { get { return "drug_dispenses_return_search_drug_dispenses_return"; } }
 
@@ -802,6 +802,18 @@ namespace SOFARCH.HealthScreening.DataModel
 
         #endregion
 
+
+        #region Data Search Filters
+
+        public static string GetSearchFields { get { return "data_search_fields_get_search_fields"; } }
+
+        #endregion
+
+        #region Data Search Operators
+
+        public static string GetSearchOperators { get { return "data_search_operators_get_search_operators"; } }
+
+        #endregion
 
     }
 

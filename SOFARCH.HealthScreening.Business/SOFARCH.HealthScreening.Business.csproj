@@ -115,6 +115,7 @@
     <Compile Include="ClientType.cs" />
     <Compile Include="Company.cs" />
     <Compile Include="Country.cs" />
+    <Compile Include="DataSearchField.cs" />
     <Compile Include="Drug.cs" />
     <Compile Include="DrugDispenseReturn.cs" />
     <Compile Include="medicinesDispense.cs" />

@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Drug Dispense Return" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="DrugDispenseReturn.aspx.cs" Inherits="HealthScreeningApp.Transactions.DrugDispenseReturn" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="cpMaster" runat="server">
@@ -68,38 +69,24 @@
                                 <div class="row">
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <label>Filter Options</label>
-                                                <select id="SearchOptions" class="form-control"></select>
-                                            </div>
+                                        <div id="SearchCriteriaList" class="table-responsive" style="max-height: 300px;">
+                                            <table id="SearchFieldsList" class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Name</th>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
+                                    </div>
 
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="display:none;">
-                                            <div class="form-group form-group-md">
-                                                <label>Operator</label>
-                                                <select id="SearchOperator" class="form-control"></select>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <label>Search Value</label>
-                                                <input type="text" id="SearchValue" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12" style="display:none;">
-                                            <div class="form-group form-group-md">
-                                                <label>Search Condition</label>
-                                                <select id="SearchCondition" class="form-control"></select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <button type="button" id="SearchDrugReturnDetails" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                                <button type="button" id="SearchDrugReturnDetails" class="btn btn-info btn-md">Search</button>
                                             </div>
                                         </div>
 
@@ -132,12 +119,12 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">Action</th>
-                                            <th class="text-center">Company Name</th>
-                                            <th class="text-center">Emp Code</th>
-                                            <th class="text-center">Patient Name</th>
                                             <th class="text-center">Drug Return No.</th>
                                             <th class="text-center">Return Date</th>
-                                            <th class="text-center">Year</th>
+                                            <th class="text-center">Patient Code</th>
+                                            <th class="text-center">Patient Name</th>
+                                            <th class="text-center">Company Name</th>
+                                            <th class="text-center">Fin Year</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -171,6 +158,85 @@
 
             <div id="EditMode">
 
+                <!-- MODAL OPEN -->
+
+                <div id="SearchPatientModal" class="modal fade">
+
+                    <div class="modal-dialog modal-medium">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Search Patient</h4>
+                            </div>
+
+                            <div class="modal-body modal-body-scroll">
+
+                                <div class="row">
+
+                                    <div class="panel-body">
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="form-group form-group-md">
+                                                    <label>First Name</label>
+                                                    <input type="text" id="FirstName" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="form-group form-group-md">
+                                                    <label>Last Name</label>
+                                                    <input type="text" id="LastName" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-group-md">
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                    <button type="button" id="SearchPatient" class="btn btn-md btn-success" style="margin-top: 26px;">Search</button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="table-responsive" style="max-height: 300px;">
+                                                <table id="PatientSearchList" class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Action</th>
+                                                            <th>Patient Code</th>
+                                                            <th>Patient Name</th>
+                                                            <th>Company Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="SelectPatient" class="btn btn-info btn-sm btn-rounded">Choose Select</button>
+                                <button type="button" id="CloseSearchPatientModal" class="btn btn-default btn-sm btn-rounded" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MODAL CLOSE -->
+
                 <div class="row">
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -200,16 +266,16 @@
                                     </div>
 
                                     <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <div class="form-group form-group-md">
-                                                        <label>Return Date</label>
-                                                        <div class="input-group date input-group-md" id="DrugReturnDateDatePicker">
-                                                            <input type="text" id="DrugReturnDate" class="form-control" />
-                                                            <span class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="form-group form-group-md">
+                                            <label>Return Date</label>
+                                            <div class="input-group date input-group-md" id="DrugReturnDateDatePicker">
+                                                <input type="text" id="DrugReturnDate" class="form-control" />
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="col-lg-1 col-md-1 col-sm-3 col-xs-12">
                                         <div class="form-group form-group-md">
@@ -221,8 +287,15 @@
                                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                                         <div class="form-group form-group-md">
                                             <label>Employee Name</label>
-                                            <input type="text" id="PatientName" class="form-control" />
-                                            <div id="SearchPatientList" class="autocompleteList"></div>
+                                            <div class="input-group">
+                                                <input type="text" id="PatientName" class="form-control" />
+                                                <div id="SearchPatientList" class="autocompleteList"></div>
+                                                <span class="input-group-btn">
+                                                    <button type="button" id="SearchPatientName" class="btn btn-danger btn-md">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -264,7 +337,7 @@
                                     </div>
 
                                     <div class="pull-right">
-                                        <h3 class="text-deep-orange-A200" style="display:none;">Total Amount Rs. <span id="TotalBillAmount"></span>80.90</h3>
+                                        <h3 class="text-deep-orange-A200" style="display: none;">Total Amount Rs. <span id="TotalBillAmount"></span>80.90</h3>
                                     </div>
                                 </div>
 

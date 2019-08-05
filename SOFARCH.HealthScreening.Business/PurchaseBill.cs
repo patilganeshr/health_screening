@@ -25,9 +25,9 @@ namespace SOFARCH.HealthScreening.Business
             return _purchaseBill.GetPurchaseBillIdAndPurcharseBillNo();
         }
 
-        public List<Entities.PurchaseBill> SearchPurchaseBillsAll()
+        public List<Entities.PurchaseBill> SearchPurchaseBillsAll(Entities.PurchaseBill purchaseBill)
         {
-            return _purchaseBill.SearchPurchaseBillsAll();
+            return _purchaseBill.SearchPurchaseBillsAll(purchaseBill);
         }
 
         public List<Entities.PurchaseBill> SearchPurchaseBillsByPurchaseBillNo(string purchaseBillNo)

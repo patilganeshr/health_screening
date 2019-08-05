@@ -148,7 +148,7 @@ namespace SOFARCH.HealthScreening.DataModel
             return purchaseBills;
         }
 
-        public List<Entities.PurchaseBill> SearchPurchaseBillsAll()
+        public List<Entities.PurchaseBill> SearchPurchaseBillsAll(Entities.PurchaseBill purchaseBill)
         {
             var purchaseBills = new List<Entities.PurchaseBill>();
 
@@ -156,6 +156,12 @@ namespace SOFARCH.HealthScreening.DataModel
             {
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchAllPurchaseBills))
                 {
+                    database.AddInParameter(dbCommand, "@financial_year", DbType.String, purchaseBill.FinancialYear);
+                    database.AddInParameter(dbCommand, "@vendor_name", DbType.String, purchaseBill.VendorName);
+                    database.AddInParameter(dbCommand, "@purchase_bill_no", DbType.String, purchaseBill.PurchaseBillNo);
+                    database.AddInParameter(dbCommand, "@purchase_bill_from_date", DbType.String, purchaseBill.PurchaseBillFromDate);
+                    database.AddInParameter(dbCommand, "@purchase_bill_to_date", DbType.String, purchaseBill.PurchaseBillToDate);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         purchaseBills = GetPurchaseBills(reader);

@@ -33,7 +33,27 @@ namespace SOFARCH.HealthScreening.Business
 
         public List<Entities.Patient> GetPatientIdAndNameByPatientName(string patientName)
         {
-            return _patient.GetPatientIdAndNameByPatientName(patientName);
+            var index = patientName.LastIndexOf(' ');
+
+            string firstName = null;
+
+            string lastName = null;
+
+            if (index == -1)
+            {
+                firstName = patientName;
+            }
+            else if (index > 0)
+            {
+                firstName = patientName.Substring(0, index);
+
+                if (patientName.Substring(index + 1) != "")
+                {
+                    lastName = patientName.Substring(index + 1);
+                }
+            }
+
+            return _patient.GetPatientIdAndNameByPatientName(firstName, lastName);
         }
 
         /// <summary>

@@ -279,9 +279,11 @@ namespace SOFARCH.HealthScreening.DataModel
                 using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchPreEmploymentDetails))
                 {
                     database.AddInParameter(dbCommand, "@pre_employment_or_health_checkup", DbType.String, preEmploymentDetails.PreEmploymentOrHealthCheckup);
-                    database.AddInParameter(dbCommand, "@patient_full_name", DbType.String, preEmploymentDetails.PatientFullName);
-                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, preEmploymentDetails.EmployerName);
-                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, preEmploymentDetails.PatientCode);
+                    database.AddInParameter(dbCommand, "@financial_year", DbType.String, preEmploymentDetails.FinancialYear);
+                    database.AddInParameter(dbCommand, "@first_name", DbType.String, preEmploymentDetails.FirstName);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.Int32, preEmploymentDetails.LastName);
+                    database.AddInParameter(dbCommand, "@consult_from_date", DbType.Int32, preEmploymentDetails.ConsultFromDate);
+                    database.AddInParameter(dbCommand, "@consult_to_date", DbType.Int32, preEmploymentDetails.ConsultToDate);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
