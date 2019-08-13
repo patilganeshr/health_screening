@@ -20,9 +20,9 @@ Sofarch.HealthCheckup = (function () {
 
         DOM.viewMode = document.getElementById('ViewMode');
         DOM.searchPreEmploymentDetailsPanel = document.getElementById('SearchPreEmploymentDetailsPanel');
-        DOM.searchOptions = document.getElementById('SearchOptions');
-        DOM.searchValue = document.getElementById('SearchValue');
-        DOM.searchPreEmploymentDetails = document.getElementById('SearchPreEmploymentDetails');
+        DOM.searchCriteriaList = document.getElementById('SearchCriteriaList');
+        DOM.searchFieldsList = document.getElementById('SearchFieldsList');
+        DOM.searchPreEmploymentDetails = document.getElementById('SearchHealthCheckupDetails');
 
         DOM.preEmploymentDetailsList = document.getElementById('PreEmploymentDetailsList');
 
@@ -33,6 +33,7 @@ Sofarch.HealthCheckup = (function () {
         DOM.searchPatientList = document.getElementById('SearchPatientList');
         DOM.financialYear = document.getElementById('FinancialYear');
         DOM.consultDate = document.getElementById('ConsultDate');
+        DOM.preEmploymentCodeNo = document.getElementById('PreEmploymentCodeNo');
         DOM.age = document.getElementById('Age');
         DOM.gender = document.getElementById('Gender');
         DOM.maritalStatus = document.getElementById('MaritalStatus');
@@ -58,6 +59,15 @@ Sofarch.HealthCheckup = (function () {
         DOM.generalTestList = document.getElementById('GeneralTestList');
         DOM.investigationTestList = document.getElementById('InvestigationTestList');
 
+        DOM.searchPatientName = document.getElementById('SearchPatientName');
+        DOM.searchPatientModal = document.getElementById('SearchPatientModal');
+        DOM.firstName = document.getElementById('FirstName');
+        DOM.lastName = document.getElementById('LastName');
+        DOM.searchPatient = document.getElementById('SearchPatient');
+        DOM.patientSearchList = document.getElementById('PatientSearchList');
+        DOM.selectPatient = document.getElementById('SelectPatient');
+        DOM.closeSearchPatientModal = document.getElementById('CloseSearchPatientModal');
+
         DOM.addNewPreEmploymentDetails = document.getElementById('AddNewPreEmploymentDetails');
         DOM.showPreEmploymentDetails = document.getElementById('ShowPreEmploymentDetails');
         DOM.viewPreEmploymentDetails = document.getElementById('ViewPreEmploymentDetails');
@@ -70,7 +80,8 @@ Sofarch.HealthCheckup = (function () {
 
         /*cache the jquery element */
         DOM.$consultDateDatePicker = $('#ConsultDateDatePicker');
-
+        DOM.$searchPatientModal = $('#SearchPatientModal');
+        DOM.$closeSearchPatientModal = $('#CloseSearchPatientModal');
     }
 
     function applyPlugins() {
@@ -89,6 +100,12 @@ Sofarch.HealthCheckup = (function () {
     function setFocusOnSelect(e) {
         setTimeout(function () {
             e.currentTarget.focus();
+        }, 200);
+    }
+
+    function setFocusOnElement(element) {
+        setTimeout(function () {
+            element.focus();
         }, 200);
     }
 
@@ -117,8 +134,14 @@ Sofarch.HealthCheckup = (function () {
         DOM.editPreEmploymentDetails.addEventListener('click', editPreEmploymentDetails);
         DOM.savePreEmploymentDetails.addEventListener('click', savePreEmploymentDetails);
         DOM.deletePreEmploymentDetails.addEventListener('click', deletePreEmploymentDetails);
+        DOM.printPreEmploymentDetails.addEventListener('click', printPreEmploymentDetails);
         DOM.searchPreEmploymentDetails.addEventListener('click', searchPreEmploymentDetails);
         DOM.filterPreEmploymentDetails.addEventListener('click', filterPreEmploymentDetails);
+
+        DOM.searchPatientName.addEventListener('click', showSearchPatientModal);
+        DOM.searchPatient.addEventListener('click', getPatientList);
+        DOM.selectPatient.addEventListener('click', selectPatient);
+        DOM.closeSearchPatientModal.addEventListener('click', closeSearchPatientModal);
 
         DOM.familyHistoryOfMajorIllness.onblur = function (e) {
             setActiveTabAndFocus(e);
@@ -128,7 +151,14 @@ Sofarch.HealthCheckup = (function () {
 
             if (CurrentFocus === undefined) { CurrentFocus = -1; }
 
-            showSearchPatientList(e);
+            if (e.target.value.length > 5) {
+                showSearchPatientList(e);
+            }
+            else if (e.target.value === "") {
+                DOM.patientName.setAttribute('data-patient-id', 0);
+                DOM.patientCode.value = "";
+                DOM.employerName.value = "";
+            }
 
         };
 
@@ -278,6 +308,125 @@ Sofarch.HealthCheckup = (function () {
         //shared.hideLoader(DOM.loader);
     }
 
+    function getPatientList() {
+
+        shared.showLoader(DOM.loader);
+
+        shared.sendRequest(SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.firstName.value + " " + DOM.lastName.value, "GET", true, "JSON", null, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var searchPatientList = JSON.parse(response.responseText);
+
+                    bindSearchPatientList(searchPatientList);
+                }
+            }
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function closeSearchPatientModal() {
+
+        DOM.$searchPatientModal.modal('hide');
+    }
+
+    function showSearchPatientModal() {
+
+        DOM.firstName.value = "";
+
+        DOM.lastName.value = "";
+
+        var table = DOM.patientSearchList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
+
+        DOM.$searchPatientModal.modal('show');
+    }
+
+    $('#SearchPatientModal').on('shown.bs.modal', function () {
+
+        DOM.firstName.focus();
+
+    });
+
+    $('#CloseSearchPatientModal').on('click', function () {
+
+        DOM.$searchPatientModal.modal('hide');
+
+    });
+
+    function bindSearchPatientList(searchPatientList) {
+
+        shared.showLoader(DOM.loader);
+
+        var table = DOM.patientSearchList;
+
+        var tableBody = table.tBodies[0];
+
+        tableBody.innerHTML = "";
+
+        if (searchPatientList.length) {
+
+            var data = "";
+
+            for (var s = 0; s < searchPatientList.length; s++) {
+
+                data = data + "<tr data-patient-id=" + searchPatientList[s].PatientId + ">";
+                data = data + "<td> <label class='label-tick'> <input type='checkbox' id='" + searchPatientList[s].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
+                data = data + "<td>" + searchPatientList[s].PatientCode + "</td>";
+                data = data + "<td>" + searchPatientList[s].FullName + "</td>";
+                data = data + "<td>" + searchPatientList[s].EmployerName + "</td>";
+                data = data + "</tr>";
+            }
+
+            tableBody.innerHTML = data;
+
+        }
+
+        shared.hideLoader(DOM.loader);
+    }
+
+    function selectPatient() {
+
+        var selectedRows = getSelectedRows(DOM.patientSearchList);
+
+        if (selectedRows.length > 1) {
+
+            DOM.$searchPatientModal.modal('show');
+
+            swal('Warning', "Please select only one record to select the Records.", "warning");
+
+            return false;
+        }
+        else {
+
+            var patientId = 0;
+            var patientCode = null;
+            var patientName = null;
+            var employerName = null;
+
+            patientId = parseInt(selectedRows[0].getAttribute('data-patient-id'));
+            patientCode = selectedRows[0].children[1].textContent;
+            patientName = selectedRows[0].children[2].textContent;
+            employerName = selectedRows[0].children[3].textContent;
+
+            DOM.patientCode.value = patientCode;
+            DOM.patientName.value = patientName;
+            DOM.patientName.setAttribute('data-patient-id', patientId);
+            DOM.employerName.value = employerName;
+
+            DOM.patientName.focus();
+
+            DOM.$searchPatientModal.modal('hide');
+        }
+    }
+
     function showSearchPatientList(e) {
 
         if (e.keyCode === 13) {
@@ -290,88 +439,93 @@ Sofarch.HealthCheckup = (function () {
             shared.closeAutoCompleteList(DOM.searchPatientList);
             return;
         }
+        else if (e.keyCode === 32 || e.keyCode >= 37 && e.keyCode <= 40 || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 65 && e.keyCode <= 90 ||
+            e.keyCode >= 97 && e.keyCode <= 105) {
 
-        var dataAttributes = ['Patient-Id', 'Patient-Code'];
+            var dataAttributes = ['Patient-Id', 'Patient-Code'];
 
-        var parameters = {};
+            var parameters = {};
 
-        parameters = {
+            var searchKey = e.target.value + e.key;
 
-            Event: e,
-            CurrentFocus: CurrentFocus,
-            PostDataKeyValue: postMessage,
-            ElementToBeAppend: DOM.searchPatientList,
-            DataAttributes: dataAttributes,
-            PostParamObject: undefined,
-            URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value + "/",
-            DisplayName: "FullName"
-        };
+            parameters = {
 
-        shared.showAutoCompleteItemsList(parameters, function (response) {
+                Event: e,
+                CurrentFocus: CurrentFocus,
+                PostDataKeyValue: postMessage,
+                ElementToBeAppend: DOM.searchPatientList,
+                DataAttributes: dataAttributes,
+                PostParamObject: undefined,
+                URL: SERVICE_PATH + "GetPatientIdAndNameByPatientName/" + DOM.patientName.value + "/",
+                DisplayName: "FullName"
+            };
 
-            if (response !== undefined) {
+            shared.showAutoCompleteItemsList(parameters, function (response) {
 
-                if (response >= 0) {
+                if (response !== undefined) {
 
-                    CurrentFocus = response;
-                }
-                else {
+                    if (response >= 0) {
 
-                    CurrentFocus = -1;
+                        CurrentFocus = response;
+                    }
+                    else {
 
-                    var autoCompleteList = response;
+                        CurrentFocus = -1;
 
-                    var listCount = autoCompleteList.length;
+                        var autoCompleteList = response;
 
-                    if (listCount) {
+                        var listCount = autoCompleteList.length;
 
-                        var data = "";
+                        if (listCount) {
 
-                        var fragment = document.createDocumentFragment();
+                            var data = "";
 
-                        var ul = document.createElement('ul');
+                            var fragment = document.createDocumentFragment();
 
-                        ul.classList.add('list-group');
+                            var ul = document.createElement('ul');
 
-                        for (var s = 0; s < listCount; s++) {
+                            ul.classList.add('list-group');
 
-                            var li = document.createElement('li');
-                            var span = document.createElement('span');
-                            var p = document.createElement('p');
+                            for (var s = 0; s < listCount; s++) {
 
-                            li.classList.add('list-group-item');
-                            li.classList.add('clearfix');
+                                var li = document.createElement('li');
+                                var span = document.createElement('span');
+                                var p = document.createElement('p');
 
-                            li.setAttribute('id', autoCompleteList[s].PatientId);
+                                li.classList.add('list-group-item');
+                                li.classList.add('clearfix');
 
-                            li.style.cursor = "pointer";
-                            li.onclick = showEmployeeNameOnSelection;
-                            span.textContent = autoCompleteList[s].FullName;
+                                li.setAttribute('id', autoCompleteList[s].PatientId);
 
-                            p.classList.add('list-group-item-text');
-                            p.textContent = autoCompleteList[s].EmployerName;
+                                li.style.cursor = "pointer";
+                                li.onclick = showEmployeeNameOnSelection;
+                                span.textContent = autoCompleteList[s].FullName;
 
-                            li.appendChild(span);
-                            li.appendChild(p);
+                                p.classList.add('list-group-item-text');
+                                p.textContent = autoCompleteList[s].EmployerName;
 
-                            fragment.appendChild(li);
+                                li.appendChild(span);
+                                li.appendChild(p);
+
+                                fragment.appendChild(li);
+                            }
+
+                            ul.appendChild(fragment);
+
+                            DOM.searchPatientList.appendChild(ul);
+
+                            DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
+                            DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
+
+                            DOM.searchPatientList.classList.add('autocompleteList-active');
+                            //DOM.itemsList.innerHTML = data;
+
                         }
-
-                        ul.appendChild(fragment);
-
-                        DOM.searchPatientList.appendChild(ul);
-
-                        DOM.searchPatientList.style.width = e.target.offsetWidth + 'px';
-                        DOM.searchPatientList.style.left = 0;//e.target.offsetParent.offsetLeft + 15 + 'px';
-
-                        DOM.searchPatientList.classList.add('autocompleteList-active');
-                        //DOM.itemsList.innerHTML = data;
-
                     }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     function showEmployeeNameOnSelection(e) {
@@ -418,11 +572,11 @@ Sofarch.HealthCheckup = (function () {
         getPatientAndTestDetails(id);
     }
 
-    var getSelectedRows = function () {
+    var getSelectedRows = function (listObject) {
 
         var selectedRows = [];
 
-        var tableBody = DOM.preEmploymentDetailsList.tBodies[0];
+        var tableBody = listObject.tBodies[0];
 
         var tableRows = tableBody.children;
 
@@ -441,6 +595,41 @@ Sofarch.HealthCheckup = (function () {
 
         return selectedRows;
     };
+
+    function getSelectedPreEmploymentDetails() {
+
+        shared.showLoader(DOM.loader);
+
+        var selectedRows = getSelectedRows(DOM.preEmploymentDetailsList);
+
+        if (selectedRows.length > 0) {
+
+            if (selectedRows.length > 1) {
+
+                swal('Warning', "Please select only one record to Edit the Records.", "warning");
+
+                shared.hideLoader(DOM.loader);
+
+                return false;
+            }
+            else {
+
+                var currentTableRow = selectedRows[0];
+
+                var preEmploymentId = parseInt(currentTableRow.getAttribute('data-pre-employment-id'));
+
+                if (isNaN(preEmploymentId)) { preEmploymentId = 0; }
+
+                showPreEmploymentDetails(preEmploymentId);
+            }
+        }
+        else {
+            swal("error", "No row selected.", "error");
+        }
+
+        shared.hideLoader(DOM.loader);
+
+    }
 
     var getPreEmploymentId = function (selectedRows) {
 
@@ -491,6 +680,7 @@ Sofarch.HealthCheckup = (function () {
         shared.clearTables(DOM.editMode);
 
         DOM.patientName.setAttribute('data-patient-id', 0);
+        DOM.preEmploymentCodeNo.setAttribute('data-pre-employment-id', 0);
 
         var currentDate = new Date();
 
@@ -528,29 +718,7 @@ Sofarch.HealthCheckup = (function () {
 
         shared.disableControls(DOM.editMode, true);
 
-        var selectedRows = getSelectedRows();
-
-        if (selectedRows.length) {
-
-            if (selectedRows.length > 1) {
-                swal({
-                    title: "Warning",
-                    text: "Please select only one record to View or Edit the Records.",
-                    type: "success"
-                }, function () {
-                    shared.hideLoader(DOM.loader);
-                });
-            }
-            else {
-
-                var preEmploymentId = getPreEmploymentId(selectedRows);
-
-                showPreEmploymentDetails(preEmploymentId);
-            }
-        }
-        else {
-            swal("error", "No row selected.", "error");
-        }
+        getSelectedPreEmploymentDetails();
 
         shared.hideLoader(DOM.loader);
 
@@ -578,24 +746,7 @@ Sofarch.HealthCheckup = (function () {
 
         shared.disableControls(DOM.editMode, false);
 
-        var selectedRows = getSelectedRows();
-
-        if (selectedRows.length) {
-
-            if (selectedRows.length > 1) {
-                swal('Warning', "Please select only one record to Edit the Records.", "warning");
-                return false;
-            }
-            else {
-
-                var preEmploymentId = getPreEmploymentId(selectedRows);
-
-                showPreEmploymentDetails(preEmploymentId);
-            }
-        }
-        else {
-            swal("error", "No row selected.", "error");
-        }
+        getSelectedPreEmploymentDetails();
 
         shared.hideLoader(DOM.loader);
 
@@ -708,16 +859,205 @@ Sofarch.HealthCheckup = (function () {
         }
     }
 
-        function fillSearchOption() {
+    function printPreEmploymentDetails() {
 
-        var options = "";
+        shared.showLoader(DOM.loader);
 
-        options += "<option value='-1'> Choose Search Option </option>";
-        options += "<option value='PatientFullName' selected='selected'> Patient Name</option>";
-        options += "<option value='EmployerName'> Company Name </option>";
-        options += "<option value='PatientCode'> Patient Code</option>";
+        var selectedRows = getSelectedRows(DOM.preEmploymentDetailsList);
 
-        DOM.searchOptions.innerHTML = options;
+        var preEmploymentId = 0;
+        var preEmploymentCodeNo = 0;
+
+        if (selectedRows.length) {
+
+            if (selectedRows.length > 1) {
+                swal({
+                    title: "Warning",
+                    text: "Please select only one record to View or Edit the Records.",
+                    type: "success"
+                }, function () {
+                    shared.hideLoader(DOM.loader);
+                });
+            }
+            else {
+
+                preEmploymentId = getPreEmploymentId(selectedRows);
+            }
+        }
+
+        var print = {};
+
+        preEmploymentId = parseInt(DOM.preEmploymentCodeNo.getAttribute('data-pre-employment-id'));
+        preEmploymentCodeNo = parseInt(DOM.preEmploymentCodeNo.value);
+
+        var folderName = 'HealthCheckupDetails';
+
+        print = {
+            PreEmploymentId: preEmploymentId,
+            PreEmploymentCodeNo: preEmploymentCodeNo,
+            PreEmploymentOrHealthCheckup: "H"
+        };
+
+        var postData = JSON.stringify(print);
+
+        shared.sendRequest(SERVICE_PATH + "PrintPreEmploymentReport", "POST", true, "JSON", postData, function (response) {
+
+            shared.showLoader(DOM.loader);
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        if (_response.length > 0) {
+
+                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/" + preEmploymentCodeNo + ".pdf", "_blank");
+
+                        }
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+    }
+
+    function getSearchFields() {
+
+        shared.showLoader(DOM.loader);
+
+        shared.sendRequest(SERVICE_PATH + "GetSearchFields/17", "GET", true, "JSON", null, function (response) {
+
+            if (response.status === 200) {
+
+                if (response.responseText !== undefined) {
+
+                    var _response = JSON.parse(response.responseText);
+
+                    if (_response !== undefined) {
+
+                        bindSearchFields(_response);
+
+                    }
+                }
+            }
+
+            shared.hideLoader(DOM.loader);
+        });
+
+        shared.hideLoader(DOM.loader);
+
+    }
+
+    function bindSearchFields(searchFields) {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        if (searchFields.length) {
+
+            for (var s = 0; s < searchFields.length; s++) {
+
+                var data = "";
+
+                var tableRow = shared.createElement('TR');
+
+                data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12' data-table-field-name='" + searchFields[s].FieldValue + "'>" + searchFields[s].FieldName + "</td>";
+
+                if (searchFields[s].ControlName.toLowerCase() === "select") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <select id='" + searchFields[s].FieldValue + "' class='form-control input-md'></select> </td>";
+                }
+                else if (searchFields[s].ControlName.toLowerCase() === "date") {
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <div class='input-group date input-group-md' id='" + searchFields[s].FieldValue + "DatePicker'><input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> <span class='input-group-addon'><i class='fa fa-calendar'></i></span></div></td>";
+                }
+                else
+                    data += "<td class='col-lg-2 col-md-2 col-sm-4 col-xs-12'> <input type='text' id='" + searchFields[s].FieldValue + "' class='form-control input-md'/> </td>";
+
+                tableRow.innerHTML = data;
+
+                tableBody.appendChild(tableRow);
+            }
+
+        }
+
+        applyPluginsToSearchFields(tableBody);
+
+        setFocusToFirstElement(tableBody);
+
+    }
+
+    function applyPluginsToSearchFields(tableBody) {
+
+        var selects = tableBody.querySelectorAll('select');
+
+        var divs = tableBody.querySelectorAll('.date');
+
+        if (selects.length) {
+
+            for (var s = 0; s < selects.length; s++) {
+
+                selects[s].innerHTML = selects[s].innerHTML + DOM.financialYear.innerHTML;
+
+                $($(selects[s])[0]).select2();
+
+                shared.setSelectOptionByIndex(selects[s], parseInt(1));
+                shared.setSelect2ControlsText(selects[s]);
+
+            }
+        }
+
+        if (divs.length) {
+
+            for (var d = 0; d < divs.length; d++) {
+
+                if (divs[d].classList.contains('date')) {
+
+                    $($(divs[d])[0]).datetimepicker({
+                        format: 'DD/MMM/YYYY'
+                    });
+                }
+            }
+        }
+
+    }
+
+    function setFocusToFirstElement(tableBody) {
+
+        var input = tableBody.querySelectorAll('input[type="text"]')[0];
+
+        setFocusOnElement(input);
+
+    }
+
+    var checkSearchFieldsTableHasRows = function () {
+
+        var tableBody = DOM.searchFieldsList.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        return tableRows;
+    };
+
+    function clearSearchFieldsListControls(tableRows) {
+
+        if (tableRows.length) {
+
+            var tableBody = DOM.searchFieldsList.tBodies[0];
+
+            var inputs = tableBody.querySelectorAll('input[type="text"]');
+
+            if (inputs.length) {
+
+                for (var i = 0; i < inputs.length; i++) {
+
+                    inputs[i].value = "";
+                }
+            }
+        }
     }
 
     function filterPreEmploymentDetails() {
@@ -726,7 +1066,14 @@ Sofarch.HealthCheckup = (function () {
 
         shared.clearInputs(DOM.searchPreEmploymentDetailsPanel);
 
-        fillSearchOption();
+        var tableRows = checkSearchFieldsTableHasRows();
+
+        if (tableRows.length) {
+            clearSearchFieldsListControls(tableRows);
+        }
+        else {
+            getSearchFields();
+        }
 
         if (DOM.searchPreEmploymentDetailsPanel.classList.contains("hide")) {
             DOM.searchPreEmploymentDetailsPanel.classList.remove('hide');
@@ -737,8 +1084,72 @@ Sofarch.HealthCheckup = (function () {
             DOM.searchPreEmploymentDetailsPanel.classList.add('hide');
         }
 
-        DOM.searchValue.focus();
+        DOM.searchFieldsList.tBodies[0].innerHTML = "";
     }
+
+    var getSearchCriteria = function () {
+
+        var table = DOM.searchFieldsList;
+
+        var tableBody = table.tBodies[0];
+
+        var tableRows = tableBody.children;
+
+        var searchCriteria = "";
+
+        var searchParameter = {};
+
+        if (tableRows.length) {
+
+            searchParameter["PreEmploymentOrHealthCheckup"] = "H";
+
+            for (var tr = 0; tr < tableRows.length; tr++) {
+
+                if (tableRows[tr].children[1].children[0].value !== "") {
+
+                    if (tableRows[tr].children[1].children[0].nodeName.toLowerCase() === "select") {
+
+                        var selectedIndex = tableRows[tr].children[1].children[0].selectedIndex;
+
+                        searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].options[selectedIndex].text;
+                    }
+                    else {
+
+                        searchParameter[tableRows[tr].children[0].getAttribute('data-table-field-name')] = tableRows[tr].children[1].children[0].value;
+                    }
+                }
+
+                //var searchFieldName = "";
+                //var operator = "";
+                //var searchFieldValue = "";
+
+                //var condition = "and ";
+
+                //searchFieldName = tableRows[tr].children[0].getAttribute('data-table-field-name');
+
+                //searchFieldValue = tableRows[tr].children[2].textContent;
+
+                //if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('contains') !== -1) {
+                //    operator = "like";
+                //}
+                //else if (tableRows[tr].children[1].textContent.toLowerCase().indexOf('equals') !== -1) {
+                //    operator = "=";
+                //}
+                //else {
+                //    operator = tableRows[tr].children[1].textContent;
+                //}
+
+                //searchCriteria += "" + searchFieldName + " " + operator + " ''%" + searchFieldValue + "%'' " + condition + " ";
+
+            }
+
+            //searchCriteria = "" +  searchCriteria.substring(0, searchCriteria.lastIndexOf("'")) + "'";
+            //searchCriteria.substring(0, searchCriteria.length - (searchCriteria.lastIndexOf("'") + condition.length));
+        }
+
+        return searchParameter;
+    };
+
 
     function searchPreEmploymentDetails() {
 
@@ -748,19 +1159,23 @@ Sofarch.HealthCheckup = (function () {
 
         PreEmploymentDetails.length = 0;
 
-        var searchParmater = {
-            PreEmploymentOrHealthCheckup: 'H',
-            PatientFullName: null,
-            EmployerName: null,
-            PatientCode: null
-        };
+        //var searchParmater = {
+        //    PreEmploymentOrHealthCheckup: 'H',
+        //    PatientFullName: null,
+        //    EmployerName: null,
+        //    PatientCode: null
+        //};
 
-        var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
-        var searchValue = DOM.searchValue.value;
+        //var searchParameterName = DOM.searchOptions.options[DOM.searchOptions.selectedIndex].value;
+        //var searchValue = DOM.searchValue.value;
 
-        searchParmater[searchParameterName] = searchValue;
+        //searchParmater[searchParameterName] = searchValue;
 
-        var postData = JSON.stringify(searchParmater);
+        //var postData = JSON.stringify(searchParmater);
+
+        var searchParameter = getSearchCriteria();
+
+        var postData = JSON.stringify(searchParameter);
 
         shared.sendRequest(SERVICE_PATH + "SearchPreEmploymentDetails/", "POST", true, "JSON", postData, function (response) {
 
@@ -775,6 +1190,8 @@ Sofarch.HealthCheckup = (function () {
                         PreEmploymentDetails = _response;
 
                         bindPreEmploymentDetails();
+
+                        filterPreEmploymentDetails();
                     }
                 }
             }
@@ -830,10 +1247,12 @@ Sofarch.HealthCheckup = (function () {
 
                 data = data + "<tr data-pre-employment-id=" + PreEmploymentDetails[r].PreEmploymentId + " data-patient-id=" + PreEmploymentDetails[r].PatientId + " >";
                 data = data + "<td><label class='label-tick'> <input type='checkbox' id='" + PreEmploymentDetails[r].PatientId + "' class='label-checkbox' name='SelectPatient' /> <span class='label-text'></span> </label>" + "</td>";
+                data = data + "<td>" + PreEmploymentDetails[r].ConsultDate + "</td>";
                 data = data + "<td>" + PreEmploymentDetails[r].EmployerName + "</td>";
                 data = data + "<td>" + PreEmploymentDetails[r].PatientCode + "</td>";
                 data = data + "<td>" + PreEmploymentDetails[r].PatientFullName + "</td>";
                 data = data + "<td>" + PreEmploymentDetails[r].Gender + "</td>";
+                data = data + "<td>" + PreEmploymentDetails[r].FinancialYear + "</td>";
                 data = data + "</tr>";
 
             }
@@ -869,9 +1288,11 @@ Sofarch.HealthCheckup = (function () {
 
             DOM.patientCode.value = preEmploymentDetails.PatientCode;
             DOM.patientName.setAttribute('data-patient-id', preEmploymentDetails.PatientId);
-            DOM.patientName.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
+            //DOM.patientName.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
             DOM.patientName.value = preEmploymentDetails.PatientFullName;
             DOM.consultDate.value = preEmploymentDetails.ConsultDate;
+            DOM.preEmploymentCodeNo.value = preEmploymentDetails.PreEmploymentCodeNo;
+            DOM.preEmploymentCodeNo.setAttribute('data-pre-employment-id', preEmploymentDetails.PreEmploymentId);
             DOM.age.value = preEmploymentDetails.Age;
             DOM.gender.value = preEmploymentDetails.Gender;
             DOM.designation.value = preEmploymentDetails.Designation;

@@ -10,52 +10,58 @@ namespace SOFARCH.HealthScreening.Api.Controllers
 {
     public class PrescriptionController : ApiController
     {
-        private readonly Business.Precautions  _pre;
-        private readonly Business.Patient  _patient;
-
+       
+        
+        private readonly Business.Precautions _drugDispense;
 
         public PrescriptionController()
         {
-            _pre = new Business.Precautions();
-            _patient = new Business.Patient();
+            _drugDispense = new Business.Precautions();
         }
 
-       
-        [Route("GetAllPre")]
-        public List<Entities.Precautions> GetAll()
+        [Route("GetDrugDetailsByDrugIds/{drugId}")]
+        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugIds(Int32 drugId)
         {
-            return _pre.GetAll();
-        }
-
-
-        [Route("GetAllPreDetails/{PrecautionsId}")]
-        public List<Entities.Precautions> GetAllPreDetails(Int32 PrecautionsId)
-        {
-            return _pre.GetAllPreDetails(PrecautionsId);
-        }
-
-
-        [HttpPost]
-        [Route("SavePrescription")]
-        public Int32 SavePrescription(Entities.Precautions pre)
-        {
-            return _pre.SavePrecaution(pre);
+            return _drugDispense.GetDrugDetailsByDrugId(drugId);
         }
 
         [HttpPost]
-        [Route("SavePrescriptionDrug")]
-        public Int32 SavePrescriptionDrug(Entities.Precautions pre)
+        [Route("SearchDrugDispenses")]
+        public List<Entities.Precautions> SearchDrguDispense(Entities.Precautions drugDispense)
         {
-            return _pre.SavePrecautionDrug(pre);
+            return _drugDispense.SearchDrguDispense(drugDispense);
         }
+
+
+
+        [Route("GetPastDrugDispenseDatesByPatientId/{patientId}")]
+        public List<Entities.Precautions> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
+        {
+            return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
+        }
+
+        [Route("GetDrugUtilisationByDrugDispenseIds/{drugDispenseId}")]
+        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        {
+            return _drugDispense.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        }
+
+        [HttpPost]
+        [Route("SaveDrugDispenseDetail")]
+        public Int32 SaveDrugDispenseDetails(Entities.Precautions drugDispense)
+        {
+            return _drugDispense.SaveDrugDispenseDetails(drugDispense);
+        }
+
 
 
         [HttpPost]
         [Route("PrintInvoice")]
-        public string PrintCashSaleInvoice(Entities.Precautions  pre)
+        public string PrintCashSaleInvoice(Entities.Precautions drugDispense)
         {
-            return _pre.generateReport(pre);
+            return _drugDispense.generateReport(drugDispense);
         }
+
 
 
 

@@ -9,7 +9,7 @@ namespace SOFARCH.HealthScreening.Entities
     public class Drug : BaseEntity
     {
         public Int32? DrugId { get; set; }
-        
+
         public Int32? DrugCode { get; set; }
 
         public string GenericName{ get; set; }
@@ -33,6 +33,8 @@ namespace SOFARCH.HealthScreening.Entities
         public string Precautions{ get; set; }
 
         public List<DrugLinkWithDrugRoutes> DrugLinkWithDrugRoutes { get; set; }
+
+        public string DrugOrXRay { get; set; }
 
         public string DrugGroupName { get; set; }
 

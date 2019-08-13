@@ -11,6 +11,7 @@ using System.IO;
 using CrystalDecisions.CrystalReports;
 using CrystalDecisions.Shared;
 using CrystalDecisions.CrystalReports.Engine;
+using System.Web;
 
 namespace SOFARCH.HealthScreening.Business
 
@@ -37,8 +38,8 @@ namespace SOFARCH.HealthScreening.Business
             string filePath = null;
             try
             {
-           
-           
+
+
 
             _tableLogOnInfo = new TableLogOnInfo();
             _reportDocument = new ReportDocument();
@@ -48,12 +49,16 @@ namespace SOFARCH.HealthScreening.Business
             _dbConnectionInfo = new ConnectionInfo();
             _tableLogOnInfo = new TableLogOnInfo();
 
-           
+
                 //Create a folder if not exists
                 if (Directory.Exists(report.DirectoryPath) == false)
                 {
                     Directory.CreateDirectory(report.DirectoryPath);
                 }
+
+                var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
+
+                File.AppendAllText(serverPath + "/log.txt", report.ReportPath);
 
                 _reportDocument.Load(report.ReportPath);
 
@@ -94,6 +99,10 @@ namespace SOFARCH.HealthScreening.Business
                     _reportDocument.RecordSelectionFormula = report.RecordSelectionFormula;
                 }
 
+                //serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
+
+                File.AppendAllText(serverPath + "/log.txt", "Report Parameters");
+
                 _diskFileDestinationOptions = new DiskFileDestinationOptions();
                 //_exportOptions = new ExportOptions();
                 _reportFormatOptions = new PdfRtfWordFormatOptions();
@@ -108,10 +117,18 @@ namespace SOFARCH.HealthScreening.Business
 
                 _reportDocument.Export();
 
+                //var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
+
+                File.AppendAllText(serverPath + "/log.txt", "File Storeage path " + report.FileStoragePath);
+
                 filePath = report.FileStoragePath;
             }
             catch (Exception ex)
             {
+                var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
+
+                File.AppendAllText(serverPath + "/log.txt", ex.Message);
+
                 throw new Exception("Error as " + ex.Message);
                 //LogEntry.LogExceptions.WriteLog("ExportCrystalReportClassLibrary", ex.GetType().ToString(), ex.Message.ToString(), ex.Source.ToString(), "WEB");
             }

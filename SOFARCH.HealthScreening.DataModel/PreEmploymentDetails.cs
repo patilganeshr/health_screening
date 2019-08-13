@@ -252,6 +252,8 @@ namespace SOFARCH.HealthScreening.DataModel
                                 MC = DRE.GetNullableString(reader, "mc", null),
                                 PastHistory = DRE.GetNullableString(reader, "past_history", null),
                                 FamilyHistory = DRE.GetNullableString(reader, "family_history", null),
+                                OtherDetails = DRE.GetNullableString(reader, "other_details", null),
+                                Remarks = DRE.GetNullableString(reader, "remarks", null),
                                 WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
                                 FinancialYear = DRE.GetNullableString(reader, "financial_year", null),
                                 PreEmploymentTestDetails = preEmploymentTestDetails.GetPreEmploymentTestDetailsByPreEmploymentId(DRE.GetInt32(reader, "pre_employment_id"))
@@ -281,9 +283,9 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@pre_employment_or_health_checkup", DbType.String, preEmploymentDetails.PreEmploymentOrHealthCheckup);
                     database.AddInParameter(dbCommand, "@financial_year", DbType.String, preEmploymentDetails.FinancialYear);
                     database.AddInParameter(dbCommand, "@first_name", DbType.String, preEmploymentDetails.FirstName);
-                    database.AddInParameter(dbCommand, "@last_name", DbType.Int32, preEmploymentDetails.LastName);
-                    database.AddInParameter(dbCommand, "@consult_from_date", DbType.Int32, preEmploymentDetails.ConsultFromDate);
-                    database.AddInParameter(dbCommand, "@consult_to_date", DbType.Int32, preEmploymentDetails.ConsultToDate);
+                    database.AddInParameter(dbCommand, "@last_name", DbType.String, preEmploymentDetails.LastName);
+                    database.AddInParameter(dbCommand, "@consult_from_date", DbType.String, preEmploymentDetails.ConsultFromDate);
+                    database.AddInParameter(dbCommand, "@consult_to_date", DbType.String, preEmploymentDetails.ConsultToDate);
 
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
@@ -319,6 +321,8 @@ namespace SOFARCH.HealthScreening.DataModel
                                 MC = DRE.GetNullableString(reader, "mc", null),
                                 PastHistory = DRE.GetNullableString(reader, "past_history", null),
                                 FamilyHistory = DRE.GetNullableString(reader, "family_history", null),
+                                OtherDetails = DRE.GetNullableString(reader, "other_details", null),
+                                Remarks = DRE.GetNullableString(reader, "remarks", null),
                                 WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
                                 FinancialYear = DRE.GetNullableString(reader, "financial_year", null),
                                 PreEmploymentTestDetails = preEmploymentTestDetails.GetPreEmploymentTestDetailsByPreEmploymentId(DRE.GetInt32(reader, "pre_employment_id"))

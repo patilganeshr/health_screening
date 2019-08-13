@@ -1,0 +1,15 @@
+
+Log Entry : 4:39:24 PM Tuesday, August 13, 2019
+  :
+  :Inside Generate REport Method
+-------------------------------
+
+Log Entry : 4:39:31 PM Tuesday, August 13, 2019
+  :
+  :HealthCheckupDetails, HealthCheckupDetails.rpt, D:\My Data\My Workspace\health_screening\health_screening\HealthScreeningApp\ApplicationFiles/HealthCheckupDetails/, ,D:\My Data\My Workspace\health_screening\health_screening\HealthScreeningApp\ApplicationFiles/HealthCheckupDetails/7089.pdf
+-------------------------------
+7019
+Log Entry : 5:16:50 PM Tuesday, August 13, 2019
+  :
+  :No Records
+-------------------------------

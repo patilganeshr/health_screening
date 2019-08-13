@@ -59,7 +59,7 @@
 
                                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                     <div class="form-group form-group-md">
-                                        <label>Search Options</label>                                    
+                                        <label>Search Options</label>
                                         <select id="DrugSearchOption" class="form-control"></select>
                                     </div>
 
@@ -67,7 +67,7 @@
 
                                 <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
                                     <div class="form-group form-group-md">
-                                    <label>Search Value</label>                                    
+                                    <label>Search Value</label>
                                         <input type="text" id="SearchValue" class="form-control" />
                                     </div>
                                 </div>
@@ -82,9 +82,7 @@
 
                         </div>
                         </div>
-                    
                     </div>
-                    
                     </div>
 
                 </div>
@@ -159,6 +157,15 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                     <div class="form-horizontal">
+
+                                        <div class="form-group form-group-sm">
+
+                                            <label class="col-sm-2">Drug Or XRay</label>
+                                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                <select id="DrugOrXRay" class="form-control"></select>
+                                            </div>
+
+                                        </div>
 
                                         <div class="form-group form-group-sm">
 

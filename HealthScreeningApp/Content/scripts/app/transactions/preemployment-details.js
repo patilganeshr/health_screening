@@ -764,7 +764,7 @@ Sofarch.PreEmployment = (function () {
 
             var tableBody = DOM.preEmploymentDetailsList.tBodies[0];
 
-            var selectedRows = getSelectedRows();
+            var selectedRows = getSelectedRows(DOM.preEmploymentDetailsList);
 
             var preEmploymentId = getPreEmploymentId(selectedRows);
 
@@ -865,7 +865,7 @@ Sofarch.PreEmployment = (function () {
 
         shared.showLoader(DOM.loader);
 
-        var selectedRows = getSelectedRows();
+        var selectedRows = getSelectedRows(DOM.preEmploymentDetailsList);
 
         var preEmploymentId = 0;
         var preEmploymentCodeNo = 0;
@@ -895,6 +895,7 @@ Sofarch.PreEmployment = (function () {
         var folderName = 'PreEmploymentDetails';
 
         print = {
+            PreEmploymentOrHealthCheckup: "P",
             PreEmploymentId: preEmploymentId,
             PreEmploymentCodeNo: preEmploymentCodeNo
         };

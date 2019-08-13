@@ -23,180 +23,336 @@ namespace SOFARCH.HealthScreening.DataModel
             database = DBConnect.getDBConnection();
         }
 
-        public List<Entities.Precautions> GetAll()
+        private Int32 AddDrugDispenseDetails(Entities.Precautions prescription, DbTransaction dbTransaction)
         {
-            var Precas = new List<Entities.Precautions>();
+            var drugDispenseId = 0;
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAll))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertPrescription))
                 {
+                    database.AddInParameter(dbCommand, "@Precautions_id", DbType.Int32, prescription.DrugDispenseId);
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, prescription.PatientId);
+                    database.AddInParameter(dbCommand, "@prescription_date", DbType.String, prescription.DrugDispenseDate);
+                    database.AddInParameter(dbCommand, "@DocName", DbType.String, prescription.DoctName);
+                    database.AddInParameter(dbCommand, "@working_period_id", DbType.Int32, prescription.WorkingPeriodId);
+                    database.AddInParameter(dbCommand, "@created_by", DbType.Int32, prescription.CreatedBy);
+                    database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, prescription.CreatedByIP);
+
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    drugDispenseId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        drugDispenseId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDispenseId;
+        }
+
+        private bool DeleteDrugDispenseDetails(Entities.Precautions prescription, DbTransaction dbTransaction)
+        {
+            var IsDrugDispenseDeleted = false;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeletePrescription))
+                {
+                    database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, prescription.DrugDispenseId);
+                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, prescription.DeletedBy);
+                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, prescription.DeletedByIP);
+
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        IsDrugDispenseDeleted = Convert.ToBoolean(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return IsDrugDispenseDeleted;
+        }
+
+        private Int32 UpdateDrugDispenseDetails(Entities.Precautions prescription, DbTransaction dbTransaction)
+        {
+            var drugDispenseId = 0;
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdatePrescription))
+                {
+                    database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, prescription.DrugDispenseId);
+                    database.AddInParameter(dbCommand, "@drug_dispense_date", DbType.String, prescription.DrugDispenseDate);
+                    database.AddInParameter(dbCommand, "@DocName", DbType.String, prescription.DoctName);
+                    database.AddInParameter(dbCommand, "@working_period_id", DbType.Int32, prescription.WorkingPeriodId);
+                    database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, prescription.ModifiedBy);
+                    database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, prescription.ModifiedByIP);
+
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
+
+                    drugDispenseId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    {
+                        drugDispenseId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDispenseId;
+        }
+
+        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
+        {
+            var drugDetails = new DrugDispenseDrugUtilisation();
+
+            return drugDetails.GetDrugDetailsByDrugId(drugId);
+        }
+
+        public List<Entities.Precautions> SearchDrguDispense(Entities.Precautions prescription)
+        {
+            var drugDispenses = new List<Entities.Precautions>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.SearchPrescription))
+                {
+                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, prescription.PatientName);
+                    database.AddInParameter(dbCommand, "@employer_name", DbType.String, prescription.EmployerName);
+                    database.AddInParameter(dbCommand, "@patient_code", DbType.Int32, prescription.PatientCode);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())
                         {
-                            var Preca = new Entities.Precautions
+                            var drugUtlisation = new DataModel.DrugDispenseDrugUtilisation();
+
+                            var drugDispenseDetails = new Entities.Precautions()
                             {
-                                PrecautionsId = DRE.GetNullableInt32(reader, "Precautions_id", 0),
-                                DocName = DRE.GetNullableString(reader, "doctor_name", null),
+                                DrugDispenseId = DRE.GetNullableInt32(reader,"Precautions_id", 0),
+                                DrugDispenseNo = DRE.GetNullableInt32(reader, "prescription_no", null),
+                                DrugDispenseDate = DRE.GetNullableString(reader, "prescription_date", null),
+                                PatientId = DRE.GetNullableInt32(reader, "patient_id", null),
+                                PatientCode = DRE.GetNullableInt32(reader, "patient_code", null),
                                 PatientName = DRE.GetNullableString(reader, "full_name", null),
-                                Age = DRE.GetNullableInt32(reader, "age", 0),
-                                Date = DRE.GetNullableString(reader, "Date", null),
-                                guid = DRE.GetNullableGuid(reader, "row_guid", null),
-                                SrNo = DRE.GetNullableInt64(reader, "sr_no", null)
-
+                                EmployerId = DRE.GetNullableInt32(reader, "employer_id", null),
+                                EmployerCode = DRE.GetNullableInt32(reader, "employer_code", null),
+                                EmployerName = DRE.GetNullableString(reader, "employer_name", null),
+                                DoctName = DRE.GetNullableString(reader, "DocName", null),
+                                WorkingPeriodId = DRE.GetNullableInt32(reader, "working_period_id", null),
+                                DrugDispenseDrugUtilisations = GetUtilisationByDrugDispenseId(DRE.GetInt32(reader, "Precautions_id"))
                             };
 
-
-                            Precas.Add(Preca);
+                            drugDispenses.Add(drugDispenseDetails);
                         }
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                throw e;
             }
 
-            return Precas;
+            return drugDispenses;
         }
 
-
-
-
-        public List<Entities.Precautions> GetAllPreDetail(Int32 PrecautionsId)
-
+        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
         {
-            var Precas = new List<Entities.Precautions>();
+            var drugDetails = new DrugDispenseDrugUtilisation();
+
+            return drugDetails.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        }
+
+        public List<Entities.Precautions> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
+        {
+            var drugDispenseDates = new List<Entities.Precautions>();
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetListOfAllDetails))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetPastDrugDispenseDatesByPatientId))
                 {
-                    database.AddInParameter(dbCommand, "@PrecautionsId", DbType.Int32, PrecautionsId);
+                    database.AddInParameter(dbCommand, "@patient_id", DbType.Int32, patientId);
+
                     using (IDataReader reader = database.ExecuteReader(dbCommand))
                     {
                         while (reader.Read())
                         {
-                            var Preca = new Entities.Precautions
+                            var drugDispenseDate = new Entities.Precautions()
                             {
-                                DrugId = DRE.GetNullableInt32(reader, "drug_code", 0),
-                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", 0),
-                               DrugName  = DRE.GetNullableString(reader, "drug_name", null),
-                               DispenseQty = DRE.GetNullableInt32(reader, "qty", 0),
-                                Dosage = DRE.GetNullableInt32(reader, "Dosage", 0),    
-                                guid = DRE.GetNullableGuid(reader, "row_guid", null),
-                               
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
+                                DrugDispenseDate = DRE.GetNullableString(reader, "drug_dispense_date", null)
                             };
 
-
-                            Precas.Add(Preca);
+                            drugDispenseDates.Add(drugDispenseDate);
                         }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return Precas;
-        }
-
-
-
-
-
-        private Int32 AddPrecautions(Entities.Precautions pre, DbTransaction dbTransaction)
-        {
-            var PrecautionsId = 0;
-
-            try
-            {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.Insertprescription))
-                {
-
-                    database.AddInParameter(dbCommand, "@doctor_name", DbType.String, pre.DocName);
-                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, pre.PatientName);
-                    database.AddInParameter(dbCommand, "@age", DbType.Int32, pre.Age);
-                    database.AddInParameter(dbCommand, "@medicines_pre", DbType.String, pre.MedicinesPre);
-                    database.AddInParameter(dbCommand, "@created_by", DbType.Int32, pre.CreatedBy);
-                    database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, pre.CreatedByIP);
-
-                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
-
-                    PrecautionsId = database.ExecuteNonQuery(dbCommand, dbTransaction);
-
-                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
-                    {
-                        PrecautionsId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
-                    }
-                }
-            }
             catch (Exception e)
             {
                 throw e;
             }
 
-            return PrecautionsId;
+            return drugDispenseDates;
         }
 
-
-
-
-        private Int32 UpdatePrecautions(Entities.Precautions pre, DbTransaction dbTransaction)
+        public Int32 SaveDrugDispenseDetails(Entities.Precautions prescription)
         {
-            var PrecautionsId = 0;
+            var drugDispenseId = 0;
 
-            try
+            var db = DBConnect.getDBConnection();
+
+            using (DbConnection conn = db.CreateConnection())
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.Updateprescription))
+                conn.Open();
+
+                using (DbTransaction dbTransaction = conn.BeginTransaction())
                 {
-
-                    database.AddInParameter(dbCommand, "@PrecautionsId", DbType.Int32, pre.PrecautionsId);
-                    database.AddInParameter(dbCommand, "@doctor_name", DbType.String, pre.DocName);
-                    database.AddInParameter(dbCommand, "@patient_name", DbType.String, pre.PatientName);
-                    database.AddInParameter(dbCommand, "@age", DbType.Int32, pre.Age);
-                    database.AddInParameter(dbCommand, "@medicines_pre", DbType.String, pre.MedicinesPre);
-                    database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, pre.ModifiedBy);
-                    database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, pre.ModifiedByIP);
-
-                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
-
-                    PrecautionsId = database.ExecuteNonQuery(dbCommand, dbTransaction);
-
-                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
+                    try
                     {
-                        PrecautionsId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
+                        var drugDispenseDrugUtilisationId = 0;
+
+                        if (prescription != null)
+                        {
+                            if (prescription.DrugDispenseId == null || prescription.DrugDispenseId == 0)
+                            {
+                                drugDispenseId = AddDrugDispenseDetails(prescription, dbTransaction);
+                            }
+                            else if (prescription.ModifiedBy != null || prescription.ModifiedBy > 0)
+                            {
+                                drugDispenseId = UpdateDrugDispenseDetails(prescription, dbTransaction);
+                            }
+                            else if (prescription.IsDeleted == true)
+                            {
+                                var result = DeleteDrugDispenseDetails(prescription, dbTransaction);
+
+                                if (result)
+                                {
+                                    drugDispenseId = (int)prescription.DrugDispenseId;
+                                }
+                                else
+                                {
+                                    drugDispenseId = -1;
+                                }
+                            }
+
+                            if (drugDispenseId > 0)
+                            {
+                                if (prescription.IsDeleted == true)
+                                {
+
+                                    var result = DeleteDrugDispenseDrugUtilisationDetailsByDrugDispenseId((int)prescription.DrugDispenseId, (int)prescription.DeletedBy, prescription.DeletedByIP, dbTransaction);
+
+                                    if (result)
+                                    {
+                                        drugDispenseDrugUtilisationId = (int)prescription.DrugDispenseId;
+                                    }
+                                }
+
+                                if (prescription.DrugDispenseDrugUtilisations != null)
+                                {
+                                    if (prescription.DrugDispenseDrugUtilisations.Count > 0)
+                                    {
+                                        foreach (Entities.DrugDispenseDrugUtilisation drugUtilisation in prescription.DrugDispenseDrugUtilisations)
+                                        {
+
+
+                                            drugUtilisation.DrugDispenseId = drugDispenseId;
+
+                                            drugDispenseDrugUtilisationId = SaveDrugDispenseDrugUtilisation(drugUtilisation, dbTransaction);
+
+                                            if (drugDispenseDrugUtilisationId < 0)
+                                            {
+                                                drugDispenseId = -1;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (drugDispenseId > 0)
+                        {
+                            dbTransaction.Commit();
+                        }
+                        else
+                        {
+                            dbTransaction.Rollback();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        drugDispenseId = -1;
+                        dbTransaction.Rollback();
+                        throw ex;
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
 
-            return PrecautionsId;
+                return drugDispenseId;
+            }
         }
 
 
 
-
-        public bool DeletePrecautions(Entities.Precautions Per)
+        public Int32 SaveDrugDispenseDrugUtilisation(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
-            bool isDeleted = false;
+            var drugUtilisationId = 0;
+
+            if (drugDispenseDrugUtilisation.DrugUtilisationId == null || drugDispenseDrugUtilisation.DrugUtilisationId == 0)
+            {
+                drugUtilisationId = AddDrugDispenseDrugUtilisationDetails(drugDispenseDrugUtilisation, dbTransaction);
+            }
+            else if (drugDispenseDrugUtilisation.ModifiedBy != null || drugDispenseDrugUtilisation.ModifiedBy > 0)
+            {
+                drugUtilisationId = UpdateDrugDispenseDrugUtilisationDetails(drugDispenseDrugUtilisation, dbTransaction);
+            }
+            else if (drugDispenseDrugUtilisation.IsDeleted == true)
+            {
+                var result = DeleteDrugDispenseDrugUtilisationDetails(drugDispenseDrugUtilisation, dbTransaction);
+
+                if (result)
+                {
+                    drugUtilisationId = (int)drugDispenseDrugUtilisation.DrugUtilisationId;
+                }
+            }
+
+            return drugUtilisationId;
+        }
+
+
+        public bool DeleteDrugDispenseDrugUtilisationDetailsByDrugDispenseId(Int32 drugDispenseId, Int32 deletedBy, string deletedByIP, DbTransaction dbTransaction)
+        {
+            var isDeleted = false;
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.Deleteprescription))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeleteDrugDispenseDrugUtilisationByDrugDispenseId))
                 {
-                    database.AddInParameter(dbCommand, "@PrecautionsId", DbType.Int32, Per.PrecautionsId);
-                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, Per.DeletedBy);
-                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, Per.DeletedByIP);
+                    database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, drugDispenseId);
+                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, deletedBy);
+                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, deletedByIP);
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    var result = database.ExecuteNonQuery(dbCommand);
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
@@ -214,30 +370,25 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
 
-        private Int32 AddPrecautionsDrug(Entities.Precautions pre, DbTransaction dbTransaction)
+        private bool DeleteDrugDispenseDrugUtilisationDetails(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
-            var PrecautionsId = 0;
+            bool IsDrugUtilisationDeleted = false;
 
             try
             {
-                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertprescriptionDrug))
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.DeletePrescriptionsDrugUtilisation))
                 {
-
-                    database.AddInParameter(dbCommand, "@Precautions_id", DbType.Int32, pre.PrecautionsId);
-                    database.AddInParameter(dbCommand, "@drug_Code", DbType.Int32, pre.DrugId);
-                    database.AddInParameter(dbCommand, "@drug_name", DbType.String , pre.DrugName);
-                    database.AddInParameter(dbCommand, "@qty", DbType.Int32, pre.DispenseQty);
-                    database.AddInParameter(dbCommand, "@dosage", DbType.String, pre.Dosage);
-                    database.AddInParameter(dbCommand, "@created_by", DbType.Int32, pre.CreatedBy);
-                    database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, pre.CreatedByIP);
+                    database.AddInParameter(dbCommand, "@drug_utilisation_id", DbType.Int32, drugDispenseDrugUtilisation.DrugUtilisationId);
+                    database.AddInParameter(dbCommand, "@deleted_by", DbType.Int32, drugDispenseDrugUtilisation.DeletedBy);
+                    database.AddInParameter(dbCommand, "@deleted_by_ip", DbType.String, drugDispenseDrugUtilisation.DeletedByIP);
 
                     database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                    PrecautionsId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+                    var result = database.ExecuteNonQuery(dbCommand, dbTransaction);
 
                     if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
-                        PrecautionsId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
+                        IsDrugUtilisationDeleted = Convert.ToBoolean(database.GetParameterValue(dbCommand, "@return_value"));
                     }
                 }
             }
@@ -246,132 +397,121 @@ namespace SOFARCH.HealthScreening.DataModel
                 throw e;
             }
 
-            return PrecautionsId;
+            return IsDrugUtilisationDeleted;
         }
 
 
 
-
-        public Int32 SavePrecautionDrug(Entities.Precautions pre)
+        private Int32 UpdateDrugDispenseDrugUtilisationDetails(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
-            var preId = 0;
+            var drugDispenseDrugUtilisationId = 0;
 
-            var db = DBConnect.getDBConnection();
-
-            using (DbConnection conn = db.CreateConnection())
+            try
             {
-                conn.Open();
-
-                using (DbTransaction transaction = conn.BeginTransaction())
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.UpdatePrescriptionsDrugUtilisation))
                 {
-                    try
-                    {
+                    database.AddInParameter(dbCommand, "@drug_utilisation_id", DbType.Int32, drugDispenseDrugUtilisation.DrugUtilisationId);
+                    database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, drugDispenseDrugUtilisation.DrugDispenseId);
+                    database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugDispenseDrugUtilisation.DrugId);
+                    //database.AddInParameter(dbCommand, "@Dosage", DbType.Int32, drugDispenseDrugUtilisation.Dosage);
+                    database.AddInParameter(dbCommand, "@dispense_qty", DbType.Decimal, drugDispenseDrugUtilisation.DispenseQty);
+                    database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, drugDispenseDrugUtilisation.ModifiedBy);
+                    database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, drugDispenseDrugUtilisation.ModifiedByIP);
 
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                        if (pre != null)
-                        {
-                            if (pre == null || pre.PrecautionsId >= 0)
-                            {
-                                preId = AddPrecautionsDrug(pre, transaction);
-                            }
-                            else if (pre.ModifiedBy != null || pre.ModifiedBy > 0)
-                            {
-                                preId = UpdatePrecautions(pre, transaction);
-                            }
-                            else if (pre.DeletedBy != null || pre.DeletedBy > 0)
-                            {
-                                var result = DeletePrecautions(pre);
-                                if (result == true)
-                                {
-                                    preId = 1;
-                                }
-                            }
-                        }
-                        if (preId > 0)
-                        {
-                            transaction.Commit();
-                        }
-                        else
-                        {
-                            transaction.Rollback();
-                        }
-                    }
-                    catch (Exception ex)
+                    drugDispenseDrugUtilisationId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
-                        preId = -1;
-                        transaction.Rollback();
-                        throw ex;
-                    }
-                    finally
-                    {
-                        db = null;
+                        drugDispenseDrugUtilisationId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
                     }
                 }
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
-            return preId;
+            return drugDispenseDrugUtilisationId;
         }
 
 
 
-        public Int32 SavePrecaution(Entities.Precautions pre)
+        private Int32 AddDrugDispenseDrugUtilisationDetails(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
-            var preId = 0;
+            var drugDispenseDrugUtilisationId = 0;
 
-            var db = DBConnect.getDBConnection();
-
-            using (DbConnection conn = db.CreateConnection())
+            try
             {
-                conn.Open();
-
-                using (DbTransaction transaction = conn.BeginTransaction())
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.InsertPrescriptionsDrugUtilisation))
                 {
-                    try
-                    {
+                    database.AddInParameter(dbCommand, "@prescription_utilisation_id", DbType.Int32, drugDispenseDrugUtilisation.DrugUtilisationId);
+                    database.AddInParameter(dbCommand, "@Precautions_id", DbType.Int32, drugDispenseDrugUtilisation.DrugDispenseId);
+                    database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugDispenseDrugUtilisation.DrugId);
+                    database.AddInParameter(dbCommand, "@dispense_qty", DbType.Decimal, drugDispenseDrugUtilisation.DispenseQty);
+                    //database.AddInParameter(dbCommand, "@Dosage", DbType.Int32, drugDispenseDrugUtilisation.Dosage);
+                    database.AddInParameter(dbCommand, "@created_by", DbType.Int32, drugDispenseDrugUtilisation.CreatedBy);
+                    database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, drugDispenseDrugUtilisation.CreatedByIP);
 
+                    database.AddOutParameter(dbCommand, "@return_value", DbType.Int32, 0);
 
-                        if (pre != null)
-                        {
-                            if (pre == null || pre.PrecautionsId == 0)
-                            {
-                                preId = AddPrecautions(pre, transaction);
-                            }
-                            else if (pre.ModifiedBy != null || pre.ModifiedBy > 0)
-                            {
-                                preId = UpdatePrecautions(pre, transaction);
-                            }
-                            else if (pre.DeletedBy != null || pre.DeletedBy > 0)
-                            {
-                                var result = DeletePrecautions(pre);
-                                if (result == true)
-                                {
-                                    preId = 1;
-                                }
-                            }
-                        }
-                        if (preId > 0)
-                        {
-                            transaction.Commit();
-                        }
-                        else
-                        {
-                            transaction.Rollback();
-                        }
-                    }
-                    catch (Exception ex)
+                    drugDispenseDrugUtilisationId = database.ExecuteNonQuery(dbCommand, dbTransaction);
+
+                    if (database.GetParameterValue(dbCommand, "@return_value") != DBNull.Value)
                     {
-                        preId = -1;
-                        transaction.Rollback();
-                        throw ex;
-                    }
-                    finally
-                    {
-                        db = null;
+                        drugDispenseDrugUtilisationId = Convert.ToInt32(database.GetParameterValue(dbCommand, "@return_value"));
                     }
                 }
             }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
-            return preId;
+            return drugDispenseDrugUtilisationId;
+        }
+
+
+        public List<Entities.DrugDispenseDrugUtilisation> GetUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        {
+            var drugDispenseDrugUtilisations = new List<Entities.DrugDispenseDrugUtilisation>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetPrescriptionsDrugUtilisationDetailsByDrugDispenseId))
+                {
+                    database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, drugDispenseId);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var drugUtilisation = new Entities.DrugDispenseDrugUtilisation()
+                            {
+                                DrugUtilisationId = DRE.GetNullableInt32(reader, "prescription_utilisation_id", null),
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "Precautions_id", null),
+                                DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
+                                DispenseQty = DRE.GetNullableDecimal(reader, "dispense_qty", null),
+                                //Dosage = DRE.GetNullableInt32(reader, "Dosage", null),
+                                BalanceQty = DRE.GetNullableDecimal(reader, "balance_qty", null),
+                                PurchaseRate = DRE.GetNullableDecimal(reader, "purchase_rate", null),
+                                Amount = DRE.GetNullableDecimal(reader, "amount", null)
+                            };
+
+                            drugDispenseDrugUtilisations.Add(drugUtilisation);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDispenseDrugUtilisations;
         }
 
 

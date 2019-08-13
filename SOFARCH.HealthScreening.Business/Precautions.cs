@@ -20,35 +20,44 @@ namespace SOFARCH.HealthScreening.Business
    public class Precautions
     {
 
-        private readonly DataModel.Precautions _Pre;
+       
+        private readonly DataModel.Precautions _drugDispense;
+
         public Precautions()
         {
-            _Pre = new DataModel.Precautions();
+            _drugDispense = new DataModel.Precautions();
         }
 
-        public Int32 SavePrecaution(Entities.Precautions pre)
+        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
         {
-            return _Pre.SavePrecaution(pre);
+            return _drugDispense.GetDrugDetailsByDrugId(drugId);
         }
 
-        public Int32 SavePrecautionDrug(Entities.Precautions pre)
+        public List<Entities.Precautions> SearchDrguDispense(Entities.Precautions drugDispense)
         {
-            return _Pre.SavePrecautionDrug(pre);
+            return _drugDispense.SearchDrguDispense(drugDispense);
         }
 
-
-        public List<Entities.Precautions> GetAll()
+        public List<Entities.Precautions> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
         {
-            return _Pre.GetAll();
+            return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
         }
 
-        public List<Entities.Precautions> GetAllPreDetails(Int32 PrecautionsId)
+        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
         {
-            return _Pre.GetAllPreDetail(PrecautionsId);
+            return _drugDispense.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        }
+
+        public Int32 SaveDrugDispenseDetails(Entities.Precautions drugDispense)
+        {
+            return _drugDispense.SaveDrugDispenseDetails(drugDispense);
         }
 
 
-        public string generateReport(Entities.Precautions  pre)
+
+
+
+        public string generateReport(Entities.Precautions pre)
         {
             var report = new BuidReport();
             var reportEntity = new Entities.Report();
@@ -58,7 +67,7 @@ namespace SOFARCH.HealthScreening.Business
 
             var parameters = new ArrayList();
 
-            parameters.Add(pre.PrecautionsId);
+            parameters.Add(pre.DrugDispenseId);
 
             reportName = "Precaution_Reports.rpt";
 
@@ -67,7 +76,7 @@ namespace SOFARCH.HealthScreening.Business
 
             reportEntity.ReportPath = serverPath + "Reports/" + reportName;
             reportEntity.Parameters = parameters;
-            reportEntity.FileStoragePath = reportEntity.DirectoryPath + "PatientNo_" + Convert.ToString(pre.PrecautionsId) + ".pdf";
+            reportEntity.FileStoragePath = reportEntity.DirectoryPath + "PatientNo_" + Convert.ToString(pre.DrugDispenseId) + ".pdf";
 
             return report.GenerateReport(reportEntity, CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
         }

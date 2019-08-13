@@ -55,7 +55,7 @@
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                        <h4 class="panel-title panel-title-align-middle">Search Pre-Employment Details</h4>
+                                        <h4 class="panel-title panel-title-align-middle">Search Health Checkup Details</h4>
 
                                     </div>
 
@@ -68,24 +68,24 @@
                                 <div class="row">
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                        <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <label>Search Options</label>
-                                                <select id="SearchOptions" class="form-control"></select>
-                                            </div>
+                                        <div id="SearchCriteriaList" class="table-responsive" style="max-height: 300px;">
+                                            <table id="SearchFieldsList" class="table table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Name</th>
+                                                        <th class="col-lg-2 col-md-2 col-sm-4 col-xs-12">Field Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                                             <div class="form-group form-group-md">
-                                                <label>Search Value</label>
-                                                <input type="text" id="SearchValue" class="form-control" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                                            <div class="form-group form-group-md">
-                                                <button type="button" id="SearchPreEmploymentDetails" class="btn btn-info btn-md" style="margin-top: 26px;">Search</button>
+                                                <button type="button" id="SearchHealthCheckupDetails" class="btn btn-info btn-md">Search</button>
                                             </div>
                                         </div>
 
@@ -118,12 +118,14 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center">Action</th>
+                                            <th class="text-center">Consult Date</th>
                                             <th class="text-center">Company Name</th>
                                             <th class="text-center">Emp Code</th>
                                             <th class="text-center">Patient Name</th>
                                             <th class="text-center">Gender</th>
                                             <th class="text-center">Contact No.</th>
                                             <th class="text-center">Email Id</th>
+                                            <th class="text-center">Fin Year</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -158,6 +160,85 @@
             <!-- edit panel -->
 
             <div id="EditMode">
+
+                <!-- MODAL OPEN -->
+
+                <div id="SearchPatientModal" class="modal fade">
+
+                    <div class="modal-dialog modal-medium">
+
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Search Patient</h4>
+                            </div>
+
+                            <div class="modal-body modal-body-scroll">
+
+                                <div class="row">
+
+                                    <div class="panel-body">
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="form-group form-group-md">
+                                                    <label>First Name</label>
+                                                    <input type="text" id="FirstName" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                                                <div class="form-group form-group-md">
+                                                    <label>Last Name</label>
+                                                    <input type="text" id="LastName" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group form-group-md">
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                    <button type="button" id="SearchPatient" class="btn btn-md btn-success" style="margin-top: 26px;">Search</button>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="table-responsive" style="max-height: 300px;">
+                                                <table id="PatientSearchList" class="table table-condensed">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Action</th>
+                                                            <th>Patient Code</th>
+                                                            <th>Patient Name</th>
+                                                            <th>Company Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" id="SelectPatient" class="btn btn-info btn-sm btn-rounded">Choose Select</button>
+                                <button type="button" id="CloseSearchPatientModal" class="btn btn-default btn-sm btn-rounded" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- MODAL CLOSE -->
 
                 <div class="row">
 
@@ -209,6 +290,14 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    <div class="form-group form-group-sm">
+                                                        <label>Pre Employment Code No.</label>
+                                                        <input type="text" id="PreEmploymentCodeNo" class="form-control" disabled="disabled" placeholder="Auto Generated" />
+                                                    </div>
+                                                </div>
+
+
                                             </div>
 
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -223,9 +312,16 @@
                                                 <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     <div class="form-group form-group-sm">
                                                         <label>Patient Name</label>
-                                                        <input type="text" id="PatientName" class="form-control" />
+                                                        <div class="input-group">
+                                                            <input type="text" id="PatientName" class="form-control" />
+                                                            <div id="SearchPatientList" class="autocompleteList"></div>
+                                                            <span class="input-group-btn">
+                                                                <button type="button" id="SearchPatientName" class="btn btn-danger btn-md">
+                                                                    <i class="fa fa-search"></i>
+                                                                </button>
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div id="SearchPatientList" class="autocompleteList"></div>
                                                 </div>
 
                                                 <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
@@ -263,111 +359,111 @@
                                                     </div>
                                                 </div>
 
-                                            </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Company Code</label>
-                                                        <input type="text" id="EmployerCode" class="form-control" />
+                                                    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Company Code</label>
+                                                            <input type="text" id="EmployerCode" class="form-control" />
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Company Name</label>
-                                                        <input type="text" id="EmployerName" class="form-control" />
+                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Company Name</label>
+                                                            <input type="text" id="EmployerName" class="form-control" />
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Designation</label>
-                                                        <input id="Designation" class="form-control" />
+                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Designation</label>
+                                                            <input id="Designation" class="form-control" />
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Identification Mark</label>
-                                                        <input id="IdentificationMark" class="form-control" />
+                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Identification Mark</label>
+                                                            <input id="IdentificationMark" class="form-control" />
+                                                        </div>
                                                     </div>
+
                                                 </div>
-
-                                            </div>
-
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Personal History of major illness</label>
-                                                        <input type="text" id="PersonalHistoryOfMajorIllness" class="form-control" />
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Personal History of major illness</label>
+                                                            <input type="text" id="PersonalHistoryOfMajorIllness" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Drug Allergy</label>
+                                                            <input type="text" id="DrugAllergy" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Micturation</label>
+                                                            <input type="text" id="Micturation" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Bowels</label>
+                                                            <input type="text" id="Bowels" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Sleep</label>
+                                                            <input type="text" id="Sleep" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Alcohol</label>
+                                                            <input type="text" id="Alcohol" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Smoking</label>
+                                                            <input type="text" id="Smoking" class="form-control" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>M.C.</label>
+                                                            <input type="text" id="MC" class="form-control" />
+                                                        </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-sm">
+                                                            <label>Family History of any major illness</label>
+                                                            <input type="text" id="FamilyHistoryOfMajorIllness" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                             </div>
-
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Drug Allergy</label>
-                                                        <input type="text" id="DrugAllergy" class="form-control" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Micturation</label>
-                                                        <input type="text" id="Micturation" class="form-control" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Bowels</label>
-                                                        <input type="text" id="Bowels" class="form-control" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Sleep</label>
-                                                        <input type="text" id="Sleep" class="form-control" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Alcohol</label>
-                                                        <input type="text" id="Alcohol" class="form-control" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Smoking</label>
-                                                        <input type="text" id="Smoking" class="form-control" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-1 col-md-1 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>M.C.</label>
-                                                        <input type="text" id="MC" class="form-control" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
-                                                    <div class="form-group form-group-sm">
-                                                        <label>Family History of any major illness</label>
-                                                        <input type="text" id="FamilyHistoryOfMajorIllness" class="form-control" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
 
                                         </div>
 
@@ -455,30 +551,30 @@
 
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-                                                        <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
-                                                            <div class="form-group form-group-md">
-                                                                <label>Other Details</label>
-                                                                <textarea class="form-control" id="OtherDetails" rows="5"></textarea>
-                                                            </div>
+                                                    <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-md">
+                                                            <label>Other Details</label>
+                                                            <textarea class="form-control" id="OtherDetails" rows="5"></textarea>
                                                         </div>
-
-                                                        <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
-                                                            <div class="form-group form-group-md">
-                                                                <label>Remarks</label>
-                                                                <textarea class="form-control" id="Remarks" rows="5"></textarea>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
-                                                            <div class="form-group form-group-md">
-                                                                <label>Medically Fit</label>
-                                                                <textarea class="form-control" id="MedicallyFit" rows="5"></textarea>
-                                                            </div>
-                                                        </div>
-
                                                     </div>
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-md">
+                                                            <label>Remarks</label>
+                                                            <textarea class="form-control" id="Remarks" rows="5"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-md-12 col-sm-2 col-xs-12">
+                                                        <div class="form-group form-group-md">
+                                                            <label>Medically Fit</label>
+                                                            <textarea class="form-control" id="MedicallyFit" rows="5"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
 
                                         </div>

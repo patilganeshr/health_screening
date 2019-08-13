@@ -742,20 +742,35 @@ namespace SOFARCH.HealthScreening.DataModel
         #endregion
 
         #region Prescriptions
-        public static string Insertprescription { get { return "insert_Precautions"; } }
+        public static string InsertPrescription { get { return "Prescription_insert_drug_dispense"; } }
 
-        public static string InsertprescriptionDrug { get { return "prescription_details_insert"; } }
+        public static string UpdatePrescription { get { return "prescription_dispenses_update_drug_dispense"; } }
 
-        public static string Updateprescription { get { return "Precautions_update_Precautions"; } }
+        public static string DeletePrescription { get { return "Prescription_delete_drug_dispense"; } }
 
-        public static string Deleteprescription { get { return "Precautions_delete_Precautions"; } }
+        public static string GetPrescriptionDetailsById { get { return "Prescription_get_drug_dispense_details_by_id"; } }
 
-        public static string GetListOfAll { get { return "Precautions_get_list"; } }
+        public static string SearchPrescription { get { return "prescription_search_drug_dispenses"; } }
 
-        public static string GetListOfAllDetails { get { return "prescription_details_get_list"; } }
 
         #endregion
 
+        #region Prescriptions Utilisation
+
+        public static string InsertPrescriptionsDrugUtilisation { get { return "drug_prescription_utilisation_insert_drug_utilisation"; } }
+
+        public static string UpdatePrescriptionsDrugUtilisation { get { return "prescription_utilisation_update_drug_utilisation"; } }
+
+        public static string DeletePrescriptionsDrugUtilisation { get { return "Precautions_drug_utilisation_delete_drug_utilisation"; } }
+
+        public static string DeletePrescriptionsDrugUtilisationByDrugDispenseId { get { return "Precautions_drug_utilisation_delete_drug_utilisation_by_drug_dispense_id"; } }
+
+        public static string GetPrescriptionsByDrugId { get { return "Drug_prescription_drug_utilisation_get_drugs_details_by_drug_id"; } }
+
+        public static string GetPrescriptionsDrugUtilisationDetailsByDrugDispenseId { get { return "Drug_prescription_utilisation_get_details_by_drug_dispense_id"; } }
+
+
+        #endregion
 
         #region PettyCase
 

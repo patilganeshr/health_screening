@@ -46,6 +46,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@adverse_effects", DbType.String, drug.AdverseEffects);
                     database.AddInParameter(dbCommand, "@precautions", DbType.String, drug.Precautions);
                     database.AddInParameter(dbCommand, "@remarks", DbType.String, drug.Remarks);
+                    database.AddInParameter(dbCommand, "@drug_or_xray", DbType.String, drug.DrugOrXRay);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, drug.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, drug.CreatedByIP);
 
@@ -182,6 +183,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             var drug = new Entities.Drug
                             {
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
+                                DrugOrXRay = DRE.GetNullableString(reader, "drug_or_xray", "D"),
                                 DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
                                 GenericName = DRE.GetNullableString(reader, "generic_name", null),
                                 DrugName = DRE.GetNullableString(reader, "drug_name", null),
@@ -317,6 +319,7 @@ namespace SOFARCH.HealthScreening.DataModel
                 var drugInfo = new Entities.Drug()
                 {
                     DrugId = DRE.GetNullableInt32(reader, "drug_id", 0),
+                    DrugOrXRay = DRE.GetNullableString(reader, "drug_or_xray", "D"),
                     DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
                     GenericName = DRE.GetNullableString(reader, "generic_name", null),
                     DrugName = DRE.GetNullableString(reader, "drug_name", null),
@@ -358,6 +361,7 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@adverse_effects", DbType.String, drug.AdverseEffects);
                     database.AddInParameter(dbCommand, "@precautions", DbType.String, drug.Precautions);
                     database.AddInParameter(dbCommand, "@remarks", DbType.String, drug.Remarks);
+                    database.AddInParameter(dbCommand, "@drug_or_xray", DbType.String, drug.DrugOrXRay);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, drug.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, drug.ModifiedByIP);
 

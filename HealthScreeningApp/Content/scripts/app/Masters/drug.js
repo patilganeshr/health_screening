@@ -27,6 +27,7 @@ Sofarch.Drug = (function () {
         DOM.drugList = document.getElementById('DrugList');
 
         DOM.editMode = document.getElementById('EditMode');
+        DOM.drugOrXRay = document.getElementById('DrugOrXRay');
         DOM.drugCode = document.getElementById('DrugCode');
         DOM.genericName = document.getElementById('GenericName');
         DOM.drugName = document.getElementById('DrugName');
@@ -91,11 +92,24 @@ Sofarch.Drug = (function () {
 
     function loadData() {
 
+        fillDrugOrXRay();
         getDrugGroups();
         getDrugFormulation();
         //getBrandNames();
         getDrugRoutes();
         fillSearchOptions();
+    }
+
+    function fillDrugOrXRay() {
+
+        var option = null;
+
+        option = "<option value='-1'>Choose Drug or XRay</option>";
+        option += "<option value='D' selected='true'>Drug</option>";
+        option += "<option value='X'>XRay</option>";
+
+        DOM.drugOrXRay.innerHTML = option;
+
     }
 
     function getDrugGroups() {
@@ -119,7 +133,7 @@ Sofarch.Drug = (function () {
             shared.hideLoader(DOM.loader);
 
         });
-                
+
         shared.hideLoader(DOM.loader);
     }
 
@@ -143,7 +157,7 @@ Sofarch.Drug = (function () {
             shared.hideLoader(DOM.loader);
 
         });
-                
+
         shared.hideLoader(DOM.loader);
     }
 
@@ -167,7 +181,7 @@ Sofarch.Drug = (function () {
             shared.hideLoader(DOM.loader);
 
         });
-        
+
         shared.hideLoader(DOM.loader);
     }
 
@@ -232,9 +246,9 @@ Sofarch.Drug = (function () {
                 drugRouteId = data[d].DrugRouteId;
                 drugId = 0;
                 routeName = data[d].RouteName;
-                
+
                 listGroupItem += "<li class='list-group-item'> <label class='label-tick'> <input type='checkbox' id=" + drugRouteId + " class='label-checkbox' data-drug-route-link-id=" + drugRouteLinkId + " data-drug-id=" + drugId + " /> <span class='label-text'></span> </label>" + routeName + "</li>";
-                
+
             }
 
             listGroup.innerHTML = listGroupItem;
@@ -248,7 +262,7 @@ Sofarch.Drug = (function () {
     function removeDrugSelection() {
 
        var tableBody = DOM.drugList.tBodies[0];
-        
+
         var checkBoxes = tableBody.querySelectorAll('.label-checkbox');
 
         if (checkBoxes.length > 0) {
@@ -336,7 +350,7 @@ Sofarch.Drug = (function () {
 
         shared.showLoader(DOM.loader);
 
-        //clear the modal control inputs        
+        //clear the modal control inputs
         shared.clearInputs(DOM.editMode);
         shared.clearSelect(DOM.editMode);
         removeDrugRouteSelection();
@@ -344,6 +358,9 @@ Sofarch.Drug = (function () {
         shared.disableControls(DOM.editMode, false);
 
         DOM.drugName.setAttribute('data-drug-id', 0);
+
+        shared.setSelectOptionByIndex(DOM.drugOrXRay, parseInt(1));
+        shared.setSelect2ControlsText(DOM.drugOrXRay);
 
         //set focus
         DOM.genericName.focus();
@@ -386,7 +403,7 @@ Sofarch.Drug = (function () {
         removeDrugRouteSelection();
 
         shared.disableControls(DOM.editMode, false);
-                
+
         getSelectedDrugDetails();
 
         //set focus
@@ -469,7 +486,7 @@ Sofarch.Drug = (function () {
             shared.hideLoader(DOM.loader);
         }
     }
-        
+
     function saveDrugRoutes() {
 
         DrugRoutes.length = 0;
@@ -521,7 +538,7 @@ Sofarch.Drug = (function () {
                         DrugRoutes.push(drugRoute);
                     }
                 }
-                
+
             }
         }
 
@@ -529,7 +546,12 @@ Sofarch.Drug = (function () {
 
     function saveDrug() {
 
-        if (DOM.genericName.value === "") {
+        if (DOM.drugOrXRay.selectedIndex === 0) {
+            DOM.drugOrXRay.focus();
+            swal("Error!!!", "Please select Drug Or XRay entry.", "error");
+            return;
+        }
+        else if (DOM.genericName.value === "") {
             DOM.genericName.focus();
             swal("Error!!!", "Please enter the Generic Name.", "error");
             return;
@@ -552,6 +574,7 @@ Sofarch.Drug = (function () {
 
         /* temp variable */
         var drugId = 0;
+        var drugOrXRay = "D";
         var drugCode = null;
         var genericName = null;
         var drugName = null;
@@ -572,6 +595,7 @@ Sofarch.Drug = (function () {
         }
 
         drugId = parseInt(DOM.drugName.getAttribute('data-drug-id'));
+        drugOrXRay = DOM.drugOrXRay.options[DOM.drugOrXRay.selectedIndex].value;
         drugCode = DOM.drugCode.value;
         genericName = DOM.genericName.value;
         drugName = DOM.drugName.value;
@@ -583,13 +607,14 @@ Sofarch.Drug = (function () {
         adverseEffects = DOM.adverseEffects.value;
         precautions = DOM.precautions.value;
         remarks = DOM.remarks.value;
-        
+
         if (isNaN(drugId)) { drugId = 0; }
 
         var drug = {};
 
             drug = {
                 DrugId: drugId,
+                DrugOrXRay: drugOrXRay,
                 DrugCode: drugCode,
                 GenericName: genericName,
                 DrugName: drugName,
@@ -611,7 +636,7 @@ Sofarch.Drug = (function () {
         }
         else {
             drug.ModifiedBy = parseInt(LOGGED_USER);
-            drug.ModifiedByIP = IP_ADDRESS;            
+            drug.ModifiedByIP = IP_ADDRESS;
         }
 
         var postData = JSON.stringify(drug);
@@ -673,7 +698,7 @@ Sofarch.Drug = (function () {
         shared.showLoader(DOM.loader);
 
         DOM.drugList.tBodies[0].innerHTML = "";
-        
+
         if (Drugs.length > 0) {
 
             var data = "";
@@ -688,7 +713,7 @@ Sofarch.Drug = (function () {
                 data += '</tr>';
             }
 
-            DOM.drugList.tBodies[0].innerHTML = data;            
+            DOM.drugList.tBodies[0].innerHTML = data;
         }
 
         shared.showPanel(DOM.viewMode);
@@ -698,7 +723,7 @@ Sofarch.Drug = (function () {
 
         shared.hideLoader(DOM.loader);
     }
-    
+
     function showDrugDetailsById(drugId) {
 
         if (Drugs.length) {
@@ -710,9 +735,11 @@ Sofarch.Drug = (function () {
             if (selectedDrug.length) {
 
                 DOM.drugCode.value = selectedDrug[0].DrugCode;
+                shared.setSelectValue(DOM.drugOrXRay, null, selectedDrug[0].DrugOrXRay);
+                shared.setSelect2ControlsText(DOM.drugOrXRay);
                 DOM.genericName.value = selectedDrug[0].GenericName;
                 DOM.drugName.value = selectedDrug[0].DrugName;
-                DOM.drugName.setAttribute('data-drug-id', selectedDrug[0].DrugId); 
+                DOM.drugName.setAttribute('data-drug-id', selectedDrug[0].DrugId);
                 shared.setSelectValue(DOM.drugGroup, null, parseInt(selectedDrug[0].DrugGroupId));
                 shared.setSelect2ControlsText(DOM.drugGroup);
                 //shared.setSelectValue(DOM.brand, null, parseInt(selectedDrug[0].BrandId));
@@ -744,7 +771,7 @@ Sofarch.Drug = (function () {
                     }
 
                     for (var d = 0; d < selectedDrugsLinkWithDrougRoutes.length; d++) {
-                                            
+
                         if (inputTypes.length) {
 
                             for (c = 0; c < inputTypes.length; c++) {

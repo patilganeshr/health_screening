@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace SOFARCH.HealthScreening.Api.Controllers
@@ -47,6 +49,7 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         public string PrintPreEmploymentReport(Entities.PreEmploymentDetails preEmploymentDetails)
         {
             return _preEmploymentDetails.generateReport(preEmploymentDetails);
+
         }
 
     }

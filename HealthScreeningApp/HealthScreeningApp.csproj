@@ -820,24 +820,28 @@
     </Compile>
     <Compile Include="MIS\medicinesDispense.aspx.cs">
       <DependentUpon>medicinesDispense.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MIS\medicinesDispense.aspx.designer.cs">
       <DependentUpon>medicinesDispense.aspx</DependentUpon>
     </Compile>
     <Compile Include="MIS\PettyCashReport.aspx.cs">
       <DependentUpon>PettyCashReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MIS\PettyCashReport.aspx.designer.cs">
       <DependentUpon>PettyCashReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="MIS\StockMovementReports.aspx.cs">
       <DependentUpon>StockMovementReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MIS\StockMovementReports.aspx.designer.cs">
       <DependentUpon>StockMovementReports.aspx</DependentUpon>
     </Compile>
     <Compile Include="MIS\StockReport.aspx.cs">
       <DependentUpon>StockReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="MIS\StockReport.aspx.designer.cs">
       <DependentUpon>StockReport.aspx</DependentUpon>
@@ -986,13 +990,13 @@
     <Content Include="Site.Master" />
     <Content Include="Site.Mobile.Master" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <Content Include="Reports\HealthCheckupReports.rpt" />
     <Content Include="Reports\PreEmploymentDetails.rpt" />
     <Content Include="Reports\medicinesDispenseReport.rpt" />
     <Content Include="Reports\PettyCashReport.rpt" />
     <Content Include="Reports\Precaution_Reports.rpt" />
     <Content Include="Reports\StockDetailsReport.rpt" />
     <Content Include="Reports\StockMovement.rpt" />
+    <Content Include="Reports\HealthCheckupDetails.rpt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

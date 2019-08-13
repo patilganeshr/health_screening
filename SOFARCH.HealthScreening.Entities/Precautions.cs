@@ -9,39 +9,28 @@ namespace SOFARCH.HealthScreening.Entities
    public class Precautions : BaseEntity
     {
 
-        public Int32? PrecautionsId { get; set; }
+        public Int32? DrugDispenseId { get; set; }
 
-        public string DocName { get; set; }
+        public Int32? DrugDispenseNo { get; set; }
+
+        public string DrugDispenseDate { get; set; }
+
+        public Int32? PatientId { get; set; }
+
+        public List<DrugDispenseDrugUtilisation> DrugDispenseDrugUtilisations { get; set; }
 
         public string PatientName { get; set; }
 
-        public Int32? Patientid { get; set; }
+        public string DoctName { get; set; }
 
+        public Int32? EmployerId { get; set; }
 
-        public Int32? Age{ get; set; }
+        public Int32? EmployerCode { get; set; }
 
-        public string MedicinesPre { get; set; }
+        public string EmployerName { get; set; }
 
-        public string Date { get; set; }
-
-
-        public Int32? DrugUtilisationId { get; set; }
-
-        public Int32? DrugDispenseId { get; set; }
-
-        public Int32? DrugId { get; set; }
-
-        public string DrugName { get; set; }
-
-        public decimal? DispenseQty { get; set; }
-
-        public Int32? DrugCode { get; set; }
-
-        public Int32? Dosage { get; set; }
-
-        public Int32? PD_id { get; set; }
-
-       
+        public Int32? PatientCode { get; set; }
+        
 
     }
 }
