@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace SOFARCH.HealthScreening.Entities
 {
-    public class StockReport
+    public class PurchaseReport : BaseEntity
     {
-        public string Date { get; set; }
-
         public string FromDate { get; set; }
 
         public string ToDate { get; set; }
-
     }
 }

@@ -495,6 +495,7 @@
     <Content Include="Content\scripts\app\mis\purchase-bill-regiser.min - Copy.js" />
     <Content Include="Content\scripts\app\mis\purchase-bill-regiser.min.js" />
     <Content Include="Content\scripts\app\mis\purchase-bill-register.js" />
+    <Content Include="Content\scripts\app\mis\PurchaseReport.js" />
     <Content Include="Content\scripts\app\mis\sale-qty-report.js" />
     <Content Include="Content\scripts\app\mis\sale-value-report-in-sale-period.js" />
     <Content Include="Content\scripts\app\mis\sales-bill-item-register.js" />
@@ -506,6 +507,8 @@
     <Content Include="Content\scripts\app\mis\stock-report.js" />
     <Content Include="Content\scripts\app\mis\StockMovementsReport.js" />
     <Content Include="Content\scripts\app\mis\StockReport.js" />
+    <Content Include="Content\scripts\app\mis\xrayissuereport.js" />
+    <Content Include="Content\scripts\app\mis\xrayreports.js" />
     <Content Include="Content\scripts\app\pop-ups\city.js" />
     <Content Include="Content\scripts\app\pop-ups\local-client.js" />
     <Content Include="Content\scripts\app\purchase\goods-receipt.js" />
@@ -679,8 +682,11 @@
     <Content Include="Masters\GSTCategory.aspx" />
     <Content Include="MIS\medicinesDispense.aspx" />
     <Content Include="MIS\PettyCashReport.aspx" />
+    <Content Include="MIS\PurchaseReport.aspx" />
     <Content Include="MIS\StockMovementReports.aspx" />
     <Content Include="MIS\StockReport.aspx" />
+    <Content Include="MIS\XrayissueReport.aspx" />
+    <Content Include="MIS\XrayStockReport.aspx" />
     <Content Include="Transactions\DrugDispenseReturn.aspx" />
     <Content Include="Transactions\XRayIssue.aspx" />
     <Content Include="Transactions\DrugDispense.aspx" />
@@ -832,6 +838,13 @@
     <Compile Include="MIS\PettyCashReport.aspx.designer.cs">
       <DependentUpon>PettyCashReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MIS\PurchaseReport.aspx.cs">
+      <DependentUpon>PurchaseReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MIS\PurchaseReport.aspx.designer.cs">
+      <DependentUpon>PurchaseReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="MIS\StockMovementReports.aspx.cs">
       <DependentUpon>StockMovementReports.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -845,6 +858,20 @@
     </Compile>
     <Compile Include="MIS\StockReport.aspx.designer.cs">
       <DependentUpon>StockReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\XrayissueReport.aspx.cs">
+      <DependentUpon>XrayissueReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MIS\XrayissueReport.aspx.designer.cs">
+      <DependentUpon>XrayissueReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MIS\XrayStockReport.aspx.cs">
+      <DependentUpon>XrayStockReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MIS\XrayStockReport.aspx.designer.cs">
+      <DependentUpon>XrayStockReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
@@ -997,6 +1024,9 @@
     <Content Include="Reports\StockDetailsReport.rpt" />
     <Content Include="Reports\StockMovement.rpt" />
     <Content Include="Reports\HealthCheckupDetails.rpt" />
+    <Content Include="Reports\PurchaseReport.rpt" />
+    <Content Include="Reports\X-RayIssueReport.rpt" />
+    <Content Include="Reports\X-rayStockDetailsReport.rpt" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

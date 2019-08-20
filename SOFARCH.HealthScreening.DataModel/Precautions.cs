@@ -120,12 +120,54 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugDispenseId;
         }
 
-        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
-        {
-            var drugDetails = new DrugDispenseDrugUtilisation();
+        //public Entities.PrecautionsList GetDrugDetailsByDrugId(Int32 drugId)
+        //{
+        //    //var drugDetails = new DrugDispenseDrugUtilisation();
 
-            return drugDetails.GetDrugDetailsByDrugId(drugId);
+        //    return GetDrugDetailsByDrugId(drugId);
+        //}
+
+
+        public Entities.PrecautionsList GetDrugDetailsByDrugId(Int32 drugId)
+        {
+            var drugDetails = new Entities.PrecautionsList();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugDetailsByDrugId))
+                {
+                    database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugId);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var drugUtilisation = new Entities.PrecautionsList()
+                            {
+                                DrugUtilisationId = DRE.GetNullableInt32(reader, "drug_utilisation_id", null),
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
+                                DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
+                                DispenseQty = Convert.ToString(DRE.GetNullableDecimal(reader, "dispense_qty", null)),
+                                BalanceQty = DRE.GetNullableDecimal(reader, "balance_qty", null),
+                                PurchaseRate = DRE.GetNullableDecimal(reader, "purchase_rate", null),
+                                Amount = DRE.GetNullableDecimal(reader, "amount", null)
+                            };
+
+                            drugDetails = drugUtilisation;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDetails;
         }
+
 
         public List<Entities.Precautions> SearchDrguDispense(Entities.Precautions prescription)
         {
@@ -174,12 +216,55 @@ namespace SOFARCH.HealthScreening.DataModel
             return drugDispenses;
         }
 
-        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
-        {
-            var drugDetails = new DrugDispenseDrugUtilisation();
+        //public List<Entities.PrecautionsList> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        //{
+        //    ///var drugDetails = new PrecautionsList();
 
-            return drugDetails.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        //    return GetDrugUtilisationByDrugDispenseId(drugDispenseId);
+        //}
+
+
+        public List<Entities.PrecautionsList> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        {
+            var drugDispenseDrugUtilisations = new List<Entities.PrecautionsList>();
+
+            try
+            {
+                using (DbCommand dbCommand = database.GetStoredProcCommand(DBStoredProcedure.GetDrugDispenseDrugUtilisationDetailsByDrugDispenseId))
+                {
+                    database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, drugDispenseId);
+
+                    using (IDataReader reader = database.ExecuteReader(dbCommand))
+                    {
+                        while (reader.Read())
+                        {
+                            var drugUtilisation = new Entities.PrecautionsList()
+                            {
+                                DrugUtilisationId = DRE.GetNullableInt32(reader, "drug_utilisation_id", null),
+                                DrugDispenseId = DRE.GetNullableInt32(reader, "drug_dispense_id", null),
+                                DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
+                                DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
+                                DrugName = DRE.GetNullableString(reader, "drug_name", null),
+                                DispenseQty = Convert.ToString(DRE.GetNullableDecimal(reader, "dispense_qty", null)),
+                                BalanceQty = DRE.GetNullableDecimal(reader, "balance_qty", null),
+                                PurchaseRate = DRE.GetNullableDecimal(reader, "purchase_rate", null),
+                                Amount = DRE.GetNullableDecimal(reader, "amount", null)
+                            };
+
+                            drugDispenseDrugUtilisations.Add(drugUtilisation);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return drugDispenseDrugUtilisations;
         }
+
+
 
         public List<Entities.Precautions> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
         {
@@ -258,7 +343,7 @@ namespace SOFARCH.HealthScreening.DataModel
                             {
                                 if (prescription.IsDeleted == true)
                                 {
-
+                                    
                                     var result = DeleteDrugDispenseDrugUtilisationDetailsByDrugDispenseId((int)prescription.DrugDispenseId, (int)prescription.DeletedBy, prescription.DeletedByIP, dbTransaction);
 
                                     if (result)
@@ -271,9 +356,9 @@ namespace SOFARCH.HealthScreening.DataModel
                                 {
                                     if (prescription.DrugDispenseDrugUtilisations.Count > 0)
                                     {
-                                        foreach (Entities.DrugDispenseDrugUtilisation drugUtilisation in prescription.DrugDispenseDrugUtilisations)
+                                        foreach (Entities.PrecautionsList drugUtilisation in prescription.DrugDispenseDrugUtilisations)
                                         {
-
+                                           
 
                                             drugUtilisation.DrugDispenseId = drugDispenseId;
 
@@ -312,7 +397,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
 
-        public Int32 SaveDrugDispenseDrugUtilisation(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
+        public Int32 SaveDrugDispenseDrugUtilisation(Entities.PrecautionsList drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
             var drugUtilisationId = 0;
 
@@ -370,7 +455,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
 
-        private bool DeleteDrugDispenseDrugUtilisationDetails(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
+        private bool DeleteDrugDispenseDrugUtilisationDetails(Entities.PrecautionsList drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
             bool IsDrugUtilisationDeleted = false;
 
@@ -402,7 +487,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
 
-        private Int32 UpdateDrugDispenseDrugUtilisationDetails(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
+        private Int32 UpdateDrugDispenseDrugUtilisationDetails(Entities.PrecautionsList drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
             var drugDispenseDrugUtilisationId = 0;
 
@@ -413,8 +498,8 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@drug_utilisation_id", DbType.Int32, drugDispenseDrugUtilisation.DrugUtilisationId);
                     database.AddInParameter(dbCommand, "@drug_dispense_id", DbType.Int32, drugDispenseDrugUtilisation.DrugDispenseId);
                     database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugDispenseDrugUtilisation.DrugId);
-                    //database.AddInParameter(dbCommand, "@Dosage", DbType.Int32, drugDispenseDrugUtilisation.Dosage);
-                    database.AddInParameter(dbCommand, "@dispense_qty", DbType.Decimal, drugDispenseDrugUtilisation.DispenseQty);
+                    database.AddInParameter(dbCommand, "@Dosage", DbType.String, drugDispenseDrugUtilisation.Dosage);
+                    database.AddInParameter(dbCommand, "@dispense_qty", DbType.String, drugDispenseDrugUtilisation.DispenseQty);
                     database.AddInParameter(dbCommand, "@modified_by", DbType.Int32, drugDispenseDrugUtilisation.ModifiedBy);
                     database.AddInParameter(dbCommand, "@modified_by_ip", DbType.String, drugDispenseDrugUtilisation.ModifiedByIP);
 
@@ -438,7 +523,7 @@ namespace SOFARCH.HealthScreening.DataModel
 
 
 
-        private Int32 AddDrugDispenseDrugUtilisationDetails(Entities.DrugDispenseDrugUtilisation drugDispenseDrugUtilisation, DbTransaction dbTransaction)
+        private Int32 AddDrugDispenseDrugUtilisationDetails(Entities.PrecautionsList drugDispenseDrugUtilisation, DbTransaction dbTransaction)
         {
             var drugDispenseDrugUtilisationId = 0;
 
@@ -449,8 +534,8 @@ namespace SOFARCH.HealthScreening.DataModel
                     database.AddInParameter(dbCommand, "@prescription_utilisation_id", DbType.Int32, drugDispenseDrugUtilisation.DrugUtilisationId);
                     database.AddInParameter(dbCommand, "@Precautions_id", DbType.Int32, drugDispenseDrugUtilisation.DrugDispenseId);
                     database.AddInParameter(dbCommand, "@drug_id", DbType.Int32, drugDispenseDrugUtilisation.DrugId);
-                    database.AddInParameter(dbCommand, "@dispense_qty", DbType.Decimal, drugDispenseDrugUtilisation.DispenseQty);
-                    //database.AddInParameter(dbCommand, "@Dosage", DbType.Int32, drugDispenseDrugUtilisation.Dosage);
+                    database.AddInParameter(dbCommand, "@dispense_qty", DbType.String, drugDispenseDrugUtilisation.DispenseQty);
+                    database.AddInParameter(dbCommand, "@Dosage", DbType.String, drugDispenseDrugUtilisation.Dosage);
                     database.AddInParameter(dbCommand, "@created_by", DbType.Int32, drugDispenseDrugUtilisation.CreatedBy);
                     database.AddInParameter(dbCommand, "@created_by_ip", DbType.String, drugDispenseDrugUtilisation.CreatedByIP);
 
@@ -473,9 +558,9 @@ namespace SOFARCH.HealthScreening.DataModel
         }
 
 
-        public List<Entities.DrugDispenseDrugUtilisation> GetUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        public List<Entities.PrecautionsList> GetUtilisationByDrugDispenseId(Int32 drugDispenseId)
         {
-            var drugDispenseDrugUtilisations = new List<Entities.DrugDispenseDrugUtilisation>();
+            var drugDispenseDrugUtilisations = new List<Entities.PrecautionsList>();
 
             try
             {
@@ -487,18 +572,16 @@ namespace SOFARCH.HealthScreening.DataModel
                     {
                         while (reader.Read())
                         {
-                            var drugUtilisation = new Entities.DrugDispenseDrugUtilisation()
+                            var drugUtilisation = new Entities.PrecautionsList()
                             {
                                 DrugUtilisationId = DRE.GetNullableInt32(reader, "prescription_utilisation_id", null),
                                 DrugDispenseId = DRE.GetNullableInt32(reader, "Precautions_id", null),
                                 DrugId = DRE.GetNullableInt32(reader, "drug_id", null),
                                 DrugCode = DRE.GetNullableInt32(reader, "drug_code", null),
                                 DrugName = DRE.GetNullableString(reader, "drug_name", null),
-                                DispenseQty = DRE.GetNullableDecimal(reader, "dispense_qty", null),
-                                //Dosage = DRE.GetNullableInt32(reader, "Dosage", null),
-                                BalanceQty = DRE.GetNullableDecimal(reader, "balance_qty", null),
-                                PurchaseRate = DRE.GetNullableDecimal(reader, "purchase_rate", null),
-                                Amount = DRE.GetNullableDecimal(reader, "amount", null)
+                                DispenseQty = DRE.GetNullableString(reader, "dispense_qty", null),
+                                Dosage = DRE.GetNullableString(reader, "Dosage", null),
+                               
                             };
 
                             drugDispenseDrugUtilisations.Add(drugUtilisation);

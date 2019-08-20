@@ -429,7 +429,7 @@ Sofarch.Prescription = (function () {
 
         var drugUtilisationId = 0;
         var drugDispenseId = 0;
-        var dispenseQty = 0;
+        var dispenseQty = null;
         var drugName = name;
         var drugUtilisation = {};
 
@@ -745,7 +745,7 @@ Sofarch.Prescription = (function () {
 
                                         swal({
                                             title: "Success",
-                                            text: "Drug Dispense deleted successfully.",
+                                            text: "Drug Prescription Details deleted successfully.",
                                             type: "success"
                                         }, function () {
                                             addNewDrugDispenseDetails();
@@ -1046,8 +1046,8 @@ Sofarch.Prescription = (function () {
             data += "<td class='text-center'> <button type='button' class='btn btn-sm btn-danger' id='" + drugUtilisation.DrugId + "'><i class='fa fa-fw fa-remove'></i></button></td>";
             data += "<td class='text-center'>" + drugUtilisation.DrugCode + "</td>";
             data += "<td class='text-center'>" + drugUtilisation.DrugName + "</td>";
-            data += "<td class='text-center'> <input type='text' id='" + drugUtilisation.DrugId + "' class='form-control' value='" + drugUtilisation.DispenseQty + "'/> </td>";
-            data += "<td class='text-center'> <input type='text' id='" + drugUtilisation.DrugId + "' class='form-control' value='" + drugUtilisation.Dosage + "'/> </td>";
+            data += "<td class='text-center'> <input type='text'  class='form-control' value='" + drugUtilisation.DispenseQty + "'/> </td>";
+            data += "<td class='text-center'> <input type='text'  class='form-control' value='" + drugUtilisation.Dosage + "'/> </td>";
             //data += "<td class='text-center'>" + drugUtilisation.BalanceQty + "</td>";
             //data += "<td class='text-right'>" + drugUtilisation.PurchaseRate + "</td>";
             //data += "<td class='text-right'>" + drugUtilisation.Amount + "</td>";
@@ -1077,19 +1077,13 @@ Sofarch.Prescription = (function () {
 
             var buttons = tableRow.querySelectorAll('button');
 
-            if (inputs.length) {
+            //if (inputs.length) {
 
-                for (var i = 0; i < inputs.length; i++) {
+            //    for (var i = 0; i < inputs.length; i++) {
 
-                    inputs[i].onkeydown = function (e) {
-                        return shared.acceptDecimalNos(e);
-                    };
-
-                    inputs[i].onblur = function (e) {
-                        calculateItemAmount(e);
-                    };
-                }
-            }
+                   
+            //    }
+            //}
 
             if (buttons.length) {
 
@@ -1201,8 +1195,8 @@ Sofarch.Prescription = (function () {
         var drugUtilisationId = 0;
         var drugDispenseId = 0;
         var drugId = 0;
-        var dispenseQty = 0;
-        var dosage=0;
+        var dispenseQty = null;
+        var dosage=null;
         DrugsUtilisation.length = 0;
 
         if (tableRows.length) {
@@ -1214,8 +1208,8 @@ Sofarch.Prescription = (function () {
                 drugUtilisationId = parseInt(tableRows[tr].getAttribute('data-drug-utilisation-id'));
                 drugDispenseId = parseInt(DOM.drugDispenseNo.getAttribute('data-drug-dispense-id'));
                 drugId = parseInt(tableRows[tr].getAttribute('data-drug-id'));
-                dispenseQty = parseFloat(dispenseQtyInput.value);
-                dosage = parseFloat(dosageInput.value);
+                dispenseQty = dispenseQtyInput.value;
+                dosage = dosageInput.value;
 
 
                 if (isNaN(drugUtilisationId)) { drugUtilisationId = 0; }

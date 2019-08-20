@@ -605,7 +605,7 @@ Sofarch.DrugDispenseReturn = (function () {
 
                 shared.showLoader(DOM.loader);
 
-;                if (response.status === 200) {
+                if (response.status === 200) {
 
                     if (response.responseText !== undefined) {
 

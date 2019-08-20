@@ -118,7 +118,9 @@
     <Compile Include="DataSearchField.cs" />
     <Compile Include="Drug.cs" />
     <Compile Include="DrugDispenseReturn.cs" />
+    <Compile Include="MedicineDispenseRegister.cs" />
     <Compile Include="medicinesDispense.cs" />
+    <Compile Include="PurchaseReport.cs" />
     <Compile Include="StockReport.cs" />
     <Compile Include="XRayIssue.cs" />
     <Compile Include="DrugDispense.cs" />
@@ -151,6 +153,8 @@
     <Compile Include="User.cs" />
     <Compile Include="UserRole.cs" />
     <Compile Include="WorkingPeriod.cs" />
+    <Compile Include="Xrayissuereport.cs" />
+    <Compile Include="XrayReports.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SOFARCH.HealthScreening.DataModel\SOFARCH.HealthScreening.DataModel.csproj">

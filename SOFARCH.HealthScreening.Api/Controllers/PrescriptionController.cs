@@ -20,7 +20,7 @@ namespace SOFARCH.HealthScreening.Api.Controllers
         }
 
         [Route("GetDrugDetailsByDrugIds/{drugId}")]
-        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugIds(Int32 drugId)
+        public Entities.PrecautionsList GetDrugDetailsByDrugIds(Int32 drugId)
         {
             return _drugDispense.GetDrugDetailsByDrugId(drugId);
         }
@@ -34,14 +34,14 @@ namespace SOFARCH.HealthScreening.Api.Controllers
 
 
 
-        [Route("GetPastDrugDispenseDatesByPatientId/{patientId}")]
-        public List<Entities.Precautions> GetPastDrugDispenseDatesByPatientId(Int32 patientId)
-        {
-            return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
-        }
+        //[Route("GetPastDrugDispenseDatesByPatientIds/patientId}")]
+        //public List<Entities.Precautions> GetPastDrugDispenseDatesByPatientIds(Int32 patientId)
+        //{
+        //    return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
+        //}
 
         [Route("GetDrugUtilisationByDrugDispenseIds/{drugDispenseId}")]
-        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        public List<Entities.PrecautionsList> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
         {
             return _drugDispense.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
         }

@@ -297,7 +297,7 @@ Sofarch.PettyCash = (function () {
 
                     //assign text to input
                     DOM.DocNo.setAttribute('data-PettycaseId-id',PettycaseId);
-                    DOM.DocNo.value = selectedPettycase[c].DocNo;
+                    DOM.DocNo.value = selectedPettycase[c].PettycaseId;
                     DOM.EntryDate.value = selectedPettycase[c].EntryDate;
                     DOM.DateRange.value = selectedPettycase[c].DateRange;
                     shared.setSelectValue(DOM.AccountHead, null, parseInt(selectedPettycase[c].AccountHeadId));
@@ -319,10 +319,8 @@ Sofarch.PettyCash = (function () {
 
     function savePettyCash() {
 
-        if (DOM.DocNo.value === "") {
-            swal("Error!!!", "Please enter the DocNo.", "error");
-            return;
-        }
+        
+       
 
         /* temp variable */
 
@@ -447,7 +445,7 @@ Sofarch.PettyCash = (function () {
                 data += "<tr data-PettycaseId-id=" + Pettycase[r].PettycaseId + ">";
                 data += "<td><label class='label-tick'> <input type='checkbox' id='" + Pettycase[r].PettycaseId + "' class='label-checkbox' name='Select' /> <span class='label-text'></span> </label>" + "</td>";
                 data += "<td>" + Pettycase[r].SrNo + "</td>";
-                data += "<td>" + Pettycase[r].DocNo + "</td>";
+                data += "<td>" + Pettycase[r].PettycaseId + "</td>";
                 data += "<td>" + Pettycase[r].EntryDate + "</td>";
                 data += "<td>" + Pettycase[r].DateRange + "</td>";
                 data += "<td>" + Pettycase[r].AccountHead + "</td>";

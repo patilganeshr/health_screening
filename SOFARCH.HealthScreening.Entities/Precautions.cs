@@ -17,7 +17,7 @@ namespace SOFARCH.HealthScreening.Entities
 
         public Int32? PatientId { get; set; }
 
-        public List<DrugDispenseDrugUtilisation> DrugDispenseDrugUtilisations { get; set; }
+        public List<PrecautionsList> DrugDispenseDrugUtilisations { get; set; }
 
         public string PatientName { get; set; }
 

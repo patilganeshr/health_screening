@@ -28,7 +28,7 @@ namespace SOFARCH.HealthScreening.Business
             _drugDispense = new DataModel.Precautions();
         }
 
-        public Entities.DrugDispenseDrugUtilisation GetDrugDetailsByDrugId(Int32 drugId)
+        public Entities.PrecautionsList GetDrugDetailsByDrugId(Int32 drugId)
         {
             return _drugDispense.GetDrugDetailsByDrugId(drugId);
         }
@@ -43,7 +43,7 @@ namespace SOFARCH.HealthScreening.Business
             return _drugDispense.GetPastDrugDispenseDatesByPatientId(patientId);
         }
 
-        public List<Entities.DrugDispenseDrugUtilisation> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
+        public List<Entities.PrecautionsList> GetDrugUtilisationByDrugDispenseId(Int32 drugDispenseId)
         {
             return _drugDispense.GetDrugUtilisationByDrugDispenseId(drugDispenseId);
         }

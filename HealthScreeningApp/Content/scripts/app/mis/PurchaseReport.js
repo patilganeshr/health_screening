@@ -2,7 +2,7 @@
 
 var Sofarch = {};
 
-Sofarch.medicinesDispense = (function () {
+Sofarch.PurchaseReport = (function () {
 
     //placeholder for cached DOM elements
     var DOM = {};
@@ -19,17 +19,13 @@ Sofarch.medicinesDispense = (function () {
         DOM.viewMode = document.getElementById('ViewMode');
 
         DOM.editMode = document.getElementById('EditMode');
-
-
-
-
         DOM.fromdate = document.getElementById('FromDate');
         DOM.todate = document.getElementById('ToDate');
 
-        DOM.printmedicinesdispenseReport = document.getElementById('PrintmedicinesDispense');
+        DOM.printPurchaseReport = document.getElementById('PrintPurchase');
 
-        DOM.$medicinesDispenseDateDatePicker1 = $('#medicinesDispenseDateDatePicker1');
-        DOM.$medicinesDispenseDateDatePicker2 = $('#medicinesDispenseDateDatePicker2');
+        DOM.$PurchaseReportDateDatePicker1 = $('#PucrhaseDateDatePicker1');
+        DOM.$PurchaseReportDateDatePicker2 = $('#PurchaseDateDatePicker2');
 
     }
 
@@ -39,11 +35,13 @@ Sofarch.medicinesDispense = (function () {
 
         var currentDate = new Date();
 
-        DOM.$medicinesDispenseDateDatePicker1.datetimepicker({
+        DOM.$PurchaseReportDateDatePicker1.datetimepicker({
             format: 'DD/MMM/YYYY',
             defaultDate: moment(currentDate).format("DD/MMM/YYYY")
         });
-        DOM.$medicinesDispenseDateDatePicker2.datetimepicker({
+
+        var currentDate = new Date();
+        DOM.$PurchaseReportDateDatePicker2.datetimepicker({
             format: 'DD/MMM/YYYY',
             defaultDate: moment(currentDate).format("DD/MMM/YYYY")
         });
@@ -75,11 +73,11 @@ Sofarch.medicinesDispense = (function () {
 
     function bindEvents() {
 
-        DOM.printmedicinesdispenseReport.addEventListener('click', PrintmedicinesDispenseReport);
+        DOM.printPurchaseReport.addEventListener('click', printPurchaseReport);
 
     }
 
-    function PrintmedicinesDispenseReport() {
+    function printPurchaseReport() {
 
         shared.showLoader(DOM.loader);
 
@@ -90,7 +88,7 @@ Sofarch.medicinesDispense = (function () {
         var fromdate = DOM.fromdate.value;
         var todate = DOM.todate.value;
 
-        var folderName = 'PreEmploymentDetails';
+        var folderName = 'Purchase';
 
         print = {
             FromDate: fromdate,
@@ -100,7 +98,7 @@ Sofarch.medicinesDispense = (function () {
 
         var postData = JSON.stringify(print);
 
-        shared.sendRequest(SERVICE_PATH + "medicinesDispenseReport", "POST", true, "JSON", postData, function (response) {
+        shared.sendRequest(SERVICE_PATH + "PurchaseReportPrint", "POST", true, "JSON", postData, function (response) {
 
             shared.showLoader(DOM.loader);
 
@@ -114,7 +112,7 @@ Sofarch.medicinesDispense = (function () {
 
                         if (_response.length > 0) {
 
-                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/MedicinesDispense.pdf", "_blank");
+                            window.open(location.origin + "/HealthScreeningApp/ApplicationFiles/" + folderName + "/PurchaseReport.pdf", "_blank");
 
                         }
                     }
@@ -143,4 +141,4 @@ Sofarch.medicinesDispense = (function () {
 }());
 
 
-Sofarch.medicinesDispense.init();
+Sofarch.PurchaseReport.init();

@@ -1,5 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="medicinesDispense.aspx.cs" Inherits="HealthScreeningApp.MIS.medicinesDispense" %>
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="XrayStockReport.aspx.cs" Inherits="HealthScreeningApp.MIS.XrayStockReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -7,7 +6,7 @@
 
     <div class="action-toolbar">
 
-        <a href="#" id="PrintmedicinesDispense"><i class="fa fa-print fa-fw"></i>Print</a>
+        <a href="#" id="StockReportPrintList"><i class="fa fa-print fa-fw"></i>Print</a>
 
     </div>
 
@@ -16,7 +15,7 @@
         <div class="container-fluid">
 
             <div class="page-header">
-                <h3>Medicines Dispense Report</h3>
+                <h3>X-ray Stock Report</h3>
             </div>
 
             <div id="Loader" class="loader-container" style="display: none;">
@@ -54,9 +53,9 @@
 
 
                                         <div class="form-group form-group-sm">
-                                            <label class="col-sm-2">From Date</label>
+                                            <label class="col-sm-2">Date</label>
                                             <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                <div class="input-group date input-group-md" id="medicinesDispenseDateDatePicker1">
+                                                <div class="input-group date input-group-md" id="StockDateDatePicker1">
                                                     <input type="text" id="FromDate" class="form-control" />
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-calendar"></i>
@@ -64,19 +63,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group form-group-sm">
-                                            <label class="col-sm-2">To Date</label>
-                                            <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-                                                <div class="input-group date input-group-md" id="medicinesDispenseDateDatePicker2">
-                                                    <input type="text" id="ToDate" class="form-control" />
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
                                     </div>
 
                                 </div>
@@ -95,6 +81,5 @@
 
     </div>
     <script type="text/javascript" src="../content/scripts/app/shared/default.js"></script>
-    <script type="text/javascript" src="../content/scripts/app/mis/medicinesDispenseReport.js"></script>
-   
+    <script type="text/javascript" src="../content/scripts/app/mis/xrayreports.js"></script>
     </asp:Content>
