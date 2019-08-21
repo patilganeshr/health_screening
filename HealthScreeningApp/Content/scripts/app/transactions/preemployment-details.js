@@ -1482,7 +1482,7 @@ Sofarch.PreEmployment = (function () {
             var familyHistory = null;
             var workingPeriodId = 0;
 
-            preEmploymentId = parseInt(DOM.patientCode.getAttribute('data-pre-employment-id'));
+            preEmploymentId = parseInt(DOM.preEmploymentCodeNo.getAttribute('data-pre-employment-id'));
             patientId = parseInt(DOM.patientName.getAttribute('data-patient-id'));
             consultDate = DOM.consultDate.value;
             maritalStatus = DOM.maritalStatus.value;

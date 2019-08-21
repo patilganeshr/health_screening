@@ -58,7 +58,7 @@ namespace SOFARCH.HealthScreening.Business
 
                 var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
 
-                File.AppendAllText(serverPath + "/log.txt", report.ReportPath);
+                //File.AppendAllText(serverPath + "/log.txt", report.ReportPath);
 
                 _reportDocument.Load(report.ReportPath);
 
@@ -101,7 +101,7 @@ namespace SOFARCH.HealthScreening.Business
 
                 //serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
 
-                File.AppendAllText(serverPath + "/log.txt", "Report Parameters");
+                //File.AppendAllText(serverPath + "/log.txt", "Report Parameters");
 
                 _diskFileDestinationOptions = new DiskFileDestinationOptions();
                 //_exportOptions = new ExportOptions();
@@ -119,15 +119,15 @@ namespace SOFARCH.HealthScreening.Business
 
                 //var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
 
-                File.AppendAllText(serverPath + "/log.txt", "File Storeage path " + report.FileStoragePath);
+                //File.AppendAllText(serverPath + "/log.txt", "File Storeage path " + report.FileStoragePath);
 
                 filePath = report.FileStoragePath;
             }
             catch (Exception ex)
             {
-                var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
+                //var serverPath = HttpContext.Current.Server.MapPath("/HealthScreeningApp/");
 
-                File.AppendAllText(serverPath + "/log.txt", ex.Message);
+                //File.AppendAllText(serverPath + "/log.txt", ex.Message);
 
                 throw new Exception("Error as " + ex.Message);
                 //LogEntry.LogExceptions.WriteLog("ExportCrystalReportClassLibrary", ex.GetType().ToString(), ex.Message.ToString(), ex.Source.ToString(), "WEB");

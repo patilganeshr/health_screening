@@ -64,7 +64,7 @@ namespace SOFARCH.HealthScreening.Business
 
                 }
 
-                LogWriter logWriter = new LogWriter(fileName);
+                ////LogWriter logWriter = new LogWriter(fileName);
 
                 ////LogWriter //logWriter = new LogWriter("Inside Generate REport Method");
 
@@ -77,7 +77,7 @@ namespace SOFARCH.HealthScreening.Business
                 reportEntity.Parameters = parameters;
                 reportEntity.FileStoragePath = reportEntity.DirectoryPath + Convert.ToString(preEmploymentDetails.PreEmploymentCodeNo) + ".pdf";
 
-                logWriter = new LogWriter(folderName + ", " + reportName + ", " + reportEntity.DirectoryPath + ", " + "," + reportEntity.FileStoragePath);
+                //logWriter = new LogWriter(folderName + ", " + reportName + ", " + reportEntity.DirectoryPath + ", " + "," + reportEntity.FileStoragePath);
 
                 fileName = report.GenerateReport(reportEntity, CrystalDecisions.Shared.ExportFormatType.PortableDocFormat);
             }
